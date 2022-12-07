@@ -1,13 +1,10 @@
 package com.seven.zichen.snakegame.controller;
 
-import com.seven.zichen.snakegame.entry.RegisterEntry;
 import com.seven.zichen.snakegame.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.apache.commons.codec.digest.DigestUtils;
 
 @RestController
 @RequestMapping("/account")
@@ -33,7 +30,7 @@ public class AccountController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public void testing() {
-
+        System.out.println(accountService.getAllAccounts());
     }
 
 }

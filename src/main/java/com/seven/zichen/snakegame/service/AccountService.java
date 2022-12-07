@@ -1,4 +1,10 @@
 package com.seven.zichen.snakegame.service;
 
-public class AccountService {
+import com.seven.zichen.snakegame.entry.AccountEntry;
+
+import java.util.List;
+
+public interface AccountService {
+
+    List<AccountEntry> getAllAccounts();
 }
