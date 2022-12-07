@@ -19,4 +19,14 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountEntry> getAllAccounts() {
         return accountMapper.getAllAccounts();
     }
+
+    @Override
+    public void createNewAccount(String accName, String pwd) {
+        accountMapper.addNewAccount(accName, pwd);
+    }
+
+    @Override
+    public AccountEntry getAccountByAccname(String accName) {
+        return accountMapper.getAccountByAccname(accName);
+    }
 }

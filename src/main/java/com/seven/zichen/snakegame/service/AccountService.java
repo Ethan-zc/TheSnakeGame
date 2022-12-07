@@ -7,4 +7,8 @@ import java.util.List;
 public interface AccountService {
 
     List<AccountEntry> getAllAccounts();
+
+    void createNewAccount(String accName, String pwd);
+
+    AccountEntry getAccountByAccname(String accName);
 }
