@@ -123,7 +123,7 @@ public class SignIn extends JFrame implements ActionListener {
             if (strCurrentLine.equals(str1)) {
                 JOptionPane.showMessageDialog(btn1, "Logged in");
                 this.dispose();
-                new GameFrame();
+                new WaitingPanel();
             } else {
                 JOptionPane.showMessageDialog(btn1, "Error, please try again");
             }
