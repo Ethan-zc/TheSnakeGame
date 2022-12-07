@@ -5,13 +5,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class SignUp extends JFrame implements ActionListener {
     JLabel l1, l2, l3, l4;
     JTextField tf1;
     JButton btn1, btn2, btn3;
     JPasswordField p1, p2;
     private String userName;
-    private String psw;
+    private String pwd;
 
     public SignUp() {
         setVisible(true);
@@ -91,16 +101,48 @@ public class SignUp extends JFrame implements ActionListener {
                 {
                     //create user
                     this.userName = s1;
-                    this.psw = s8;
+                    this.pwd = s8;
 
-                    this.dispose();
-                    new SignIn();
+                    URL url = new URL("http://localhost:8080/account/register");
+                    Map<String,Object> params = new LinkedHashMap<>();
+                    params.put("accname", userName);
+                    params.put("pwd", pwd);
 
-                    JOptionPane.showMessageDialog(btn1, "Data Saved Successfully");
+                    StringBuilder postData = new StringBuilder();
+                    for (Map.Entry<String,Object> param : params.entrySet()) {
+                        if (postData.length() != 0) postData.append('&');
+                        postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                        postData.append('=');
+                        postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                    }
+                    byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
+
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                    conn.setDoOutput(true);
+                    conn.getOutputStream().write(postDataBytes);
+
+                    BufferedReader br = null;
+                    if (100 <= conn.getResponseCode() && conn.getResponseCode() <= 399) {
+                        br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    } else {
+                        br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                    }
+                    String strCurrentLine = br.readLine();
+                    System.out.print(strCurrentLine);
+                    if (strCurrentLine.equals("Success!")) {
+                        JOptionPane.showMessageDialog(btn1, "Data Saved Successfully");
+                        this.dispose();
+                        new SignIn();
+                    } else {
+                        JOptionPane.showMessageDialog(btn1, "Error, please try again");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    System.out.println(ex);
+                    System.out.println(ex.getMessage());
                 }
             }
             else

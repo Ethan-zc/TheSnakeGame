@@ -4,6 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SignIn extends JFrame implements ActionListener {
     JLabel l1, l2, l3;
@@ -83,9 +91,42 @@ public class SignIn extends JFrame implements ActionListener {
 
         try {
             //Login
-            this.dispose();
-            new GameFrame();
+            URL url = new URL("http://localhost:8080/account/login");
+            Map<String,Object> params = new LinkedHashMap<>();
+            params.put("accname", str1);
+            params.put("pwd", str2);
 
+            StringBuilder postData = new StringBuilder();
+            for (Map.Entry<String,Object> param : params.entrySet()) {
+                if (postData.length() != 0) postData.append('&');
+                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                postData.append('=');
+                postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+            }
+            byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
+
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+            conn.setDoOutput(true);
+            conn.getOutputStream().write(postDataBytes);
+
+            BufferedReader br = null;
+            if (100 <= conn.getResponseCode() && conn.getResponseCode() <= 399) {
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            } else {
+                br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            }
+            String strCurrentLine = br.readLine();
+            System.out.print(strCurrentLine);
+            if (strCurrentLine.equals(str1)) {
+                JOptionPane.showMessageDialog(btn1, "Logged in");
+                this.dispose();
+                new GameFrame();
+            } else {
+                JOptionPane.showMessageDialog(btn1, "Error, please try again");
+            }
         } catch (Exception ex) {
 
             System.out.println(ex);

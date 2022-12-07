@@ -7,10 +7,7 @@ import com.seven.zichen.snakegame.service.AccountService;
 import io.swagger.annotations.Api;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/account")
@@ -21,26 +18,22 @@ public class AccountController {
     private AccountService accountService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@RequestBody RegisterEntry request) {
-        String accName = request.getAccname();
-        String pwd = DigestUtils.md5Hex(request.getPwd());
-        if (accName == null || accName.equals("") || pwd.equals("")) {
+    public String register(@RequestParam String accname, @RequestParam String pwd) {
+        if (accname == null || accname.equals("") || pwd.equals("")) {
             return "Account Name or password could not be empty. ";
         } else {
-            accountService.createNewAccount(accName, pwd);
+            accountService.createNewAccount(accname, pwd);
             return "Success!";
         }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestBody LoginEntry request) {
-        String accName = request.getAccname();
-        String pwd = DigestUtils.md5Hex(request.getPwd());
-        AccountEntry foundAcc = accountService.getAccountByAccname(accName);
+    public String login(@RequestParam String accname, @RequestParam String pwd) {
+        AccountEntry foundAcc = accountService.getAccountByAccname(accname);
         if (foundAcc == null || !foundAcc.getPwd().equals(pwd)) {
             return "Failed";
         } else {
-            return accName;
+            return accname;
         }
     }
 
