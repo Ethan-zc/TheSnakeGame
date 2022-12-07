@@ -2,7 +2,13 @@ package com.seven.zichen.snakegame.models;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
+import java.io.*;
+import java.net.*;
 
 public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 600;
@@ -73,7 +79,7 @@ public class GamePanel extends JPanel implements ActionListener {
         appleX = random.nextInt((int) (SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
         appleY = random.nextInt((int) (SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
     }
-    public void move(){
+    public void move() throws IOException {
         for(int i = bodyParts;i>0;i--){
             X[i] = X[i-1];
             Y[i]=Y[i-1];
@@ -93,6 +99,32 @@ public class GamePanel extends JPanel implements ActionListener {
                 X[0]=X[0]+UNIT_SIZE;
                 break;
         }
+
+        URL url = new URL("http://127.0.0.1:8080/game/printhist");
+        Map<String,Object> params = new LinkedHashMap<>();
+        params.put("X", Arrays.toString(X));
+        params.put("Y", Arrays.toString(Y));
+
+        StringBuilder postData = new StringBuilder();
+        for (Map.Entry<String,Object> param : params.entrySet()) {
+            if (postData.length() != 0) postData.append('&');
+            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            postData.append('=');
+            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+        }
+        byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
+
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+        conn.setDoOutput(true);
+        conn.getOutputStream().write(postDataBytes);
+
+        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+
+        for (int c; (c = in.read()) >= 0;)
+            System.out.print((char)c);
     }
     public void checkApple(){
         if((X[0] == appleX) && (Y[0] == appleY)){
@@ -143,7 +175,11 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(running){
-            move();
+            try {
+                move();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             checkApple();
             checkCollision();
         }
