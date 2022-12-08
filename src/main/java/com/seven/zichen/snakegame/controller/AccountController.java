@@ -1,11 +1,14 @@
 package com.seven.zichen.snakegame.controller;
 
 import com.seven.zichen.snakegame.entry.AccountEntry;
+import com.seven.zichen.snakegame.entry.ScoreEntry;
 import com.seven.zichen.snakegame.service.AccountService;
 import io.swagger.annotations.Api;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/account")
@@ -42,9 +45,9 @@ public class AccountController {
         System.out.println(accountService.getAllAccounts());
     }
 
-//    @RequestMapping(value = "/getLeaderBoard", method = RequestMethod.GET)
-//    public List<> getLeaderBoard() {
-//
-//    }
+    @RequestMapping(value = "/getLeaderBoard", method = RequestMethod.GET)
+    public List<ScoreEntry> getLeaderBoard() {
+        return accountService.getScore();
+    }
 
 }

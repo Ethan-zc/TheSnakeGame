@@ -2,6 +2,7 @@ package com.seven.zichen.snakegame.service.Impl;
 
 import com.seven.zichen.snakegame.dao.AccountMapper;
 import com.seven.zichen.snakegame.entry.AccountEntry;
+import com.seven.zichen.snakegame.entry.ScoreEntry;
 import com.seven.zichen.snakegame.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountEntry getAccountByAccname(String accName) {
         return accountMapper.getAccountByAccname(accName);
+    }
+
+    @Override
+    public List<ScoreEntry> getScore() {
+        return accountMapper.getScore();
     }
 }
