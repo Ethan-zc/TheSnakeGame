@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,15 +18,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 
-public class LeaderBoard extends JFrame {
+public class LeaderBoard extends JFrame implements ActionListener {
     private JLabel l1;
+    private JButton btn;
     private ArrayList<JLabel> ls;
     private static final int numLeaders = 6;
     private Map<String, Integer> leaderScore = new HashMap<>();
 
-    private static final String[] suffixes = new String[] {"th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"};
+    private static final String[] suffixes = new String[] {"st", "nd", "rd", "th", "th", "th"};
+    private String userName;
 
-    public LeaderBoard(String response) {
+    public LeaderBoard(String response, String userName) {
+        this.userName = userName;
+
         setTitle("Leader Board");
 
         setVisible(true);
@@ -39,29 +45,26 @@ public class LeaderBoard extends JFrame {
         l1 = new JLabel("LEADER BOARD:");
         l1.setForeground(Color.black);
         l1.setFont(new Font("Bayon", Font.BOLD, 28));
-        l1.setBounds(108, 25, 300, 42);
+        l1.setBounds(90, 25, 300, 42);
 
         processResponse(response);
-
-
-//        leaderScore.put("ALEX", 35);
-//        leaderScore.put("BOB", 30);
-//        leaderScore.put("CATHERINE", 27);
-//        leaderScore.put("DAVID", 25);
-//        leaderScore.put("EASON", 23);
-//        leaderScore.put("FALCON", 20);
 
         List<Map.Entry<String, Integer>> leaderList = new LinkedList<>(leaderScore.entrySet());
         int boardLength = Math.min(numLeaders, leaderList.size());
 
         for (int i = 0; i < boardLength; i++) {
-            JLabel l = new JLabel((i + 1) + suffixes[i] + "\t\t" + leaderList.get(i).getKey() + "\t\t" + leaderList.get(i).getValue());
+            JLabel l = new JLabel(String.format("%-6s %-15s %-5d", (i + 1) + suffixes[i], leaderList.get(i).getKey(), leaderList.get(i).getValue()));
             l.setForeground(Color.black);
-            l.setFont(new Font("Bayon", Font.BOLD, 26));
-            l.setBounds(46, 50 * i + 107, 350, 43);
+            l.setFont(new Font("Bayon", Font.BOLD, 22));
+            l.setBounds(46, 50 * i + 90, 350, 43);
             add(l);
         }
-        System.out.println("finish");
+
+        btn = new JButton("Go Back");
+        btn.setBounds(119, 400, 150, 30);
+        btn.addActionListener(this);
+
+        add(btn);
         add(l1);
     }
 
@@ -92,6 +95,11 @@ public class LeaderBoard extends JFrame {
             int score = Integer.parseInt(records[i].split("}")[0].split("\"score\":")[1]);
             leaderScore.put(name, score);
         }
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        this.dispose();
+        new WelcomePage(userName);
     }
 }
