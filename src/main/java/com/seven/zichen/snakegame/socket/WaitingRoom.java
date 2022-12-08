@@ -33,11 +33,22 @@ public class WaitingRoom implements Runnable{
         try {
             // Create a server socket
             ServerSocket serverSocket = new ServerSocket(8000);
-            System.out.println("Chat Started at: " + new Date() + "/n");
+            System.out.println("Waitingroom Started at: " + new Date() + "/n");
 
             while (true) {
                 // Listen for a new connection request
                 Socket socket = serverSocket.accept();
+
+                DataOutputStream outputToClient = new DataOutputStream(
+                        socket.getOutputStream());
+                if (!clientInRoom.isEmpty()) {
+                    StringBuilder sb = new StringBuilder();
+                    for (String un : clientInRoom.keySet()) {
+                        sb.append(un);
+                        sb.append(", ");
+                    }
+                    outputToClient.writeUTF(sb.toString());
+                }
 
                 // Increment clientNo
                 clientNo++;
@@ -80,7 +91,6 @@ public class WaitingRoom implements Runnable{
 
                 // Continuously serve the client
                 while (true) {
-
                     String username = inputFromClient.readUTF();
                     clientInRoom.put(username, 1);
                     for (Integer client : activeClients.keySet()) {
