@@ -19,7 +19,7 @@ ALTER TABLE acc MODIFY accid BIGINT AUTO_INCREMENT;
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE acc_game (
-    score       VARCHAR(50),
+    score BIGINT,
     accid BIGINT NOT NULL,
     gameid BIGINT NOT NULL
 );
@@ -34,3 +34,16 @@ ALTER TABLE acc_game
 ALTER TABLE acc_game
     ADD CONSTRAINT acc_accgame_fk FOREIGN KEY ( accid )
         REFERENCES acc ( accid );
+
+INSERT INTO `try`.`acc` (`accname`, `pwd`) VALUES ('zichenyang', 'e10adc3949ba59abbe56e057f20f883e');
+INSERT INTO `try`.`acc` (`accname`, `pwd`) VALUES ('zhangnan', 'e10adc3949ba59abbe56e057f20f883e');
+INSERT INTO `try`.`acc` (`accname`, `pwd`) VALUES ('pochita', 'e10adc3949ba59abbe56e057f20f883e');
+
+INSERT INTO `try`.`acc_game` (`score`, `accid`, `gameid`) VALUES ('123456', '1', '1');
+INSERT INTO `try`.`acc_game` (`score`, `accid`, `gameid`) VALUES ('23441', '2', '2');
+INSERT INTO `try`.`acc_game` (`score`, `accid`, `gameid`) VALUES ('12314123', '3', '1');
+INSERT INTO `try`.`acc_game` (`score`, `accid`, `gameid`) VALUES ('1312', '1', '2');
+INSERT INTO `try`.`acc_game` (`score`, `accid`, `gameid`) VALUES ('1312', '3', '2');
+
+INSERT INTO `try`.`game` (`starttime`, `endtime`) VALUES ('2020-03-01 00:00:00', '2020-03-01 00:00:00');
+INSERT INTO `try`.`game` (`starttime`, `endtime`) VALUES ('2020-03-01 00:00:00', '2020-03-01 00:00:00');
