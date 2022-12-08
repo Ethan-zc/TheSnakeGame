@@ -1,8 +1,6 @@
 package com.seven.zichen.snakegame.controller;
 
 import com.seven.zichen.snakegame.entry.AccountEntry;
-import com.seven.zichen.snakegame.entry.LoginEntry;
-import com.seven.zichen.snakegame.entry.RegisterEntry;
 import com.seven.zichen.snakegame.service.AccountService;
 import io.swagger.annotations.Api;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -43,5 +41,10 @@ public class AccountController {
     public void testing() {
         System.out.println(accountService.getAllAccounts());
     }
+
+//    @RequestMapping(value = "/getLeaderBoard", method = RequestMethod.GET)
+//    public List<> getLeaderBoard() {
+//
+//    }
 
 }
