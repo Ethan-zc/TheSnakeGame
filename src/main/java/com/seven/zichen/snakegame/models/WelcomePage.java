@@ -4,20 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class WelcomePage extends JFrame implements ActionListener {
-    JLabel l1;
-    JButton btn1, btn2;
+    private JLabel l1;
+    private JButton btn1, btn2;
+    private String userName;
     public WelcomePage(String userName) {
+        this.userName = userName;
         setTitle("Welcome!");
 
         setVisible(true);
@@ -36,10 +30,10 @@ public class WelcomePage extends JFrame implements ActionListener {
         btn1 = new JButton("Start Game");
         btn2 = new JButton("Show Leaderboard");
 
-        l1.setBounds(118, 28, 200, 47);
+        l1.setBounds(130, 28, 200, 47);
 
-        btn1.setBounds(90, 160, 200, 30);
-        btn2.setBounds(170, 160, 200, 30);
+        btn1.setBounds(115, 120, 150, 30);
+        btn2.setBounds(115, 160, 150, 30);
 
         add(l1);
 
@@ -62,7 +56,7 @@ public class WelcomePage extends JFrame implements ActionListener {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            new LeaderBoard(response);
+            new LeaderBoard(response, userName);
         }
     }
 }
