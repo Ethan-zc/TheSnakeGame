@@ -19,6 +19,7 @@ public class AccountController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestParam String accname, @RequestParam String pwd) {
+        pwd = DigestUtils.md5Hex(pwd);
         if (accname == null || accname.equals("") || pwd.equals("")) {
             return "Account Name or password could not be empty. ";
         } else {
@@ -30,6 +31,7 @@ public class AccountController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@RequestParam String accname, @RequestParam String pwd) {
         AccountEntry foundAcc = accountService.getAccountByAccname(accname);
+        pwd = DigestUtils.md5Hex(pwd);
         if (foundAcc == null || !foundAcc.getPwd().equals(pwd)) {
             return "Failed";
         } else {
