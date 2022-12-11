@@ -13,7 +13,7 @@ public class TheSnakeGameApplication {
 
 	public static void main(String[] args) throws IOException {
 		new SpringApplicationBuilder(TheSnakeGameApplication.class).headless(false).run(args);
-		new SignUp();
+//		new SignUp();
 	}
 
 }
