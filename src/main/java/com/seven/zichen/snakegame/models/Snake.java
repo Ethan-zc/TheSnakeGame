@@ -11,7 +11,7 @@ public class Snake {
 
     private int[] X;
     private int[] Y;
-    private static final int UNIT_SIZE = 25;
+    private static final int UNIT_SIZE = 15;
     private Boolean alive = false;
     int bodyParts = 6;
     char direction = 'R';
@@ -50,7 +50,12 @@ public class Snake {
     }
 
     public void changeDirection(char dir) {
-        this.direction = dir;
+        if (!(direction == 'U' && dir == 'D' ||
+                direction == 'D' && dir == 'U' ||
+                direction == 'L' && dir == 'R' ||
+                direction == 'R' && dir == 'L')) {
+            this.direction = dir;
+        }
     }
 
     public char getDirection() {
@@ -109,7 +114,7 @@ public class Snake {
         }
         //checks if head touched top border
         if(Y[0] < 0){
-            Y[0] = GAME_HEIGHT;
+            Y[0] = GAME_HEIGHT - UNIT_SIZE;
         }
         //checks if head touched bottom border
         if(Y[0] > GAME_HEIGHT - UNIT_SIZE){
