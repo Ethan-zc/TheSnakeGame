@@ -35,4 +35,5 @@ public class AccountServiceImpl implements AccountService {
     public List<ScoreEntry> getScore() {
         return accountMapper.getScore();
     }
+
 }

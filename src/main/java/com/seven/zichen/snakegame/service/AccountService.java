@@ -14,4 +14,5 @@ public interface AccountService {
     AccountEntry getAccountByAccname(String accName);
 
     List<ScoreEntry> getScore();
+
 }
