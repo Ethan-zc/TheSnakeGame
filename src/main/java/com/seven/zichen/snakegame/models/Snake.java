@@ -1,30 +1,32 @@
 package com.seven.zichen.snakegame.models;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import static com.seven.zichen.snakegame.models.GamePanel.GAME_HEIGHT;
+import static com.seven.zichen.snakegame.models.GamePanel.UNIT_SIZE;
 import static com.seven.zichen.snakegame.models.GamePanel.GAME_WIDTH;
+import static com.seven.zichen.snakegame.models.GamePanel.GAME_UNITS;
+
 
 public class Snake {
 
     private int[] X;
     private int[] Y;
-    private static final int UNIT_SIZE = 15;
-    private Boolean alive = false;
+    private Boolean alive;
     int bodyParts = 6;
     char direction = 'R';
-    private String username = null;
+    private String userName;
     private Integer scores;
 
-    public Snake(String username, int allDots) {
-        this.username = username;
+    public Snake(String userName, int x, int y) {
+        this.userName = userName;
         this.alive = true;
         this.scores = 0;
-        this.X = new int[allDots];
-        this.Y = new int[allDots];
-
+        this.X = new int[GAME_UNITS];
+        this.X[0] = x;
+        this.Y = new int[GAME_UNITS];
+        this.Y[0] = y;
     }
 
     public void move() {
@@ -99,7 +101,7 @@ public class Snake {
     }
 
     public void checkCollision() {
-        for(int i = bodyParts;i>0;i--){
+        for(int i = bodyParts; i > 0; i--){
             if((X[0] == X[i]) && (Y[0] == Y[i])){
                 dead();
             }
@@ -122,6 +124,28 @@ public class Snake {
         }
     }
 
+    public void checkCrossCollisions(ArrayList<Snake> snakes) {
+        for (Snake snake : snakes) {
+            if (snake.equals(this) || !snake.isAlive()) {
+            } else {
+                int headX = this.getHead()[0];
+                int headY = this.getHead()[1];
+                if (headX == snake.getHead()[0] && headY == snake.getHead()[1]) {
+                    snake.dead();
+                    this.dead();
+                    break;
+                }
+                int Xs[] = snake.getX();
+                int Ys[] = snake.getY();
+                for (int i = 0; i < Xs.length; i++) {
+                    if (headX == Xs[i] && headY == Ys[i]) {
+                        this.dead();
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
 //    public List<>
 }
