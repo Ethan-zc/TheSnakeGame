@@ -18,16 +18,19 @@ public class GamePanel implements ActionListener {
     static final int UNIT_SIZE = 15;
     static final int GAME_UNITS = (GAME_WIDTH*GAME_HEIGHT)/UNIT_SIZE;
     static final int DELAY = 100;
+    private int gameTime;
 //    private Snake snake;
     private ArrayList<Snake> snakes;
     private int appleX;
     private int appleY;
     private boolean running = false;
     private Timer timer;
+    private Timer countDown;
     private Random random;
 
     public GamePanel() {
         random = new Random();
+        gameTime = 120;
 
         snakes = new ArrayList<>();
         snakes.add(new Snake("Testing1", "LRUD",15, 15));
@@ -50,11 +53,34 @@ public class GamePanel implements ActionListener {
         return appleY;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
+    public int getGameTime() {
+        return gameTime;
+    }
+
     public void startGame () {
         newApple();
         running = true;
-        timer= new Timer(DELAY,this);
+        timer = new Timer(DELAY,this);
+        countDown = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gameTime--;
+                if (gameTime == 0) {
+                    for (Snake snake : snakes) {
+                        snake.dead();
+                    }
+                    running = false;
+                    timer.stop();
+                    countDown.stop();
+                }
+            }
+        });
         timer.start();
+        countDown.start();
     }
     public void newApple(){
         appleX = random.nextInt((GAME_WIDTH/UNIT_SIZE))*UNIT_SIZE;
@@ -90,6 +116,7 @@ public class GamePanel implements ActionListener {
         if(allDead){
             running = false;
             timer.stop();
+            countDown.stop();
         }
     }
 

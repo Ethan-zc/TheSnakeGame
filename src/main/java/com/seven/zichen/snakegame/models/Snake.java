@@ -118,10 +118,10 @@ public class Snake {
         }
         //check if head touches left border
         if(X[0] < 0){
-            X[0] = GAME_WIDTH;
+            X[0] = GAME_WIDTH - UNIT_SIZE;
         }
         //checks if head touches right border
-        if(X[0] > GAME_WIDTH){
+        if(X[0] > GAME_WIDTH - UNIT_SIZE){
             X[0] = 0;
         }
         //checks if head touched top border

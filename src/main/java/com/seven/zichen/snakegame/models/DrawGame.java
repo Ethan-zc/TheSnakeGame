@@ -44,7 +44,7 @@ public class DrawGame extends JPanel {
                 allDead = false;
             }
         }
-        if(!allDead){
+        if (!allDead && game.isRunning()) {
             g.drawLine(0, GAME_HEIGHT, GAME_WIDTH, GAME_HEIGHT);
             g.setColor(Color.red);
             g.fillOval(game.getAppleX(),game.getAppleY(),UNIT_SIZE,UNIT_SIZE);
@@ -67,9 +67,12 @@ public class DrawGame extends JPanel {
                 //score
                 g.setColor(snakeColors[i]);
                 g.setFont(new Font("Bayon",Font.BOLD,40));
-                g.drawString(snake.isAlive() ? String.valueOf(game.getSnakes().get(i).getScores()) : "Over", (20 + i * 150), SCREEN_HEIGHT - 10);
+                g.drawString(snake.isAlive() ? String.valueOf(game.getSnakes().get(i).getScores()) : "OVER", (20 + i * 120), SCREEN_HEIGHT - 10);
             }
-        }else {
+            g.setColor(Color.black);
+            g.setFont(new Font("Bayon",Font.BOLD,35));
+            g.drawString("0" + game.getGameTime() / 60 + ":" + (game.getGameTime() % 60 >= 10 ? "" : "0") + game.getGameTime() % 60, SCREEN_WIDTH - 105, SCREEN_HEIGHT - 10);
+        } else {
             gameOver(g);
         }
     }
@@ -79,13 +82,13 @@ public class DrawGame extends JPanel {
         for (int i = 0; i < game.getSnakes().size(); i++) {
             Snake snake = game.getSnakes().get(i);
             g.setColor(snakeColors[i]);
-            g.setFont( new Font("Ink Free",Font.BOLD, 40));
+            g.setFont( new Font("Bayon",Font.BOLD, 40));
 //            FontMetrics metrics1 = getFontMetrics(g.getFont());
             g.drawString(String.valueOf(snake.getScores()), 100 + i * 100, g.getFont().getSize());
         }
         //Game over text
         g.setColor(Color.red);
-        g.setFont(new Font("Ink Free",Font.BOLD,75));
+        g.setFont(new Font("Bayon",Font.BOLD,75));
         FontMetrics metrics = getFontMetrics(g.getFont());
         g.drawString("Game Over",(GAME_WIDTH - metrics.stringWidth("Game Over"))/2,GAME_HEIGHT/2);
     }
