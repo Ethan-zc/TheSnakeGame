@@ -28,12 +28,12 @@ public class GamePanel implements ActionListener {
 
     public GamePanel() {
         random = new Random();
-//        snake = new Snake("Testing");
+
         snakes = new ArrayList<>();
-        snakes.add(new Snake("Testing1", 15, 15));
-        snakes.add(new Snake("Testing2", 75, 75));
-        snakes.add(new Snake("Testing3", 135, 135));
-        snakes.add(new Snake("Testing4", 195, 195));
+        snakes.add(new Snake("Testing1", "LRUD",15, 15));
+        snakes.add(new Snake("Testing2", "ADWS", 75, 75));
+        snakes.add(new Snake("Testing3", "JLIK", 135, 135));
+        snakes.add(new Snake("Testing4", "FHTG", 195, 195));
 
         startGame();
     }

@@ -14,19 +14,29 @@ public class Snake {
     private int[] X;
     private int[] Y;
     private Boolean alive;
-    int bodyParts = 6;
-    char direction = 'R';
+    private int bodyParts = 6;
+    private char direction = 'R';
     private String userName;
     private Integer scores;
+    private String controlKeys;
 
-    public Snake(String userName, int x, int y) {
+    public Snake(String userName, String controlKeys, int x, int y) {
         this.userName = userName;
+        this.controlKeys = controlKeys;
         this.alive = true;
         this.scores = 0;
         this.X = new int[GAME_UNITS];
         this.X[0] = x;
         this.Y = new int[GAME_UNITS];
         this.Y[0] = y;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getControlKeys() {
+        return controlKeys;
     }
 
     public void move() {

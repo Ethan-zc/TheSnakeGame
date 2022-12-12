@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 import static com.seven.zichen.snakegame.models.GamePanel.GAME_HEIGHT;
 import static com.seven.zichen.snakegame.models.GamePanel.GAME_WIDTH;
@@ -92,94 +91,35 @@ public class DrawGame extends JPanel {
     }
 
     public class MyKeyAdapter extends KeyAdapter {
+        private final int[] keysValc = {
+                KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_UP, KeyEvent.VK_DOWN,
+                KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W, KeyEvent.VK_S,
+                KeyEvent.VK_J, KeyEvent.VK_L, KeyEvent.VK_I, KeyEvent.VK_K,
+                KeyEvent.VK_F, KeyEvent.VK_H, KeyEvent.VK_T, KeyEvent.VK_G
+        };
+
         @Override
         public void keyPressed(KeyEvent e) {
-            char dir1 = game.getSnakes().get(0).getDirection();
-            char dir2 = game.getSnakes().get(1).getDirection();
-            char dir3 = game.getSnakes().get(2).getDirection();
-            char dir4 = game.getSnakes().get(3).getDirection();
-
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT:
-                    if (dir1 != 'R') {
-                        game.getSnakes().get(0).changeDirection('L');
+            for (int i = 0; i < game.getSnakes().size(); i++) {
+                Snake snake = game.getSnakes().get(i);
+                char dir = snake.getDirection();
+                if (e.getKeyCode() == keysValc[i * 4]) {
+                    if (dir != 'R') {
+                        snake.changeDirection('L');
                     }
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    if (dir1 != 'L') {
-                        game.getSnakes().get(0).changeDirection('R');
+                } else if (e.getKeyCode() == keysValc[i * 4 + 1]) {
+                    if (dir != 'L') {
+                        snake.changeDirection('R');
                     }
-                    break;
-                case KeyEvent.VK_UP:
-                    if (dir1 != 'D') {
-                        game.getSnakes().get(0).changeDirection('U');
+                } else if (e.getKeyCode() == keysValc[i * 4 + 2]) {
+                    if (dir != 'D') {
+                        snake.changeDirection('U');
                     }
-                    break;
-                case KeyEvent.VK_DOWN:
-                    if (dir1 != 'U') {
-                        game.getSnakes().get(0).changeDirection('D');
+                } else if (e.getKeyCode() == keysValc[i * 4 + 3]) {
+                    if (dir != 'U') {
+                        snake.changeDirection('D');
                     }
-                    break;
-                case KeyEvent.VK_A:
-                    if (dir2 != 'R') {
-                        game.getSnakes().get(1).changeDirection('L');
-                    }
-                    break;
-                case KeyEvent.VK_D:
-                    if (dir2 != 'L') {
-                        game.getSnakes().get(1).changeDirection('R');
-                    }
-                    break;
-                case KeyEvent.VK_W:
-                    if (dir2 != 'D') {
-                        game.getSnakes().get(1).changeDirection('U');
-                    }
-                    break;
-                case KeyEvent.VK_S:
-                    if (dir2 != 'U') {
-                        game.getSnakes().get(1).changeDirection('D');
-                    }
-                    break;
-                case KeyEvent.VK_J:
-                    if (dir3 != 'R') {
-                        game.getSnakes().get(2).changeDirection('L');
-                    }
-                    break;
-                case KeyEvent.VK_L:
-                    if (dir3 != 'L') {
-                        game.getSnakes().get(2).changeDirection('R');
-                    }
-                    break;
-                case KeyEvent.VK_I:
-                    if (dir3 != 'D') {
-                        game.getSnakes().get(2).changeDirection('U');
-                    }
-                    break;
-                case KeyEvent.VK_K:
-                    if (dir3 != 'U') {
-                        game.getSnakes().get(2).changeDirection('D');
-                    }
-                    break;
-                case KeyEvent.VK_F:
-                    if (dir4 != 'R') {
-                        game.getSnakes().get(3).changeDirection('L');
-                    }
-                    break;
-                case KeyEvent.VK_H:
-                    if (dir4 != 'L') {
-                        game.getSnakes().get(3).changeDirection('R');
-                    }
-                    break;
-                case KeyEvent.VK_T:
-                    if (dir4 != 'D') {
-                        game.getSnakes().get(3).changeDirection('U');
-                    }
-                    break;
-                case KeyEvent.VK_G:
-                    if (dir4 != 'U') {
-                        game.getSnakes().get(3).changeDirection('D');
-                    }
-                    break;
+                }
             }
         }
     }
