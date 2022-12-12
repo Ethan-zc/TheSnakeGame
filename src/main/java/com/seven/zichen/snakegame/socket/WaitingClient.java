@@ -24,9 +24,15 @@ public class WaitingClient implements Runnable{
     }
 
     public void setUserList(String list) {
-        String[] separated = list.split(",");
-        System.out.println("The received list is: " + Arrays.toString(separated));
-        Collections.addAll(userList, separated);
+        String[] receivedList = list.split(",");
+        List<String> newList = new ArrayList<>();
+        for (String user : receivedList) {
+            if (!user.equals(username)) {
+                newList.add(user);
+            }
+        }
+        this.userList = newList;
+        System.out.println("The transformed: " + userList.toString());
     }
 
     public List<String> getUserList() {

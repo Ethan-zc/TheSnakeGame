@@ -52,23 +52,6 @@ public class WaitingPanel extends JFrame {
         l5 = new JLabel("Waiting...");
         l6 = new JLabel("Waiting...");
 
-        // Draw other users in the room.
-        List<String> userList = currentClient.getUserList();
-        System.out.println("The list size is: " + userList.size());
-        if (userList.size() == 1) {
-            System.out.println("Yes! its 1!");
-            l4.setText(userList.get(0));
-        } else if (userList.size() == 2) {
-            System.out.println("Yes! its 2!");
-            l4.setText(userList.get(0));
-            l5.setText(userList.get(1));
-        } else if (userList.size() == 3) {
-            System.out.println("Yes! its 3!");
-            l4.setText(userList.get(0));
-            l5.setText(userList.get(1));
-            l6.setText(userList.get(2));
-        }
-
         l4.setForeground(Color.black);
         l4.setFont(new Font("Bayon", Font.BOLD, 16));
 
@@ -103,6 +86,26 @@ public class WaitingPanel extends JFrame {
         add(l4);
         add(l5);
         add(l6);
+    }
+
+    @Override
+    public void repaint() {
+        List<String> userList = currentClient.getUserList();
+        System.out.println("The list size is: " + userList.size());
+        if (userList.size() == 1) {
+            System.out.println("Yes! its 1!");
+            l4.setText(userList.get(0));
+        } else if (userList.size() == 2) {
+            System.out.println("Yes! its 2!");
+            l4.setText(userList.get(0));
+            l5.setText(userList.get(1));
+        } else if (userList.size() == 3) {
+            System.out.println("Yes! its 3!");
+            l4.setText(userList.get(0));
+            l5.setText(userList.get(1));
+            l6.setText(userList.get(2));
+        }
+
     }
 
     public void setNumPlayers(int numPlayers) {
