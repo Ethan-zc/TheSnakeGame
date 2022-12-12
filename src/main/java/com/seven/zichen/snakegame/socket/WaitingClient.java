@@ -4,36 +4,50 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Random;
+import java.util.*;
 
 public class WaitingClient implements Runnable{
 
     private Socket socket = null;
     private String username;
+    private List<String> userList = new ArrayList<>();
     DataOutputStream toServer = null;
     DataInputStream fromServer = null;
     public WaitingClient(String username) {
         try {
             this.username = username;
             socket = new Socket("localhost", 8000);
-            System.out.println("connected" + "\n");
             new Thread(new HandleServer(socket, username)).start();
         } catch (IOException e1) {
             e1.printStackTrace();
         }
     }
+
+    public void setUserList(String list) {
+        String[] separated = list.split(",");
+        System.out.println("The received list is: " + Arrays.toString(separated));
+        Collections.addAll(userList, separated);
+    }
+
+    public List<String> getUserList() {
+        return this.userList;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
     @Override
     public void run() {
 
     }
 
-    public static void main(String[] args) {
-        int rand = new Random().nextInt();
-        String userName = "testing " + Integer.toString(rand);
-        WaitingClient waitingClient = new WaitingClient(userName);
-
-    }
+//    public static void main(String[] args) {
+//        int rand = new Random().nextInt();
+//        String userName = "testing " + Integer.toString(rand);
+//        WaitingClient waitingClient = new WaitingClient(userName);
+//
+//    }
 
     class HandleServer implements Runnable {
         private Socket socket;
@@ -56,7 +70,6 @@ public class WaitingClient implements Runnable{
             try {
 
                 String username = this.username;
-
                 toServer.writeUTF(username);
                 toServer.flush();
 
@@ -69,7 +82,7 @@ public class WaitingClient implements Runnable{
                     if (socket.isClosed()) break;
                     fromServer = new DataInputStream(socket.getInputStream());
                     String message = fromServer.readUTF();
-                    System.out.println("receive from server: " + message);
+                    setUserList(message);
                 } catch (IOException ex) {
                     System.err.println(ex);
                 }

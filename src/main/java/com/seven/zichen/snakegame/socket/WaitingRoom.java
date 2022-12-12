@@ -45,7 +45,7 @@ public class WaitingRoom implements Runnable{
                     StringBuilder sb = new StringBuilder();
                     for (String un : clientInRoom.keySet()) {
                         sb.append(un);
-                        sb.append(", ");
+                        sb.append(",");
                     }
                     outputToClient.writeUTF(sb.toString());
                 }
@@ -93,21 +93,22 @@ public class WaitingRoom implements Runnable{
                 while (true) {
                     String username = inputFromClient.readUTF();
                     clientInRoom.put(username, 1);
+                    StringBuilder sb = new StringBuilder();
+                    for (String un : clientInRoom.keySet()) {
+                        sb.append(un);
+                        sb.append(",");
+                    }
                     for (Integer client : activeClients.keySet()) {
                         Socket currSocket = activeClients.get(client);
                         if (!currSocket.isClosed()) {
                             DataOutputStream outputToClient = new DataOutputStream(
                                     currSocket.getOutputStream());
                             if (client != this.clientNum) {
-                                outputToClient.writeUTF(username);
+                                outputToClient.writeUTF(sb.toString());
                             }
                         }
                     }
-                    StringBuilder sb = new StringBuilder();
-                    for (String un : clientInRoom.keySet()) {
-                        sb.append(un);
-                        sb.append(", ");
-                    }
+
                     System.out.println("All users: " + sb.toString());
 
                 }

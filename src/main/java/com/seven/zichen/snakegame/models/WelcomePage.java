@@ -47,7 +47,10 @@ public class WelcomePage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == btn1) {
             this.dispose();
-            new GameFrame();
+//            new GameFrame();
+            WaitingPanel wp = new WaitingPanel(userName);
+            Timer timer = new Timer(1000, new UpdateWaitingPanel(wp));
+            timer.start();
         } else if (actionEvent.getSource() == btn2) {
             this.dispose();
             String response = null;
@@ -59,4 +62,20 @@ public class WelcomePage extends JFrame implements ActionListener {
             new LeaderBoard(response, userName);
         }
     }
+
+    public class UpdateWaitingPanel implements ActionListener {
+
+        public WaitingPanel wp;
+
+        public UpdateWaitingPanel(WaitingPanel wp) {
+            this.wp = wp;
+        }
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            wp.draw();
+        }
+    }
+
 }
