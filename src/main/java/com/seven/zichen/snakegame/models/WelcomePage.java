@@ -74,7 +74,9 @@ public class WelcomePage extends JFrame implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            wp.draw();
+            wp.invalidate();
+            wp.validate();
+            wp.repaint();
         }
     }
 
