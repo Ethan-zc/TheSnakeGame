@@ -4,6 +4,7 @@ import com.mysql.cj.protocol.x.XMessage;
 import com.seven.zichen.snakegame.models.Game;
 import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
+import com.seven.zichen.snakegame.models.WaitingPanel;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,12 +18,14 @@ public class WaitingClient implements Runnable{
     private Socket socket = null;
     private String username;
     private List<String> userList = new ArrayList<>();
+    private WaitingPanel wp;
     DataOutputStream toServer = null;
     DataInputStream fromServer = null;
-    public WaitingClient(String username) {
+    public WaitingClient(String username, WaitingPanel wp) {
         try {
+            this.wp = wp;
             this.username = username;
-            socket = new Socket("108.46.36.226", 8000);
+            socket = new Socket("localhost", 8000);
             new Thread(new HandleServer(socket, username)).start();
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -100,21 +103,13 @@ public class WaitingClient implements Runnable{
                     System.err.println(ex);
                 }
             }
+            wp.setVisible(false);
+            List<String> userList = getUserList();
+//            GamePanel gp = new GamePanel(userList);
+//            new GameFrame(gp);
 
-            while (gameStart) {
-                try {
-                    ObjectInputStream fromServerObj = new ObjectInputStream(socket.getInputStream());
 
-                    GamePanel serverGP = (GamePanel) fromServerObj.readObject();
-                    GameFrame clientGame = new GameFrame(serverGP);
-                } catch (IOException | ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
 
-//            while (gameStart) {
-//
-//            }
         }
     }
 }

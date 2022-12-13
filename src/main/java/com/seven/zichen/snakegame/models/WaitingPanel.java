@@ -35,7 +35,7 @@ public class WaitingPanel extends JFrame implements ActionListener {
         setLayout(null);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        currentClient = new WaitingClient(username);
+        currentClient = new WaitingClient(username, this);
         draw();
     }
 
@@ -110,7 +110,7 @@ public class WaitingPanel extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        WaitingClient nullClient = new WaitingClient("GAMESTART");
+        WaitingClient nullClient = new WaitingClient("GAMESTART", this);
 //        List<String> userList = new ArrayList<>();
 //        while(nullClient.getUserList().size() == 0) {
 //            userList = nullClient.getUserList();

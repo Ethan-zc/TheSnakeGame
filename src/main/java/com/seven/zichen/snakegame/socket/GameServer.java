@@ -30,10 +30,6 @@ public class GameServer {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-//        while(true) {
-//
-//        }
-        // read the list of messages from the socket
         objectOutputStream.reset();
         objectOutputStream.writeObject(game);
         System.out.println("Sent out!");

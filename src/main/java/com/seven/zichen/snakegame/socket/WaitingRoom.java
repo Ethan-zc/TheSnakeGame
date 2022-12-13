@@ -155,28 +155,33 @@ public class WaitingRoom implements Runnable{
                         DataOutputStream outputToClient = new DataOutputStream(
                                 currSocket.getOutputStream());
                         outputToClient.writeUTF("GAMESTART!");
+
                     }
+                }
+                GamePanel game = new GamePanel(userList);
+                for (int i = 0; i < userList.size(); i++) {
+                    new GameFrame(game);
                 }
                 gameRunning = true;
 
-                while(gameRunning) {
-//                    String key = inputFromClient.readUTF();
-//                    int input = Integer.parseInt(key);
-//                    mainGame.handleKeyPressed(input);
+//                new GameClient();
 
-                    for (Integer client : activeClients.keySet()) {
-                        Socket currSocket = activeClients.get(client);
-                        if (!currSocket.isClosed()) {
-                            ObjectOutputStream ObjectOutputStream = new ObjectOutputStream(
-                                    socket.getOutputStream());
-                            ObjectOutputStream.reset();
-                            if (client != this.clientNum) {
-                                ObjectOutputStream.writeObject(mainGame);
-                            }
-                        }
-                    }
-
-                }
+//                while(gameRunning) {
+//
+//
+//                    for (Integer client : activeClients.keySet()) {
+//                        Socket currSocket = activeClients.get(client);
+//                        if (!currSocket.isClosed()) {
+//                            ObjectOutputStream ObjectOutputStream = new ObjectOutputStream(
+//                                    socket.getOutputStream());
+//                            ObjectOutputStream.reset();
+//                            if (client != this.clientNum) {
+//                                ObjectOutputStream.writeObject(mainGame);
+//                            }
+//                        }
+//                    }
+//
+//                }
 
             }
             catch(IOException ex) {
