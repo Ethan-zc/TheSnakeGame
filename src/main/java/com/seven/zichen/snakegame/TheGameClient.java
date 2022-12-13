@@ -16,6 +16,9 @@ public class TheGameClient {
         List<String> test = new ArrayList<>();
         test.add("Haha");
         test.add("Yes");
-        new GameFrame(test);
+        GamePanel gamePanel = new GamePanel(test);
+        for (int i = 0; i < gamePanel.getSnakes().size(); i++) {
+            new GameFrame(gamePanel);
+        }
     }
 }

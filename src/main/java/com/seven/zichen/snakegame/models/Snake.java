@@ -92,6 +92,10 @@ public class Snake implements Serializable {
         scores += 10;
     }
 
+    public void addScores(int score) {
+        scores += score;
+    }
+
     public int getScores() {
         return this.scores;
     }
@@ -109,6 +113,13 @@ public class Snake implements Serializable {
         headPos[0] = X[0];
         headPos[1] = Y[0];
         return headPos;
+    }
+
+    public int[] getTail() {
+        int[] tailPos = new int[2];
+        tailPos[0] = X[bodyParts];
+        tailPos[1] = Y[bodyParts];
+        return tailPos;
     }
 
     public void checkCollision() {
@@ -144,6 +155,10 @@ public class Snake implements Serializable {
                 if (headX == snake.getHead()[0] && headY == snake.getHead()[1]) {
                     snake.dead();
                     this.dead();
+                    break;
+                }
+                if (headX == snake.getTail()[0] && headY == snake.getTail()[1]) {
+                    this.addScores(snake.getBodyParts() * 10);
                     break;
                 }
                 int Xs[] = snake.getX();

@@ -31,7 +31,7 @@ public class DrawGame extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         this.setBackground(Color.white);
         this.setFocusable(true);
-//        this.addKeyListener(new MyKeyAdapter());
+        this.addKeyListener(new MyKeyAdapter());
 
         btn = new JButton("Show Leaderboard");
         btn.setBounds(220, 540, 150, 30);
@@ -114,10 +114,10 @@ public class DrawGame extends JPanel implements ActionListener {
         add(btn);
     }
 
-//    public class MyKeyAdapter extends KeyAdapter {
-//        @Override
-//        public void keyPressed(KeyEvent e) {
-//            game.handleKeyPressed(e);
-//        }
-//    }
+    public class MyKeyAdapter extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            game.handleKeyPressed(e.getKeyCode());
+        }
+    }
 }
