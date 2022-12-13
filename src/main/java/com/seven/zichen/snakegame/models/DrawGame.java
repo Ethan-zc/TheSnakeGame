@@ -67,9 +67,9 @@ public class DrawGame extends JPanel implements ActionListener {
         }
         if (!allDead && game.isRunning()) {
             g.drawLine(0, GAME_HEIGHT, GAME_WIDTH, GAME_HEIGHT);
-            g.setColor(Color.red);
+            g.setColor(Color.black);
             g.fillOval(game.getAppleX(),game.getAppleY(),UNIT_SIZE,UNIT_SIZE);
-            //draw the head and the body of the snake
+
             for (int i = 0; i < game.getSnakes().size(); i++) {
                 Snake snake = game.getSnakes().get(i);
                 if (snake.isAlive()) {
@@ -88,7 +88,7 @@ public class DrawGame extends JPanel implements ActionListener {
                 //score
                 g.setColor(snakeColors[i]);
                 g.setFont(new Font("Bayon",Font.BOLD,40));
-                g.drawString(snake.isAlive() ? String.valueOf(game.getSnakes().get(i).getScores()) : "OVER", (20 + i * 120), SCREEN_HEIGHT - 10);
+                g.drawString(snake.isAlive() ? String.valueOf(game.getSnakes().get(i).getScores()) : "OUT", (20 + i * 120), SCREEN_HEIGHT - 10);
             }
             g.setColor(Color.black);
             g.setFont(new Font("Bayon",Font.BOLD,35));

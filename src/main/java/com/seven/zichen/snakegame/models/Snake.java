@@ -1,5 +1,6 @@
 package com.seven.zichen.snakegame.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -9,7 +10,7 @@ import static com.seven.zichen.snakegame.models.GamePanel.GAME_WIDTH;
 import static com.seven.zichen.snakegame.models.GamePanel.GAME_UNITS;
 
 
-public class Snake {
+public class Snake implements Serializable {
 
     private int[] X;
     private int[] Y;
