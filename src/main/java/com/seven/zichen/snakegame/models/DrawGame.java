@@ -115,36 +115,9 @@ public class DrawGame extends JPanel implements ActionListener {
     }
 
     public class MyKeyAdapter extends KeyAdapter {
-        private final int[] keysValc = {
-                KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_UP, KeyEvent.VK_DOWN,
-                KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W, KeyEvent.VK_S,
-                KeyEvent.VK_J, KeyEvent.VK_L, KeyEvent.VK_I, KeyEvent.VK_K,
-                KeyEvent.VK_F, KeyEvent.VK_H, KeyEvent.VK_T, KeyEvent.VK_G
-        };
-
         @Override
         public void keyPressed(KeyEvent e) {
-            for (int i = 0; i < game.getSnakes().size(); i++) {
-                Snake snake = game.getSnakes().get(i);
-                char dir = snake.getDirection();
-                if (e.getKeyCode() == keysValc[i * 4]) {
-                    if (dir != 'R') {
-                        snake.changeDirection('L');
-                    }
-                } else if (e.getKeyCode() == keysValc[i * 4 + 1]) {
-                    if (dir != 'L') {
-                        snake.changeDirection('R');
-                    }
-                } else if (e.getKeyCode() == keysValc[i * 4 + 2]) {
-                    if (dir != 'D') {
-                        snake.changeDirection('U');
-                    }
-                } else if (e.getKeyCode() == keysValc[i * 4 + 3]) {
-                    if (dir != 'U') {
-                        snake.changeDirection('D');
-                    }
-                }
-            }
+            game.handleKeyPressed(e);
         }
     }
 }

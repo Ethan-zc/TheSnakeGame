@@ -9,7 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class TheGameClient {
 
     public static void main(String[] args) {
-        new SignIn();
-//        new GameFrame();
+//        new SignIn();
+        new GameFrame();
     }
 }
