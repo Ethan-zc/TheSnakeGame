@@ -20,18 +20,18 @@ public class DrawGame extends JPanel implements ActionListener {
             Color.decode("#6B6FF2")};
 
     private GamePanel game;
-    private GameFrame frame;
+    private JFrame frame;
 
     private JButton btn;
 
-    public DrawGame(GamePanel game, GameFrame frame) {
+    public DrawGame(GamePanel game, JFrame frame) {
         this.game = game;
         this.frame = frame;
 
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         this.setBackground(Color.white);
         this.setFocusable(true);
-        this.addKeyListener(new MyKeyAdapter());
+//        this.addKeyListener(new MyKeyAdapter());
 
         btn = new JButton("Show Leaderboard");
         btn.setBounds(220, 540, 150, 30);
@@ -114,10 +114,10 @@ public class DrawGame extends JPanel implements ActionListener {
         add(btn);
     }
 
-    public class MyKeyAdapter extends KeyAdapter {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            game.handleKeyPressed(e.getKeyCode());
-        }
-    }
+//    public class MyKeyAdapter extends KeyAdapter {
+//        @Override
+//        public void keyPressed(KeyEvent e) {
+//            game.handleKeyPressed(e);
+//        }
+//    }
 }

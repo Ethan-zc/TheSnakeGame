@@ -22,7 +22,7 @@ public class WaitingClient implements Runnable{
     public WaitingClient(String username) {
         try {
             this.username = username;
-            socket = new Socket("localhost", 8000);
+            socket = new Socket("108.46.36.226", 8000);
             new Thread(new HandleServer(socket, username)).start();
         } catch (IOException e1) {
             e1.printStackTrace();
