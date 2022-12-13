@@ -5,20 +5,20 @@ import com.seven.zichen.snakegame.socket.WaitingClient;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.List;
 
 
-public class WaitingPanel extends JFrame {
+public class WaitingPanel extends JFrame implements ActionListener {
     JLabel l1, l2, l3, l4, l5, l6;
+    JButton btn1;
     int numPlayers = 1;
     String username;
     WaitingClient currentClient;
@@ -61,9 +61,7 @@ public class WaitingPanel extends JFrame {
         l6.setForeground(Color.black);
         l6.setFont(new Font("Bayon", Font.BOLD, 16));
 
-        l3 = new JLabel("Waiting for the game to start...");
-        l3.setForeground(Color.black);
-        l3.setFont(new Font("Bayon", Font.BOLD, 16));
+
 
 
         l1.setBounds(34, 28, 400, 47);
@@ -76,36 +74,50 @@ public class WaitingPanel extends JFrame {
 
         l6.setBounds(34, 202, 100, 30);
 
-        l3.setBounds(34, 246, 400, 30);
-
         add(l1);
 
         add(l2);
 
-        add(l3);
         add(l4);
         add(l5);
         add(l6);
+
+        btn1 = new JButton("Start Game!");
+        btn1.setBounds(125, 246, 150, 30);
+        btn1.addActionListener(this);
+        add(btn1);
     }
 
     @Override
     public void repaint() {
         List<String> userList = currentClient.getUserList();
-        System.out.println("The list size is: " + userList.size());
+//        System.out.println("The list size is: " + userList.size());
         if (userList.size() == 1) {
-            System.out.println("Yes! its 1!");
+//            System.out.println("Yes! its 1!");
             l4.setText(userList.get(0));
         } else if (userList.size() == 2) {
-            System.out.println("Yes! its 2!");
+//            System.out.println("Yes! its 2!");
             l4.setText(userList.get(0));
             l5.setText(userList.get(1));
         } else if (userList.size() == 3) {
-            System.out.println("Yes! its 3!");
+//            System.out.println("Yes! its 3!");
             l4.setText(userList.get(0));
             l5.setText(userList.get(1));
             l6.setText(userList.get(2));
         }
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        WaitingClient nullClient = new WaitingClient("GAMESTART");
+//        List<String> userList = new ArrayList<>();
+//        while(nullClient.getUserList().size() == 0) {
+//            userList = nullClient.getUserList();
+//        }
+//        System.out.println("The list is: " + userList.toString());
+        this.setVisible(false);
+//        GameFrame clientGame = new GameFrame(userList);
     }
 
     public void setNumPlayers(int numPlayers) {

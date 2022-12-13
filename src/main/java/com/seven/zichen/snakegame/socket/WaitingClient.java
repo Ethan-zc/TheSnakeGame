@@ -1,8 +1,14 @@
 package com.seven.zichen.snakegame.socket;
 
+import com.mysql.cj.protocol.x.XMessage;
+import com.seven.zichen.snakegame.models.Game;
+import com.seven.zichen.snakegame.models.GameFrame;
+import com.seven.zichen.snakegame.models.GamePanel;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.*;
 
@@ -48,16 +54,12 @@ public class WaitingClient implements Runnable{
 
     }
 
-//    public static void main(String[] args) {
-//        int rand = new Random().nextInt();
-//        String userName = "testing " + Integer.toString(rand);
-//        WaitingClient waitingClient = new WaitingClient(userName);
-//
-//    }
-
     class HandleServer implements Runnable {
         private Socket socket;
         private String username;// A connected socket
+
+        private boolean isWaiting = true;
+        private boolean gameStart = false;
 
         public HandleServer(Socket socket, String username) {
             this.socket = socket;
@@ -83,16 +85,36 @@ public class WaitingClient implements Runnable{
             catch (IOException ex) {
                 System.err.println(ex);
             }
-            while (true) {
+            while (isWaiting) {
                 try {
                     if (socket.isClosed()) break;
                     fromServer = new DataInputStream(socket.getInputStream());
                     String message = fromServer.readUTF();
-                    setUserList(message);
+                    if (!message.equals("GAMESTART!")) {
+                        setUserList(message);
+                    } else {
+                        isWaiting = false;
+                        gameStart = true;
+                    }
                 } catch (IOException ex) {
                     System.err.println(ex);
                 }
             }
+
+            while (gameStart) {
+                try {
+                    ObjectInputStream fromServerObj = new ObjectInputStream(socket.getInputStream());
+
+                    GamePanel serverGP = (GamePanel) fromServerObj.readObject();
+                    GameFrame clientGame = new GameFrame(serverGP);
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+//            while (gameStart) {
+//
+//            }
         }
     }
 }

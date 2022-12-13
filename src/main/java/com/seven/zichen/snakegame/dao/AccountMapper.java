@@ -26,5 +26,8 @@ public interface AccountMapper {
     @Select("SELECT accname, score FROM acc NATURAL JOIN acc_game ORDER BY score DESC")
     List<ScoreEntry> getScore();
 
+    @Select("SELECT accid FROM acc WHERE accname = #{accName}")
+    int getUserIdByName(String accName);
+
 
 }

@@ -17,4 +17,5 @@ public interface GameMapper {
     @Insert("INSERT INTO acc_game(accid, gameid, score) " +
             "VALUES (#{accid}, #{gameid}, #{score})")
     public void addScore(int accid, int gameid, int score);
+
 }

@@ -1,6 +1,7 @@
 package com.seven.zichen.snakegame.controller;
 
 import com.seven.zichen.snakegame.entry.GameEntry;
+import com.seven.zichen.snakegame.service.AccountService;
 import com.seven.zichen.snakegame.service.GameService;
 import com.seven.zichen.snakegame.service.Impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    @Autowired
+    private AccountService accountService;
+
     @RequestMapping(value = "/printhist", method = RequestMethod.POST)
     public String printHist(@RequestParam String X,
                             @RequestParam String Y) {
@@ -28,24 +32,19 @@ public class GameController {
         return "Received!";
     }
 
-    @RequestMapping(value = "/addhist", method = RequestMethod.POST)
-    public void addHistory(@RequestParam String user1,
-                           @RequestParam int score1,
-                           @RequestParam String user2,
-                           @RequestParam int score2,
-                           @RequestParam String user3,
-                           @RequestParam int score3,
-                           @RequestParam String user4,
-                           @RequestParam int score4
-                           ) {
-
-    }
-
     @RequestMapping(value = "/addgame", method = RequestMethod.POST)
     public void addGame(@RequestParam Date starttime,
                         @RequestParam Date endtime) {
 
         gameService.addGame(starttime, endtime);
+    }
+
+    @RequestMapping(value = "/addscore", method = RequestMethod.POST)
+    public void addScore(@RequestParam String userName,
+                         @RequestParam int gameId,
+                         @RequestParam int score) {
+        int userId = accountService.getUserIdByName(userName);
+        gameService.addScore(userId, gameId, score);
     }
 
 }

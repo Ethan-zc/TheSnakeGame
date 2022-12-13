@@ -15,4 +15,6 @@ public interface AccountService {
 
     List<ScoreEntry> getScore();
 
+    int getUserIdByName(String userName);
+
 }

@@ -117,7 +117,7 @@ public class DrawGame extends JPanel implements ActionListener {
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            game.handleKeyPressed(e);
+            game.handleKeyPressed(e.getKeyCode());
         }
     }
 }

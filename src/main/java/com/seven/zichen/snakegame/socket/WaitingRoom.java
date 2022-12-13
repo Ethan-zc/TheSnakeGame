@@ -1,13 +1,16 @@
 package com.seven.zichen.snakegame.socket;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import com.seven.zichen.snakegame.models.GameFrame;
+import com.seven.zichen.snakegame.models.GamePanel;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 public class WaitingRoom implements Runnable{
 
     private int clientNo = 0;
@@ -76,6 +79,10 @@ public class WaitingRoom implements Runnable{
         private final Socket socket; // A connected socket
         private final int clientNum;
 
+        private boolean isWaiting = true;
+        private boolean gameInit = false;
+        private boolean gameRunning = false;
+
         public HandleAClient(Socket socket, int clientNum) {
             this.socket = socket;
             this.clientNum = clientNum;
@@ -90,28 +97,87 @@ public class WaitingRoom implements Runnable{
                         socket.getInputStream());
 
                 // Continuously serve the client
-                while (true) {
+                while (isWaiting) {
                     String username = inputFromClient.readUTF();
-                    clientInRoom.put(username, 1);
-                    StringBuilder sb = new StringBuilder();
-                    for (String un : clientInRoom.keySet()) {
-                        sb.append(un);
-                        sb.append(",");
+                    if (!username.equals("GAMESTART")) {
+                        clientInRoom.put(username, 1);
+                        StringBuilder sb = new StringBuilder();
+                        for (String un : clientInRoom.keySet()) {
+                            sb.append(un);
+                            sb.append(",");
+                        }
+                        for (Integer client : activeClients.keySet()) {
+                            Socket currSocket = activeClients.get(client);
+                            if (!currSocket.isClosed()) {
+                                DataOutputStream outputToClient = new DataOutputStream(
+                                        currSocket.getOutputStream());
+                                if (client != this.clientNum) {
+                                    outputToClient.writeUTF(sb.toString());
+                                }
+                            }
+                        }
+
+                        System.out.println("All users: " + sb.toString());
+                    } else {
+                        StringBuilder sb = new StringBuilder();
+                        for (String un : clientInRoom.keySet()) {
+                            sb.append(un);
+                            sb.append(",");
+                        }
+                        for (Integer client : activeClients.keySet()) {
+                            Socket currSocket = activeClients.get(client);
+                            if (!currSocket.isClosed()) {
+                                DataOutputStream outputToClient = new DataOutputStream(
+                                        currSocket.getOutputStream());
+                                if (client != this.clientNum) {
+                                    outputToClient.writeUTF(sb.toString());
+                                }
+                            }
+                        }
+
+                        System.out.println("All users: " + sb.toString());
+                        System.out.println("Game Started!");
+                        isWaiting = false;
                     }
+                }
+
+                System.out.println("Game initializing...");
+                List<String> userList = new ArrayList<>();
+                for (int i = 1; i <= clientInRoom.size(); i++) {
+                    userList.add(Integer.toString(i));
+                }
+                GamePanel mainGame = new GamePanel(userList);
+                System.out.println("Game initialization finished!");
+
+                for (Integer client : activeClients.keySet()) {
+                    Socket currSocket = activeClients.get(client);
+                    if (!currSocket.isClosed()) {
+                        DataOutputStream outputToClient = new DataOutputStream(
+                                currSocket.getOutputStream());
+                        outputToClient.writeUTF("GAMESTART!");
+                    }
+                }
+                gameRunning = true;
+
+                while(gameRunning) {
+//                    String key = inputFromClient.readUTF();
+//                    int input = Integer.parseInt(key);
+//                    mainGame.handleKeyPressed(input);
+
                     for (Integer client : activeClients.keySet()) {
                         Socket currSocket = activeClients.get(client);
                         if (!currSocket.isClosed()) {
-                            DataOutputStream outputToClient = new DataOutputStream(
-                                    currSocket.getOutputStream());
+                            ObjectOutputStream ObjectOutputStream = new ObjectOutputStream(
+                                    socket.getOutputStream());
+                            ObjectOutputStream.reset();
                             if (client != this.clientNum) {
-                                outputToClient.writeUTF(sb.toString());
+                                ObjectOutputStream.writeObject(mainGame);
                             }
                         }
                     }
 
-                    System.out.println("All users: " + sb.toString());
-
                 }
+
             }
             catch(IOException ex) {
                 ex.printStackTrace();

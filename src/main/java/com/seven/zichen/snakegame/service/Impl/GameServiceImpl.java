@@ -23,4 +23,9 @@ public class GameServiceImpl implements GameService {
         gameMapper.addGame(startTime, endTime);
     }
 
+    @Override
+    public void addScore(int userId, int gameId, int score) {
+        gameMapper.addScore(userId, gameId, score);
+    }
+
 }

@@ -6,10 +6,16 @@ import com.seven.zichen.snakegame.models.SignUp;
 import com.seven.zichen.snakegame.models.SignIn;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TheGameClient {
 
     public static void main(String[] args) {
-//        new SignIn();
-        new GameFrame();
+//        new SignUp();
+        List<String> test = new ArrayList<>();
+        test.add("Haha");
+        test.add("Yes");
+        new GameFrame(test);
     }
 }

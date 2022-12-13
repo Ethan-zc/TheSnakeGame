@@ -36,4 +36,10 @@ public class AccountServiceImpl implements AccountService {
         return accountMapper.getScore();
     }
 
+    @Override
+    public int getUserIdByName(String userName) {
+        return accountMapper.getUserIdByName(userName);
+    }
+
+
 }

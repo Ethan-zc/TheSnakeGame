@@ -9,7 +9,7 @@ import java.io.*;
 import java.net.*;
 import java.util.List;
 
-public class GamePanel implements ActionListener {
+public class GamePanel implements ActionListener, Serializable {
     static final int GAME_WIDTH = 600;
     static final int GAME_HEIGHT = 600;
 
@@ -18,6 +18,9 @@ public class GamePanel implements ActionListener {
     static final int UNIT_SIZE = 15;
     static final int GAME_UNITS = (GAME_WIDTH*GAME_HEIGHT)/UNIT_SIZE;
     static final int DELAY = 100;
+    static final int INIT_X = 15;
+    static final int INIT_Y = 15;
+    static final String[] controlPad = new String[]{"LRUD", "ADWS", "JLIK", "FHTG"};
     private int gameTime;
 //    private Snake snake;
     private ArrayList<Snake> snakes;
@@ -34,15 +37,14 @@ public class GamePanel implements ActionListener {
             KeyEvent.VK_F, KeyEvent.VK_H, KeyEvent.VK_T, KeyEvent.VK_G
     };
 
-    public GamePanel() {
+    public GamePanel(List<String> userNameList) {
         random = new Random();
         gameTime = 120;
 
         snakes = new ArrayList<>();
-        snakes.add(new Snake("Testing1", "LRUD",15, 15));
-        snakes.add(new Snake("Testing2", "ADWS", 75, 75));
-        snakes.add(new Snake("Testing3", "JLIK", 135, 135));
-        snakes.add(new Snake("Testing4", "FHTG", 195, 195));
+        for (int i = 0; i < userNameList.size(); i++) {
+            snakes.add(new Snake(userNameList.get(i), controlPad[i], INIT_X + i * 60, INIT_Y + i * 60));
+        }
 
         startGame();
     }
@@ -126,23 +128,23 @@ public class GamePanel implements ActionListener {
         }
     }
 
-    public void handleKeyPressed(KeyEvent e) {
+    public void handleKeyPressed(int e) {
         for (int i = 0; i < snakes.size(); i++) {
             Snake snake = snakes.get(i);
             char dir = snake.getDirection();
-            if (e.getKeyCode() == keysValc[i * 4]) {
+            if (e == keysValc[i * 4]) {
                 if (dir != 'R') {
                     snake.changeDirection('L');
                 }
-            } else if (e.getKeyCode() == keysValc[i * 4 + 1]) {
+            } else if (e == keysValc[i * 4 + 1]) {
                 if (dir != 'L') {
                     snake.changeDirection('R');
                 }
-            } else if (e.getKeyCode() == keysValc[i * 4 + 2]) {
+            } else if (e == keysValc[i * 4 + 2]) {
                 if (dir != 'D') {
                     snake.changeDirection('U');
                 }
-            } else if (e.getKeyCode() == keysValc[i * 4 + 3]) {
+            } else if (e == keysValc[i * 4 + 3]) {
                 if (dir != 'U') {
                     snake.changeDirection('D');
                 }
