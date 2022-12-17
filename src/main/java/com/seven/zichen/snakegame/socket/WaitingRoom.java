@@ -157,6 +157,9 @@ public class WaitingRoom implements Runnable{
 
                     }
                 }
+
+                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
+        		GH.start();
 //                GamePanel game = new GamePanel(userList);
 //                for (int i = 0; i < userList.size(); i++) {
 //                    new GameFrame(game);
@@ -185,8 +188,6 @@ public class WaitingRoom implements Runnable{
 //                conn.getOutputStream().write(postDataBytes);
 //                System.out.println("Sent!");
 
-                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
-                GH.start();
 
             }
             catch(IOException ex) {
