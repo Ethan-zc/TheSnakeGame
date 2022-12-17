@@ -80,7 +80,7 @@ public class ClientListener implements Runnable {
 		for (int i = 0; i < nbSnakes; i++) {
 			byte num = buffer.get();
 			short score = buffer.getShort();
-			s += "<h3>Player " + num + " got " + score + " points</h3>";
+			s += "<h3>Player " + client.numToName(num) + " got " + score + " points</h3>";
 		}
 		return s + "</HTML>";
 	}

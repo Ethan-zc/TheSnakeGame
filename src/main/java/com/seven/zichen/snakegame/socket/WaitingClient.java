@@ -104,7 +104,7 @@ public class WaitingClient implements Runnable{
                     System.out.println("Client started!");
                     socket.close();
                     userList.add(username);
-                    Thread C = new Thread((Runnable) new Client(userList));
+                    Thread C = new Thread((Runnable) new Client(username));
                     C.start();
 //                    new Client();
 //                new Client();
