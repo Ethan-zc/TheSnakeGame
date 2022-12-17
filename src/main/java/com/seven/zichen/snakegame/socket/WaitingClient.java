@@ -109,7 +109,7 @@ public class WaitingClient implements Runnable{
             if (!username.equals("GAMESTART")) {
                 try {
                     System.out.println("Client started!");
-                    Thread C =new Thread((Runnable) new Client());
+                    Thread C = new Thread((Runnable) new Client(username));
                     C.start();
 //                    new Client();
 //                new Client();

@@ -21,11 +21,13 @@ public class Client{
 	private String nomServer;
 	private HandleInputDirection gest;
 	private DrawGame fenetre = null;
+	private String userName;
 	
 	// on recupere sur le port 5656, le serveur et le port avec lequel on
 	// communique avec le serveur, on dit au serveur de nous parler sur 5959
-	public Client() throws Exception{
-			lancementListener((short) 5959, lireBufferAttenteJoueurServeur(5656));
+	public Client(String username) throws Exception{
+		this.userName = username;
+		lancementListener((short) 5959, lireBufferAttenteJoueurServeur(5656));
 	}
 	
 	// On lance un client listener sur le port listeningPort et on envoie au serveur le port sur lequel on va ecouter

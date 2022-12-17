@@ -4,7 +4,7 @@ import com.seven.zichen.snakegame.client.Client;
 public class SnakeClient {
 	public static void main(String[] args) {
 		try {
-			new Client();
+			new Client("Testing");
 		} catch (Exception e) {
 		}
 	}
