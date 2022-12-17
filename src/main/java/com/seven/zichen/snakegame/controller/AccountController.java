@@ -50,4 +50,6 @@ public class AccountController {
         return accountService.getScore();
     }
 
+
+
 }

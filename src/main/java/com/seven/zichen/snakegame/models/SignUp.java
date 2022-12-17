@@ -103,7 +103,7 @@ public class SignUp extends JFrame implements ActionListener {
                     this.userName = s1;
                     this.pwd = s8;
 
-                    URL url = new URL("http://localhost:8080/account/register");
+                    URL url = new URL("http://192.168.1.156:8080/account/register");
                     Map<String,Object> params = new LinkedHashMap<>();
                     params.put("accname", userName);
                     params.put("pwd", pwd);

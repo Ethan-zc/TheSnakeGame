@@ -8,11 +8,9 @@ import com.seven.zichen.snakegame.models.GamePanel;
 import com.seven.zichen.snakegame.models.WaitingPanel;
 import com.seven.zichen.snakegame.client.Client;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class WaitingClient implements Runnable{
@@ -105,13 +103,15 @@ public class WaitingClient implements Runnable{
                 }
             }
             wp.setVisible(false);
+
+
 //            List<String> userList = getUserList();
             if (!username.equals("GAMESTART")) {
                 try {
                     System.out.println("Client started!");
-//                    Thread C =new Thread((Runnable) new Client());
-//                    C.start();
-                    new Client();
+                    Thread C =new Thread((Runnable) new Client());
+                    C.start();
+//                    new Client();
 //                new Client();
                 } catch (Exception e) {
                 }

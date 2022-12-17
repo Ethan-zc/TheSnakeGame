@@ -24,6 +24,7 @@ public class Client_listener implements Runnable {
 		client = c;
 		try {
 			listenerChannel = DatagramChannel.open();
+			System.out.println("The port is: " + listeningPort);
 			listenerChannel.socket().bind(new InetSocketAddress(listeningPort));
 		} catch (IOException e) {
 			e.printStackTrace();

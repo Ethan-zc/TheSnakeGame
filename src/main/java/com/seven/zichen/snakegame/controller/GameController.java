@@ -1,12 +1,14 @@
 package com.seven.zichen.snakegame.controller;
 
 import com.seven.zichen.snakegame.entry.GameEntry;
+import com.seven.zichen.snakegame.games_handler.GH_Manager;
 import com.seven.zichen.snakegame.service.AccountService;
 import com.seven.zichen.snakegame.service.GameService;
 import com.seven.zichen.snakegame.service.Impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Date;
@@ -46,5 +48,17 @@ public class GameController {
         int userId = accountService.getUserIdByName(userName);
         gameService.addScore(userId, gameId, score);
     }
+
+    @RequestMapping(value = "/newgame", method = RequestMethod.POST)
+    public void newGame(@RequestParam int num) throws IOException {
+        System.out.println("Server received start game request!");
+        Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, num));
+        GH.start();
+    }
+
+//    @RequestMapping(value = "/newgame", method = RequestMethod.GET)
+//    public void testing() throws IOException {
+//        System.out.println("Server received start game request!");
+//    }
 
 }

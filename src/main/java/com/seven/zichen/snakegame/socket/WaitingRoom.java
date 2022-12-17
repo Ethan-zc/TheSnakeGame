@@ -5,13 +5,11 @@ import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Date;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.List;
+
 public class WaitingRoom implements Runnable{
 
     private int clientNo = 0;
@@ -163,12 +161,32 @@ public class WaitingRoom implements Runnable{
 //                for (int i = 0; i < userList.size(); i++) {
 //                    new GameFrame(game);
 //                }
-                gameRunning = true;
-                System.out.println("Server initializing...");
-//                System.out.println(activeClients.size());
+//                gameRunning = true;
+//                System.out.println("Server initializing...");
+//
+//                URL url = new URL("http://localhost:8080/game/newgame");
+//                Map<String,Object> params = new LinkedHashMap<>();
+//                params.put("num", activeClients.size() - 1);
+//
+//                StringBuilder postData = new StringBuilder();
+//                for (Map.Entry<String,Object> param : params.entrySet()) {
+//                    if (postData.length() != 0) postData.append('&');
+//                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+//                    postData.append('=');
+//                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+//                }
+//                byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
+//
+//                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+//                conn.setRequestMethod("POST");
+//                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//                conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+//                conn.setDoOutput(true);
+//                conn.getOutputStream().write(postDataBytes);
+//                System.out.println("Sent!");
 
-//                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
-//                GH.start();
+                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
+                GH.start();
 
             }
             catch(IOException ex) {
