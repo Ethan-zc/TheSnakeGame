@@ -1,9 +1,9 @@
 package com.seven.zichen.snakegame.game;
 
-import utilities.Client;
-import utilities.Job;
-import utilities.Runnable_Input;
-import utilities.Snake;
+import com.seven.zichen.snakegame.utilities.Client;
+import com.seven.zichen.snakegame.utilities.Job;
+import com.seven.zichen.snakegame.utilities.Runnable_Input;
+import com.seven.zichen.snakegame.utilities.Snake;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -1,8 +1,8 @@
 package com.seven.zichen.snakegame.games_handler;
 
-import game.Game;
-import utilities.Job;
-import utilities.Runnable_Input;
+import com.seven.zichen.snakegame.game.Game;
+import com.seven.zichen.snakegame.utilities.Job;
+import com.seven.zichen.snakegame.utilities.Runnable_Input;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;

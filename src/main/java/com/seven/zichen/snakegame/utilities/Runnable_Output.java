@@ -1,6 +1,6 @@
 package com.seven.zichen.snakegame.utilities;
 
-import game.G_Manager;
+import com.seven.zichen.snakegame.game.G_Manager;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

@@ -1,6 +1,7 @@
 package com.seven.zichen.snakegame.client;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
+import com.seven.zichen.snakegame.utilities.GameOptions;
 
 // OK : calcule la nouvelle grille a afficher a partir des hashmaps de serpent
 class GestionBackGrille implements Runnable {
@@ -8,7 +9,7 @@ class GestionBackGrille implements Runnable {
 	private GestionAffichage gameDisplay;
 	private byte monNumero;
 	private GestionDemandeDirection gestionnaire;
-	private final int taille = utilities.GameOptions.gridSize;
+	private final int taille = GameOptions.gridSize;
 	
 	protected GestionBackGrille(ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> jobs, GestionAffichage display, byte numero, GestionDemandeDirection gest){
 		this.grilleJobs = jobs;

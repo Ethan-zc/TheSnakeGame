@@ -1,10 +1,12 @@
 package com.seven.zichen.snakegame.socket;
 
 import com.mysql.cj.protocol.x.XMessage;
+import com.seven.zichen.snakegame.games_handler.GH_Manager;
 import com.seven.zichen.snakegame.models.Game;
 import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
 import com.seven.zichen.snakegame.models.WaitingPanel;
+import com.seven.zichen.snakegame.client.Client;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -104,9 +106,14 @@ public class WaitingClient implements Runnable{
                 }
             }
             wp.setVisible(false);
-            List<String> userList = getUserList();
-//            GamePanel gp = new GamePanel(userList);
-//            new GameFrame(gp);
+//            List<String> userList = getUserList();
+            try {
+                Thread C =new Thread((Runnable) new Client());
+                C.start();
+
+            } catch (Exception e) {
+            }
+
 
 
 

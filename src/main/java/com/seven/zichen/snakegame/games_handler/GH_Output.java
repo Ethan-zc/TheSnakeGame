@@ -1,6 +1,6 @@
 package com.seven.zichen.snakegame.games_handler;
 
-import utilities.BufferHandler;
+import com.seven.zichen.snakegame.utilities.BufferHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

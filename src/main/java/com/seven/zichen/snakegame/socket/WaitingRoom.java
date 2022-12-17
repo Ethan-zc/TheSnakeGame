@@ -1,5 +1,6 @@
 package com.seven.zichen.snakegame.socket;
 
+import com.seven.zichen.snakegame.games_handler.GH_Manager;
 import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
 
@@ -158,30 +159,14 @@ public class WaitingRoom implements Runnable{
 
                     }
                 }
-                GamePanel game = new GamePanel(userList);
-                for (int i = 0; i < userList.size(); i++) {
-                    new GameFrame(game);
-                }
-                gameRunning = true;
-
-//                new GameClient();
-
-//                while(gameRunning) {
-//
-//
-//                    for (Integer client : activeClients.keySet()) {
-//                        Socket currSocket = activeClients.get(client);
-//                        if (!currSocket.isClosed()) {
-//                            ObjectOutputStream ObjectOutputStream = new ObjectOutputStream(
-//                                    socket.getOutputStream());
-//                            ObjectOutputStream.reset();
-//                            if (client != this.clientNum) {
-//                                ObjectOutputStream.writeObject(mainGame);
-//                            }
-//                        }
-//                    }
-//
+//                GamePanel game = new GamePanel(userList);
+//                for (int i = 0; i < userList.size(); i++) {
+//                    new GameFrame(game);
 //                }
+                gameRunning = true;
+                System.out.println("Server initializing...");
+                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size()));
+                GH.start();
 
             }
             catch(IOException ex) {

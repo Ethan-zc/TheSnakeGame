@@ -1,6 +1,6 @@
 package com.seven.zichen.snakegame.game;
 
-import utilities.*;
+import com.seven.zichen.snakegame.utilities.*;
 
 import java.io.IOException;
 import java.util.HashMap;

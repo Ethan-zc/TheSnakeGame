@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ArrayBlockingQueue;
+import com.seven.zichen.snakegame.utilities.GameOptions;
 
 // NORMALEMENT OK : interface graphique + gestion des demandes du clavier
 @SuppressWarnings("serial")
@@ -16,7 +17,7 @@ public class GestionAffichage extends JComponent implements KeyListener {
 	private JFrame graphe;
 	private ArrayBlockingQueue<Byte> demandeDir;
 	private JLabel a = new JLabel();
-	private final int taille = utilities.GameOptions.gridSize;
+	private final int taille = GameOptions.gridSize;
 
 	protected void swap(byte[][] backGrille) {
 		try {

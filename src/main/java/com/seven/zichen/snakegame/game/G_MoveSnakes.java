@@ -1,8 +1,8 @@
 package com.seven.zichen.snakegame.game;
 
-import utilities.GameOptions;
-import utilities.Job;
-import utilities.Snake;
+import com.seven.zichen.snakegame.utilities.GameOptions;
+import com.seven.zichen.snakegame.utilities.Job;
+import com.seven.zichen.snakegame.utilities.Snake;
 
 import java.util.LinkedList;
 

@@ -2,6 +2,7 @@ package com.seven.zichen.snakegame.client;
 
 import java.awt.*;
 import java.util.LinkedList;
+import com.seven.zichen.snakegame.utilities.GameOptions;
 
 // La classe Snake code les serpents sur une liste de points
 public class Snake {
@@ -31,7 +32,7 @@ public class Snake {
 class Point {
 	int x, y;
 	Color color;
-	private final int taille = utilities.GameOptions.gridSize;
+	private final int taille = GameOptions.gridSize;
 
 	Point(int x, int y) {
 		while (x < 0)
