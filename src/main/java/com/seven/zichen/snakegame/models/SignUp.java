@@ -22,8 +22,10 @@ public class SignUp extends JFrame implements ActionListener {
     JPasswordField p1, p2;
     private String userName;
     private String pwd;
+    private String ipAddr = "";
 
-    public SignUp() {
+    public SignUp(String ip) {
+        this.ipAddr = ip;
         setVisible(true);
         setSize(400, 300);
         setLayout(null);
@@ -103,7 +105,7 @@ public class SignUp extends JFrame implements ActionListener {
                     this.userName = s1;
                     this.pwd = s8;
 
-                    URL url = new URL("http://192.168.1.156:8080/account/register");
+                    URL url = new URL("http://" + this.ipAddr + ":8080/account/register");
                     Map<String,Object> params = new LinkedHashMap<>();
                     params.put("accname", userName);
                     params.put("pwd", pwd);
@@ -135,7 +137,7 @@ public class SignUp extends JFrame implements ActionListener {
                     if (strCurrentLine.equals("Success!")) {
                         JOptionPane.showMessageDialog(btn1, "Data Saved Successfully");
                         this.dispose();
-                        new SignIn();
+                        new SignIn(this.ipAddr);
                     } else {
                         JOptionPane.showMessageDialog(btn1, "Error, please try again");
                     }
@@ -157,7 +159,7 @@ public class SignUp extends JFrame implements ActionListener {
         }
         else {
             this.dispose();
-            new SignIn();
+            new SignIn(this.ipAddr);
         }
     }
 }

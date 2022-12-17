@@ -18,8 +18,10 @@ public class SignIn extends JFrame implements ActionListener {
     JTextField tf1;
     JButton btn1;
     JPasswordField p1;
+    String ipAddr = "";
 
-    public SignIn() {
+    public SignIn(String ip) {
+        this.ipAddr = ip;
         setTitle("Login");
 
         setVisible(true);
@@ -91,7 +93,7 @@ public class SignIn extends JFrame implements ActionListener {
 
         try {
             //Login
-            URL url = new URL("http://192.168.1.156:8080/account/login");
+            URL url = new URL("http://" + this.ipAddr + ":8080/account/login");
             Map<String,Object> params = new LinkedHashMap<>();
             params.put("accname", str1);
             params.put("pwd", str2);

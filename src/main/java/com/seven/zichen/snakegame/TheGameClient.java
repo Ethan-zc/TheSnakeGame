@@ -12,10 +12,12 @@ import java.util.List;
 
 public class TheGameClient {
 
+    public static String localhostIP = "192.168.1.156";
+
     public static void main(String[] args) {
 //        new SpringApplicationBuilder(TheSnakeGameApplication.class).headless(false).run(args);
 //        new WaitingRoom();
-        new SignIn();
+        new SignIn(localhostIP);
 //        List<String> test = new ArrayList<>();
 //        test.add("Haha");
 //        test.add("Yes");

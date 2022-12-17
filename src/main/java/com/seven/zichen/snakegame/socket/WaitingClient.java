@@ -1,16 +1,9 @@
 package com.seven.zichen.snakegame.socket;
 
-import com.mysql.cj.protocol.x.XMessage;
-import com.seven.zichen.snakegame.games_handler.GH_Manager;
-import com.seven.zichen.snakegame.models.Game;
-import com.seven.zichen.snakegame.models.GameFrame;
-import com.seven.zichen.snakegame.models.GamePanel;
 import com.seven.zichen.snakegame.models.WaitingPanel;
 import com.seven.zichen.snakegame.client.Client;
-
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class WaitingClient implements Runnable{
@@ -109,6 +102,7 @@ public class WaitingClient implements Runnable{
             if (!username.equals("GAMESTART")) {
                 try {
                     System.out.println("Client started!");
+                    socket.close();
                     Thread C = new Thread((Runnable) new Client(username));
                     C.start();
 //                    new Client();

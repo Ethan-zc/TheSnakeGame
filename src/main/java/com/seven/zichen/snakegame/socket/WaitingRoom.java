@@ -157,7 +157,7 @@ public class WaitingRoom implements Runnable{
 
                     }
                 }
-
+                socket.close();
                 Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
         		GH.start();
 //                GamePanel game = new GamePanel(userList);
