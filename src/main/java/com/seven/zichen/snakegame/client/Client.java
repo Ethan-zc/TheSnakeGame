@@ -24,6 +24,9 @@ public class Client{
 		this.userName = username;
 		startListener((short) 5959, bufferWaitPlayerServer(5656));
 	}
+	String numToName(byte num) {
+		return userName.get(num - 1);
+	}
 
 	private void startListener(short listeningPort, short sendingPort) throws Exception {
 		gridJobs = new ArrayBlockingQueue<>(1);
