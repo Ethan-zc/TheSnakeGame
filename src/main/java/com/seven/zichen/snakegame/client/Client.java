@@ -10,77 +10,67 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 
 public class Client{
-	// server est initialisé dans le lireBufferAttenteJoueurServeur et utile dans lancerSpeaker
 	private InetSocketAddress server;
-	// créée dans lancementListener et utile pour lancerAffichage, grilleJobs contient les serpents envoye par le serveur, la liste est partagée entre le client listener aui la remplit et le gestionnaire de la grille qui la vide
-	private ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> grilleJobs; 
-	// créée dans lancerAffichage et utile pour lancerSpeaker, directionIdJobs est remplie par le gestionnaire de direction et vidée par le sender
+	private ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> gridJobs;
 	private BlockingDeque<Pair<Byte,Byte>> directionIdJobs;
-	// pour envoyer le message je veux joueur tant qu'on ne recoit pas de message du serveur
-	protected volatile boolean pasRecuPortJeu = true;
-	private String nomServer;
-	private HandleInputDirection gest;
-	private DrawGame fenetre = null;
+	protected volatile boolean notReceivedPortGame = true;
+	private String serverName;
+	private HandleInputDirection hid;
+	private DrawGame gameDisplay = null;
 	private String userName;
-	
-	// on recupere sur le port 5656, le serveur et le port avec lequel on
-	// communique avec le serveur, on dit au serveur de nous parler sur 5959
+
 	public Client(String username) throws Exception{
 		this.userName = username;
-		lancementListener((short) 5959, lireBufferAttenteJoueurServeur(5656));
-	}
-	
-	// On lance un client listener sur le port listeningPort et on envoie au serveur le port sur lequel on va ecouter
-	private void lancementListener(short listeningPort, short envoiePort) throws Exception {
-		grilleJobs = new ArrayBlockingQueue<>(1);
-		new Thread(new Client_listener(grilleJobs, listeningPort, this)).start();
-		envoieServer(listeningPort, envoiePort, server);
-	}
-	
-	// appelé par le Client_listener
-	void lancerAffichage(byte numero) {
-		directionIdJobs = new LinkedBlockingDeque<Pair<Byte,Byte>>(5);
-		ArrayBlockingQueue<Byte> directionJobs = new ArrayBlockingQueue<Byte>(5);
-		gest = new HandleInputDirection(directionIdJobs, directionJobs);
-		fenetre = new DrawGame(numero, directionJobs);
-		new Thread(new HandleReturnedGrid(grilleJobs, fenetre, numero, gest)).start();
+		startListener((short) 5959, bufferWaitPlayerServer(5656));
 	}
 
-	// appelé par le Client_listener, on lance un speaker sur le port gamePort
-	void lancerSpeaker(byte numero, short gamePort) {
-		new Thread(new Client_sender(server, directionIdJobs, gamePort, numero)).start();
+	private void startListener(short listeningPort, short sendingPort) throws Exception {
+		gridJobs = new ArrayBlockingQueue<>(1);
+		new Thread(new ClientListener(gridJobs, listeningPort, this)).start();
+		envoieServer(listeningPort, sendingPort, server);
 	}
-	
-	void lancerGestionnaireDirection(){
-		new Thread(gest).start();
+
+	void startGamePanel(byte number) {
+		directionIdJobs = new LinkedBlockingDeque<>(5);
+		ArrayBlockingQueue<Byte> directionJobs = new ArrayBlockingQueue<>(5);
+		hid = new HandleInputDirection(directionIdJobs, directionJobs);
+		gameDisplay = new DrawGame(number, directionJobs);
+		new Thread(new HandleReturnedGrid(gridJobs, gameDisplay, number, hid)).start();
 	}
-	
+
+	void startSpeaker(byte number, short gamePort) {
+		new Thread(new ClientSender(server, directionIdJobs, gamePort, number)).start();
+	}
+
+	void startHandleDirection(){
+		new Thread(hid).start();
+	}
+
 	public void print(String string) {
 		//text.setText(string);
-		if(fenetre != null)
-			fenetre.print(string);
+		if(gameDisplay != null)
+			gameDisplay.print(string);
+	}
+
+	public void gameOver() {
+		gameDisplay.gameOver();
 	}
 
 	private void envoieServer(short listeningPort, short portConnexion,
 			InetSocketAddress server) throws Exception {
-		// on ouvre une nouvelle connexion avec le serveur sur le port de connexion
 		DatagramChannel speakerChannel = DatagramChannel.open();
 		speakerChannel.socket().bind(new InetSocketAddress(0));
 		InetSocketAddress remote = new InetSocketAddress(server.getAddress(), portConnexion);
 		
-		// on envoie le port de jeu du client
 		ByteBuffer jeVeuxJouer = clientConnection(listeningPort);
-		while(pasRecuPortJeu){
-			// On envoie un message je veux jouer sur le port portConnexion
+		while(notReceivedPortGame){
 			speakerChannel.send(jeVeuxJouer, remote);
-			// permet de reenvoyer le buffer
-			jeVeuxJouer.position(0); 
+			jeVeuxJouer.position(0);
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 			}
 		}
-		// on ferme la communication
 		speakerChannel.close();
 	}
 
@@ -92,33 +82,27 @@ public class Client{
 		return res;
 	}
 
-	private short lireBufferAttenteJoueurServeur(int portServeur)
+	private short bufferWaitPlayerServer(int serverPort)
 			throws Exception {
-		// on ouvre une communication avec le serveur sur le port indiqué dans la rfc (5656)
 		DatagramChannel clientSocket = DatagramChannel.open();
-		InetSocketAddress local = new InetSocketAddress(portServeur);
+		InetSocketAddress local = new InetSocketAddress(serverPort);
 		clientSocket.socket().bind(local);
-		// on cree un buffer pour recevoir le message, on attend une réponse du serveur
+
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
-		// on recupere l'adresse du serveur
 		server = (InetSocketAddress) clientSocket
 				.receive(buffer);
 		buffer.flip();
 		try {
-			// on a déjà le nom du serveur codé comme pour DNS
 			byte nbChar = buffer.get();
-			nomServer = "";
+			serverName = "";
 			for (int i = 0; i < nbChar; i++)
-				nomServer += (char) buffer.get();
-			// on récupère le port de connexion
+				serverName += (char) buffer.get();
 			short portConnexion = buffer.getShort();
-			// On joue sur nomServer nom qui contient nbChar caracteres. On se connecte sur portConnexion
-			// on ferme la connexion avec le serveur sur le port 5656
 			clientSocket.close();
 			return portConnexion;
 		} catch (BufferUnderflowException e) {
 			clientSocket.close();
-			throw new Exception("Le message du serveur est corrompu");
+			throw new Exception("Game Server is corrupted");
 		}
 	}
 

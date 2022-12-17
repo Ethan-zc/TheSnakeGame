@@ -2,7 +2,7 @@ package com.seven.zichen.snakegame.games_handler;
 
 import com.seven.zichen.snakegame.game.Game;
 import com.seven.zichen.snakegame.utilities.Job;
-import com.seven.zichen.snakegame.utilities.Runnable_Input;
+import com.seven.zichen.snakegame.utilities.RunnableInput;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -34,7 +34,7 @@ public class GH_Manager implements Runnable{
 		System.out.println("GH_Manager has been initialized:");
 		
 		in_communicator=new ArrayBlockingQueue<Job>(100);
-		input=new Thread(new Runnable_Input(inputPort, in_communicator, "GH"));
+		input=new Thread(new RunnableInput(inputPort, in_communicator, "GH"));
 		System.out.println("\t> input Thread initialized on port "+inputPort);
 		
 		output=new Thread(new GH_Output(outputPort, serverName, broadcastTimeInterval, inputPort));

@@ -9,18 +9,14 @@ import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 // TEST OK
-public class Client_listener implements Runnable {
-	// le serveur vide la file avant de mettre un nouvel element
-	private ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> grilleJobs;
-	private DatagramChannel listenerChannel; // sur le portEcoute
+public class ClientListener implements Runnable {
+	private ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> gridJobs;
+	private DatagramChannel listenerChannel;
 	private Client client;
-	private boolean pasLancerDir = true;
+	private boolean dirNotStarted = true;
 
-	// le serveur vide la file avant de mettre un nouvel element, ne marche
-	// parce qu'un seul thread remplit la file
-	protected Client_listener(ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> jobs, short listeningPort,
-			Client c) {
-		grilleJobs = jobs;
+	protected ClientListener(ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> jobs, short listeningPort, Client c) {
+		gridJobs = jobs;
 		client = c;
 		try {
 			listenerChannel = DatagramChannel.open();
@@ -42,23 +38,22 @@ public class Client_listener implements Runnable {
 				byte type = buffer.get();
 				switch (type) {
 				case 0:
-					if (client.pasRecuPortJeu) {
-						client.pasRecuPortJeu = false;
+					if (client.notReceivedPortGame) {
+						client.notReceivedPortGame = false;
 						short gamePort = buffer.getShort();
-						byte numero = buffer.get();
-						// On a port de jeu = gamePort et numero de client =
-						// numero
-						client.lancerAffichage(numero);
-						client.lancerSpeaker(numero, gamePort);
+						byte number = buffer.get();
+
+						client.startGamePanel(number);
+						client.startSpeaker(number, gamePort);
 					}
 					break;
 				case 1:
-					client.print("<HTML><h2>On commence dans " + buffer.get() + " secondes</h2></HTML>");
+					client.print("<HTML><h2>Game will start in " + buffer.get() + " seconds</h2></HTML>");
 					break;
 				case 2:
-					if (pasLancerDir) {
-						client.lancerGestionnaireDirection();
-						pasLancerDir = false;
+					if (dirNotStarted) {
+						client.startHandleDirection();
+						dirNotStarted = false;
 						client.print("");
 					}
 					lireSerpents(buffer);
@@ -66,11 +61,12 @@ public class Client_listener implements Runnable {
 				case 3:
 					if (!gameOver) {
 						gameOver = true;
-						client.print(lireBufferFinal(buffer));
+						client.gameOver();
+						client.print(readFinalBuffer(buffer));
 					}
 					break;
 				default:
-					throw new Exception("Le message du server de Jeu est corrompu");
+					throw new Exception("Game server is corrupted");
 				}
 				buffer.clear();
 			}
@@ -78,29 +74,26 @@ public class Client_listener implements Runnable {
 		}
 	}
 
-	private String lireBufferFinal(ByteBuffer buffer) {
-		String s = "<HTML><h2>La partie est finie, voici les scores :</h2>";
+	private String readFinalBuffer(ByteBuffer buffer) {
+		String s = "<HTML><h2>Game Over!</h2>";
 		byte nbSnakes = buffer.get();
 		for (int i = 0; i < nbSnakes; i++) {
 			byte num = buffer.get();
 			short score = buffer.getShort();
-			s += "<h3>Le serpent " + num + " a " + score + " point</h3>";
+			s += "<h3>Player " + num + " got " + score + " points</h3>";
 		}
-		return s+"</HTML>";
+		return s + "</HTML>";
 	}
 
 	private void lireSerpents(ByteBuffer buffer) throws Exception {
 		Pair<HashMap<Byte, Snake>, Point> req = decodeBufferToGame(buffer);
-		// ici on enleve tous les elements de la file pour ne prendre en compte
-		// que le dernier, marche car un seul thread remplit la file
-		while (grilleJobs.size() > 0)
-			grilleJobs.poll();
-		grilleJobs.put(req);
+		while (gridJobs.size() > 0)
+			gridJobs.poll();
+		gridJobs.put(req);
 	}
 
-	// fonction decode
 	private static Pair<HashMap<Byte, Snake>, Point> decodeBufferToGame(ByteBuffer buf) throws Exception {
-		HashMap<Byte, Snake> snakes = new HashMap<Byte, Snake>();
+		HashMap<Byte, Snake> snakes = new HashMap<>();
 		try {
 			byte nbSnakes = buf.get();
 			for (int i = 0; i < nbSnakes; i++) {
@@ -125,9 +118,9 @@ public class Client_listener implements Runnable {
 				snakes.put(numSnake, c);
 			}
 			Point pomme = new Point(buf.get(), buf.get());
-			return new Pair<HashMap<Byte, Snake>, Point>(snakes, pomme);
+			return new Pair<>(snakes, pomme);
 		} catch (Exception e) {
 		}
-		throw new Exception("Le message du serveur est mal décodé");
+		throw new Exception("The message from the server is incorrectly decoded");
 	}
 }

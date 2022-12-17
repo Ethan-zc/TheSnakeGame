@@ -23,7 +23,7 @@ public class Game extends Thread {
 	public HashSet<Snake> snakesAtStart;
 	public Apple apple;
 	
-	public G_Manager manager;
+	public GameManager manager;
 	private long multicastTimeInterval = 50;// 50 ms
 	
 	
@@ -46,7 +46,7 @@ public class Game extends Thread {
 		
 		snakesAtStart = new HashSet<>();
 		
-		this.manager = new G_Manager(this, inputPort, multicastTimeInterval);
+		this.manager = new GameManager(this, inputPort, multicastTimeInterval);
 		System.out.println("Game was initialized, listening on " + inputPort);
 		
 		waitForClients=true;
@@ -67,7 +67,7 @@ public class Game extends Thread {
 			
 			ArrayBlockingQueue<Job> out_communicator = new ArrayBlockingQueue<>(100);
 			this.manager.out_communicators.put(c, out_communicator);
-			Thread t=new Thread(new Runnable_Output(c.address, c.listeningPort, out_communicator, "G", manager));
+			Thread t=new Thread(new RunnableOutput(c.address, c.listeningPort, out_communicator, "G", manager));
 			t.start();
 			
 			System.out.println("A client has been added and communicator was initiated");

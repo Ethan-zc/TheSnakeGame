@@ -2,14 +2,14 @@ package com.seven.zichen.snakegame.game;
 
 import com.seven.zichen.snakegame.utilities.Client;
 import com.seven.zichen.snakegame.utilities.Job;
-import com.seven.zichen.snakegame.utilities.Runnable_Input;
+import com.seven.zichen.snakegame.utilities.RunnableInput;
 import com.seven.zichen.snakegame.utilities.Snake;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class G_Manager implements Runnable {
+public class GameManager implements Runnable {
 	public Game thisGame;
 
 	public volatile boolean sendGameInfo;
@@ -24,7 +24,7 @@ public class G_Manager implements Runnable {
 
 	public HashMap<Client, ArrayBlockingQueue<Job>> out_communicators;
 
-	public G_Manager(Game g, int inputPort, long multicastTimeInterval)
+	public GameManager(Game g, int inputPort, long multicastTimeInterval)
 			throws IOException {
 		/**
 		 * A manager for 1 game: - listening each player moves on port inputPort
@@ -36,7 +36,7 @@ public class G_Manager implements Runnable {
 		thisGame = g;
 		in_communicator = new ArrayBlockingQueue<>(100);
 		this.inputPort = inputPort;
-		input = new Thread(new Runnable_Input(inputPort, in_communicator, "G"));
+		input = new Thread(new RunnableInput(inputPort, in_communicator, "G"));
 		System.out.println("\t> input Thread initialized on port " + inputPort);
 		out_communicators = new HashMap<>();
 		System.out.println("\t> output Thread initialized");
@@ -90,7 +90,7 @@ public class G_Manager implements Runnable {
 			}
 
 			Thread moveSnakes;
-			moveSnakes = new Thread(new G_MoveSnakes(thisGame));
+			moveSnakes = new Thread(new MoveSnakes(thisGame));
 			moveSnakes.start();
 
 			byte id = -1;

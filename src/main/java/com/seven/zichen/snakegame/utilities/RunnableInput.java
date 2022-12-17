@@ -5,13 +5,13 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class Runnable_Input extends UDP_Listener implements Runnable {
+public class RunnableInput extends UDPListener implements Runnable {
 	private ByteBuffer buffer;
 	private ArrayBlockingQueue<Job> communicator;
 	String parentPrefix;
 
-	public Runnable_Input(int port, ArrayBlockingQueue<Job> communicator,
-			String prefix) throws IOException {
+	public RunnableInput(int port, ArrayBlockingQueue<Job> communicator,
+						 String prefix) throws IOException {
 		super(port);
 		System.out.println("Runnable input initiated on port "+port);
 		buffer = ByteBuffer.allocate(1000);

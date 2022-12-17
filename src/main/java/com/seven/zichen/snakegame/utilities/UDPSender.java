@@ -6,12 +6,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
 
-public class UDP_Sender {
+public class UDPSender {
 	public InetSocketAddress local;
 	public InetSocketAddress remote;
 	public DatagramChannel channel;
 
-	public UDP_Sender(String target, int remotePort) throws IOException{
+	public UDPSender(String target, int remotePort) throws IOException{
 		this.channel=DatagramChannel.open();
 		local=new InetSocketAddress(0);
 		channel.bind(local);

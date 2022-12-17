@@ -1,20 +1,20 @@
 package com.seven.zichen.snakegame.utilities;
 
-import com.seven.zichen.snakegame.game.G_Manager;
+import com.seven.zichen.snakegame.game.GameManager;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class Runnable_Output extends UDP_Sender implements Runnable {
+public class RunnableOutput extends UDPSender implements Runnable {
 	private ByteBuffer buffer;
 	private ArrayBlockingQueue<Job> communicator;
 	String parentPrefix;
-	G_Manager manager;
+	GameManager manager;
 
-	public Runnable_Output(String address, int port,
-			ArrayBlockingQueue<Job> communicator, String prefix,
-			G_Manager manager) throws IOException {
+	public RunnableOutput(String address, int port,
+						  ArrayBlockingQueue<Job> communicator, String prefix,
+						  GameManager manager) throws IOException {
 		super(address, port);
 		buffer = null;
 		this.communicator = communicator;

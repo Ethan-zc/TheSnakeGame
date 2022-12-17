@@ -5,11 +5,11 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
-public class UDP_Listener {
+public class UDPListener {
 	private InetSocketAddress local;
 	private DatagramChannel channel;
 	
-	public UDP_Listener(int port) throws IOException{
+	public UDPListener(int port) throws IOException{
 		this.channel = DatagramChannel.open();
 		this.local=new InetSocketAddress(port);
 		this.channel.socket().bind(local);

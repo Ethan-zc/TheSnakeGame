@@ -7,18 +7,18 @@ import java.nio.channels.DatagramChannel;
 import java.util.concurrent.BlockingDeque;
 
 // A TESTER
-public class Client_sender implements Runnable {
+public class ClientSender implements Runnable {
 	public InetSocketAddress server;
 	public BlockingDeque<Pair<Byte,Byte>> directionJobs;
 	private short gamePort;
-	private byte numero;
+	private byte number;
 	public byte id;
 
-	public Client_sender(InetSocketAddress server, BlockingDeque<Pair<Byte,Byte>> jobs, short gP, byte num) {
+	public ClientSender(InetSocketAddress server, BlockingDeque<Pair<Byte,Byte>> jobs, short gP, byte num) {
 		this.server = server;
 		this.directionJobs = jobs;
 		gamePort = gP;
-		numero = num;
+		number = num;
 		id = 0;
 	}
 
@@ -35,7 +35,7 @@ public class Client_sender implements Runnable {
 						// System.out.println("Sender : il n'y a pas encore d'element, j'attends...");
 						directionJobs.wait();
 					}
-					else speakerChannel.send(changementDirection(numero, dirId), remote);
+					else speakerChannel.send(changementDirection(number, dirId), remote);
 					Thread.sleep(5);
 					// Envoie demande nouvelle direction sur gamePort
 				}
