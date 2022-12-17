@@ -4,6 +4,7 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -17,9 +18,9 @@ public class Client{
 	private String serverName;
 	private HandleInputDirection hid;
 	private DrawGame gameDisplay = null;
-	private String userName;
+	private List<String> userName;
 
-	public Client(String username) throws Exception{
+	public Client(List<String> username) throws Exception{
 		this.userName = username;
 		startListener((short) 5959, bufferWaitPlayerServer(5656));
 	}
