@@ -12,9 +12,9 @@ public class Apple {
 	}
 	
 	public Point generate(){
-		int x=(int) (Math.random()*GameOptions.gridSize);
-		int y=(int) (Math.random()*GameOptions.gridSize);
-		return new Point(x,y);
+		int x = (int) (Math.random() * GameOptions.gridSize);
+		int y = (int) (Math.random() * GameOptions.gridSize);
+		return new Point(x, y);
 	}
 	
 	public ByteBuffer toBuffer(){

@@ -19,8 +19,8 @@ public class Client{
 	// pour envoyer le message je veux joueur tant qu'on ne recoit pas de message du serveur
 	protected volatile boolean pasRecuPortJeu = true;
 	private String nomServer;
-	private GestionDemandeDirection gest;
-	private GestionAffichage fenetre = null;
+	private HandleInputDirection gest;
+	private DrawGame fenetre = null;
 	
 	// on recupere sur le port 5656, le serveur et le port avec lequel on
 	// communique avec le serveur, on dit au serveur de nous parler sur 5959
@@ -30,7 +30,7 @@ public class Client{
 	
 	// On lance un client listener sur le port listeningPort et on envoie au serveur le port sur lequel on va ecouter
 	private void lancementListener(short listeningPort, short envoiePort) throws Exception {
-		grilleJobs = new ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>>(1);
+		grilleJobs = new ArrayBlockingQueue<>(1);
 		new Thread(new Client_listener(grilleJobs, listeningPort, this)).start();
 		envoieServer(listeningPort, envoiePort, server);
 	}
@@ -39,9 +39,9 @@ public class Client{
 	void lancerAffichage(byte numero) {
 		directionIdJobs = new LinkedBlockingDeque<Pair<Byte,Byte>>(5);
 		ArrayBlockingQueue<Byte> directionJobs = new ArrayBlockingQueue<Byte>(5);
-		gest = new GestionDemandeDirection(directionIdJobs, directionJobs);
-		fenetre = new GestionAffichage(nomServer, numero, directionJobs);
-		new Thread(new GestionBackGrille(grilleJobs, fenetre, numero, gest)).start();
+		gest = new HandleInputDirection(directionIdJobs, directionJobs);
+		fenetre = new DrawGame(numero, directionJobs);
+		new Thread(new HandleReturnedGrid(grilleJobs, fenetre, numero, gest)).start();
 	}
 
 	// appelé par le Client_listener, on lance un speaker sur le port gamePort
@@ -55,7 +55,7 @@ public class Client{
 	
 	public void print(String string) {
 		//text.setText(string);
-		if(fenetre!=null)
+		if(fenetre != null)
 			fenetre.print(string);
 	}
 
@@ -121,13 +121,4 @@ public class Client{
 	}
 
 
-}
-
-class Pair<E,V>{
-	E a;
-	V b;
-	Pair(E a1, V b1){
-		a = a1;
-		b = b1;
-	}
 }

@@ -34,11 +34,11 @@ public class G_Manager implements Runnable {
 		System.out.println("G_Manager has been initialized:");
 
 		thisGame = g;
-		in_communicator = new ArrayBlockingQueue<Job>(100);
+		in_communicator = new ArrayBlockingQueue<>(100);
 		this.inputPort = inputPort;
 		input = new Thread(new Runnable_Input(inputPort, in_communicator, "G"));
 		System.out.println("\t> input Thread initialized on port " + inputPort);
-		out_communicators = new HashMap<Client, ArrayBlockingQueue<Job>>();
+		out_communicators = new HashMap<>();
 		System.out.println("\t> output Thread initialized");
 
 		System.out.println("\t> END");
@@ -119,7 +119,7 @@ public class G_Manager implements Runnable {
 				}
 			}
 
-			gameOver=true;
+			gameOver = true;
 			System.out.println(">>>>>>>>>>>>>> GameOver <<<<<<<<<<<<<<<");
 
 			sendScore = true;

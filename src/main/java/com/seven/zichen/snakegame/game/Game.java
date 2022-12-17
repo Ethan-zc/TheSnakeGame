@@ -31,41 +31,41 @@ public class Game extends Thread {
 		this.maxPlayers = maxPlayers;
 		this.gameName = "Test";//TODO
 		
-		s1=new Snake(new Point(0,0),15,(byte)1);
-		s2=new Snake(new Point(40,40),15,(byte)2);
-		s3=new Snake(new Point(80,80),15,(byte)3);
-		s4=new Snake(new Point(120,120),15,(byte)4);
+		s1 = new Snake(new Point(0,0),15,(byte)1, "Test");
+		s2 = new Snake(new Point(40,40),15,(byte)2, "Test");
+		s3 = new Snake(new Point(80,80),15,(byte)3, "Test");
+		s4 = new Snake(new Point(120,120),15,(byte)4, "Test");
 		
 		
-		snakes=new HashMap<Integer,Snake>();
-		remainingSnakes = new LinkedList<Snake>();
+		snakes = new HashMap<>();
+		remainingSnakes = new LinkedList<>();
 		remainingSnakes.add(s1);
 		remainingSnakes.add(s2);
 		remainingSnakes.add(s3);
 		remainingSnakes.add(s4);
 		
-		snakesAtStart=new HashSet<Snake>();
+		snakesAtStart = new HashSet<>();
 		
 		this.manager = new G_Manager(this, inputPort, multicastTimeInterval);
-		System.out.println("Game was initialized, listening on "+inputPort);
+		System.out.println("Game was initialized, listening on " + inputPort);
 		
 		waitForClients=true;
 		
 		games.add(this); //Once a Game is initiated, we had it to this list, so that it can be filled with new players
 	}
 
-	public int maxPlayers() {
-		return maxPlayers;
-	}
+//	public int maxPlayers() {
+//		return maxPlayers;
+//	}
 
 	public void addClient(String address, int port) throws IOException, InterruptedException {
 		if (this.hasRoom() && waitForClients){
-			Snake s=remainingSnakes.removeFirst();
-			snakesAtStart.add(s);
-			Client c=new Client(address, port, s.id);
-			this.snakes.put(c.id, s);
+			Snake snake = remainingSnakes.removeFirst();
+			snakesAtStart.add(snake);
+			Client c = new Client(address, port, snake.id, snake.name);
+			this.snakes.put(c.id, snake);
 			
-			ArrayBlockingQueue<Job> out_communicator = new ArrayBlockingQueue<Job>(100);
+			ArrayBlockingQueue<Job> out_communicator = new ArrayBlockingQueue<>(100);
 			this.manager.out_communicators.put(c, out_communicator);
 			Thread t=new Thread(new Runnable_Output(c.address, c.listeningPort, out_communicator, "G", manager));
 			t.start();
@@ -73,7 +73,7 @@ public class Game extends Thread {
 			System.out.println("A client has been added and communicator was initiated");
 			
 			Job j = new Job(Job.Type.SEND_GAME_INFO);
-			j.id(s.id);
+			j.id(snake.id);
 			j.port(manager.inputPort);
 			out_communicator.put(j);
 			
@@ -113,7 +113,7 @@ public class Game extends Thread {
 
 	// ==========> STATIC <===============
 	// actually existing Games
-	public static LinkedList<Game> games = new LinkedList<Game>();
+	public static LinkedList<Game> games = new LinkedList<>();
 	//possible starting positions
 	
 	

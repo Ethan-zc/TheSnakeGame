@@ -6,60 +6,63 @@ import java.util.LinkedList;
 
 public class Snake {
 	enum Direction {
-		West, North, East, South
+		Left, Up, Right, Down
 	}
 
 	public Direction direction;
 	public Point head;
+	public Point tail;
 	public byte id;
+	public String name;
 	public int score;
-	LinkedList<Point> points; // last element is head
+	LinkedList<Point> points;
 
-	public Snake(Point point, int size, byte id) {
+	public Snake(Point point, int size, byte id, String name) {
 		this.id = id;
-		this.points = new LinkedList<Point>();
+		this.points = new LinkedList<>();
+		this.name = name;
+
 		for (int i = 0; i < size; i++) {
-			Point tmp = new Point(point.x + i, point.y);
-			this.points.add(tmp);
+			Point pt = new Point(point.x + i, point.y);
+			this.points.add(pt);
 		}
-		direction = Direction.East;
+
+		direction = Direction.Right;
 		head = points.getLast();
-		score=0;
+		tail = points.getFirst();
+		score = 0;
 	}
 
 	synchronized byte direction() {
 		switch (this.direction) {
-		case West:
+		case Left:
 			return (byte) 0;
-		case North:
+		case Up:
 			return (byte) 1;
-		case East:
+		case Right:
 			return (byte) 2;
-		case South:
+		case Down:
 			return (byte) 3;
-
 		default:
-			break;
+			return (byte) -1;
 		}
-		return (byte) -1;
 	}
 
 	synchronized public void direction(byte i) {
-		if (direction() % 2 != i % 2) {
+		if (direction() % 2 != i % 2) { //check cases unable to make a turn
 			switch (i) {
 			case 0:
-				this.direction = Direction.West;
+				this.direction = Direction.Left;
 				break;
 			case 1:
-				this.direction = Direction.North;
+				this.direction = Direction.Up;
 				break;
 			case 2:
-				this.direction = Direction.East;
+				this.direction = Direction.Right;
 				break;
 			case 3:
-				this.direction = Direction.South;
+				this.direction = Direction.Down;
 				break;
-
 			default:
 				break;
 			}
@@ -68,20 +71,21 @@ public class Snake {
 
 	synchronized public void move() {
 		points.removeFirst();
+
 		int x = head.x;
 		int y = head.y;
 
 		switch (this.direction) {
-		case North:
+		case Up:
 			y--;
 			break;
-		case South:
+		case Down:
 			y++;
 			break;
-		case East:
+		case Right:
 			x++;
 			break;
-		case West:
+		case Left:
 			x--;
 			break;
 		default:
@@ -90,36 +94,40 @@ public class Snake {
 		Point newHead = new Point(x, y);
 		points.addLast(newHead);
 		head = newHead;
+		tail = points.getFirst();
 	}
 
 	synchronized public void grow() {
-		points.addFirst(null);// will be immediately removed
+		points.addFirst(null);
 		move();
 	}
 
 	synchronized public boolean isInCollision(Point a) {
-		if (a.equals(head) && a!=head)
+		if (a.equals(head) && a != head) {
 			return true;
+		}
 		return false;
 	}
 
 	synchronized public boolean isInCollision(Snake a) {
-		for (Point b : a.points)
-			if (isInCollision(b))
+		for (Point pt : a.points) {
+			if (isInCollision(pt)) {
 				return true;
+			}
+		}
 		return false;
 	}
 
-	synchronized public Snake isInCollision(HashMap<Integer,Snake> a) {
-		for (Snake b : a.values())
-			if (isInCollision(b))
-				return b;
+	synchronized public Snake isInCollision(HashMap<Integer,Snake> snakes) {
+		for (Snake snake : snakes.values())
+			if (isInCollision(snake))
+				return snake;
 		return null;
 	}
 
 	@Override
 	synchronized public String toString() {
-		String s = "Snake " + id + " [";
+		String s = "Snake " + id + " [" + name + ",";
 		for (Point p : points) {
 			s += p.toString();
 			if (!p.equals(head))
@@ -131,59 +139,59 @@ public class Snake {
 
 	@Override
 	public boolean equals(Object o) {
-		Snake that = (Snake) o;
-		return that.id == this.id;
+		Snake snake = (Snake) o;
+		return snake.id == this.id;
 	}
 	
-	synchronized static ByteBuffer encodeOneSnake(Snake sn){
-		LinkedList<Point> s= new LinkedList<Point>();
-		for(Point p: sn.points){
-			s.addLast(p);
+	synchronized static ByteBuffer encodeOneSnake(Snake snake){
+		LinkedList<Point> points = new LinkedList<>();
+		for(Point pt: snake.points){
+			points.addLast(pt);
 		}
 		// s: queue > point > point > head
 		
 		
-		LinkedList<Byte> d = new LinkedList<>();// collection of directions
-		LinkedList<Byte> l = new LinkedList<>();// collection of lengths
+		LinkedList<Byte> dirs = new LinkedList<>();// collection of directions
+		LinkedList<Byte> lens = new LinkedList<>();// collection of lengths
 		
 		//Snake should be at least 2 Points long
 		
-		Point p = s.poll();
-		Point q=p; // queue
-		Point n = s.poll();
-		byte direction=dir(p,n);
-		byte length=1;
+		Point p = points.poll();
+		Point q = p; // queue
+		Point n = points.poll();
+		byte direction = dir(p,n);
+		byte length = 1;
 		
-		while(n!=null){
-			byte dir=dir(p,n);
-			if(direction==dir)
+		while(n != null){
+			byte dir = dir(p,n);
+			if(direction == dir)
 				length++;
 			else{
-				d.addLast(direction);
-				l.addLast(length);
-				direction=dir;
-				length=1;
+				dirs.addLast(direction);
+				lens.addLast(length);
+				direction = dir;
+				length = 1;
 			}
-			direction=dir;	
-			p=n;
-			n=s.poll();
+			direction = dir;
+			p = n;
+			n = points.poll();
 		}
-		d.addLast(direction);
-		l.addLast(length);
+		dirs.addLast(direction);
+		lens.addLast(length);
 		
-		length = (byte) l.size();
+		length = (byte) lens.size();
 		
 		ByteBuffer buf=ByteBuffer.allocate(length*2+4);
 		
 		// Then we prepare the buffer
-		buf.put(sn.id);
+		buf.put(snake.id);
 		buf.put((byte) q.x);
 		buf.put((byte) q.y);
 		buf.put(length);
-		while (!l.isEmpty()) {
-			byte dir=d.poll();
+		while (!lens.isEmpty()) {
+			byte dir = dirs.poll();
 			buf.put(dir);
-			byte len =l.poll();
+			byte len = lens.poll();
 			buf.put(len);
 			//System.out.print("["+dir+","+len+"]");
 		}
@@ -194,93 +202,30 @@ public class Snake {
 	}
 	
 	static byte dir(Point p, Point n){
-		int mod =GameOptions.gridSize;
-		if(p.x%mod == n.x%mod){
-			//going North (1) or South (3)
-			if((p.y+1)%mod==n.y%mod) return 3;
+		int mod = GameOptions.gridSize;
+		if(p.x % mod == n.x % mod){
+			if((p.y + 1) % mod == n.y % mod) return 3;
 			return 1;
 		}
 		//going East (2) or West (0)
-		if((p.x+1)%mod==n.x%mod) return 2;
+		if((p.x + 1) % mod == n.x % mod) return 2;
 		return 0;
 	}
 
-	synchronized static ByteBuffer encodeOneSnake2(Snake s) {
-		/**
-		 * We describe a snake more compactly : we only provide the points where
-		 * the direction changes, and the length where it goes straight
-		 */
-		// we assume snakes's length is at least 2 in order to avoid NULL
-		// Pointer Exception
-		// we implement the new representation of snake before pushing it into
-		// the buffer
-		
-		LinkedList<Point> obj= new LinkedList<Point>();
-		for(Point p: s.points){
-			obj.addLast(p);
-		}
-		
-		ByteBuffer buf;
-		LinkedList<Byte> length = new LinkedList<>();
-		LinkedList<Byte> direction = new LinkedList<>();
-		Point queue = obj.poll();
-		System.out.print("La queue est " + queue);
-		Point successeur = obj.poll();
-		Point tmp = obj.poll();
-		byte l = 1;
-		byte dir = findDirection(queue, successeur);
-		System.out.print(" allant vers " + dir);
-		direction.push(dir);
-
-		while (tmp != null) {
-			byte tmpDir = findDirection(successeur, tmp);
-			if (tmpDir == dir) {
-				l++;
-			} else {
-				System.out.println(" de taille " + l);
-				length.addFirst(l);
-				l = 1;
-				dir = tmpDir;
-				direction.addFirst(dir);
-			}
-			successeur = tmp;
-			tmp = obj.poll();
-		}
-		System.out.println(" de taille " + l);
-		length.addFirst(l);
-		l = (byte) length.size();
-		
-		buf=ByteBuffer.allocate(l*2+4);
-		
-		// Then we prepare the buffer
-		buf.put(s.id);
-		buf.put((byte) queue.x);
-		buf.put((byte) queue.y);
-		buf.put(l);
-		while (!length.isEmpty()) {
-			buf.put(direction.poll());
-			buf.put(length.poll());
-		}
-		
-		
-		return buf;
-
-	}
-
-	synchronized static public ByteBuffer encodeAllSnakes(HashMap<Integer, Snake> S) {
-		LinkedList<ByteBuffer> tmp = new LinkedList<ByteBuffer>();
+	synchronized static public ByteBuffer encodeAllSnakes(HashMap<Integer, Snake> snakes) {
+		LinkedList<ByteBuffer> bb = new LinkedList<>();
 		int size = 0;
-		for (Snake s : S.values()) {
+		for (Snake s : snakes.values()) {
 			// System.out.println("encodage du Snake  "+i);
-			tmp.add(encodeOneSnake(s));
-			size += tmp.getLast().capacity();
+			bb.add(encodeOneSnake(s));
+			size += bb.getLast().capacity();
 		}
-		ByteBuffer buf = ByteBuffer.allocate(size + 2+2);//+2 for the apple;
-		byte nb = (byte) S.size();
+		ByteBuffer buf = ByteBuffer.allocate(size + 2 + 2);//+2 for the apple;
+		byte nb = (byte) snakes.size();
 		buf.put((byte) 2);// TYPE
 		buf.put(nb);// NB SNAKES
 
-		for (ByteBuffer b : tmp) {
+		for (ByteBuffer b : bb) {
 			b.flip();
 			buf.put(b);
 		}
@@ -288,66 +233,43 @@ public class Snake {
 		return buf;
 	}
 
-	static byte findDirection(Point queue, Point succ) {
-		// Attention, la direction va de A vers B
-		if ((succ.x) % GameOptions.gridSize == (queue.x + 1)
-				% GameOptions.gridSize) {
-			return 2;
-		}
-		if ((succ.x+1) % GameOptions.gridSize == (queue.x)
-				% GameOptions.gridSize) {
-			return 0;
-		}
-		if ((succ.y) % GameOptions.gridSize == (queue.y + 1)
-				% GameOptions.gridSize) {
-			return 3;
-		}
-		if ((succ.y+1) % GameOptions.gridSize == (queue.y)
-				% GameOptions.gridSize) {
-			return 1;
-		}
-		System.out.println("ERROR : POINTS ARE NOT CLOSE TO EACH OTHER");
-		return 4;
-
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("Creating a snake");
-		Snake s = new Snake(new Point(10, 10), 5, (byte) 1);
-		System.out.println(s);
-		System.out.println();
-		System.out.println("Testing directions and move()");
-		s.direction((byte) 3);
-		s.move();
-		System.out.println(s);
-
-		s.direction((byte) 2);
-		s.move();
-		System.out.println(s);
-
-		System.out.println();
-		System.out.println("Testing grow()");
-		s.direction((byte) 1);
-		s.grow();
-		System.out.println(s);
-
-		System.out.println();
-		System.out.println("Testing collision");
-		Snake s2 = new Snake(new Point(10, 9), 5, (byte) 2);
-		System.out.println(s2);
-		s2.move();
-		
-
-		System.out.println();
-		System.out.println("Testing grid");
-		Snake s3 = new Snake(new Point(120, 120), 10, (byte) 3);
-		System.out.println(s3);
-		s3.direction((byte) 0);
-		for (int i = 0; i < 8; i++)
-			s3.move();
-		System.out.println(s3);
-
-	}
+//	public static void main(String[] args) {
+//		// TODO Auto-generated method stub
+//		System.out.println("Creating a snake");
+//		Snake s = new Snake(new Point(10, 10), 5, (byte) 1, "Test1");
+//		System.out.println(s);
+//		System.out.println();
+//		System.out.println("Testing directions and move()");
+//		s.direction((byte) 3);
+//		s.move();
+//		System.out.println(s);
+//
+//		s.direction((byte) 2);
+//		s.move();
+//		System.out.println(s);
+//
+//		System.out.println();
+//		System.out.println("Testing grow()");
+//		s.direction((byte) 1);
+//		s.grow();
+//		System.out.println(s);
+//
+//		System.out.println();
+//		System.out.println("Testing collision");
+//		Snake s2 = new Snake(new Point(10, 9), 5, (byte) 2, "Test2");
+//		System.out.println(s2);
+//		s2.move();
+//
+//
+//		System.out.println();
+//		System.out.println("Testing grid");
+//		Snake s3 = new Snake(new Point(120, 120), 10, (byte) 3, "Test3");
+//		System.out.println(s3);
+//		s3.direction((byte) 0);
+//		for (int i = 0; i < 8; i++)
+//			s3.move();
+//		System.out.println(s3);
+//
+//	}
 
 }
