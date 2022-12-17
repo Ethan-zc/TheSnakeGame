@@ -99,7 +99,6 @@ public class WaitingClient implements Runnable{
                         setUserList(message);
                     } else {
                         isWaiting = false;
-                        gameStart = true;
                     }
                 } catch (IOException ex) {
                     System.err.println(ex);
@@ -107,12 +106,17 @@ public class WaitingClient implements Runnable{
             }
             wp.setVisible(false);
 //            List<String> userList = getUserList();
-            try {
-                Thread C =new Thread((Runnable) new Client());
-                C.start();
-
-            } catch (Exception e) {
+            if (!username.equals("GAMESTART")) {
+                try {
+                    System.out.println("Client started!");
+//                    Thread C =new Thread((Runnable) new Client());
+//                    C.start();
+                    new Client();
+//                new Client();
+                } catch (Exception e) {
+                }
             }
+
 
 
 

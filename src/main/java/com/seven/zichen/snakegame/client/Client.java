@@ -9,7 +9,7 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
 
-public class Client implements Runnable{
+public class Client{
 	// server est initialisé dans le lireBufferAttenteJoueurServeur et utile dans lancerSpeaker
 	private InetSocketAddress server;
 	// créée dans lancementListener et utile pour lancerAffichage, grilleJobs contient les serpents envoye par le serveur, la liste est partagée entre le client listener aui la remplit et le gestionnaire de la grille qui la vide
@@ -120,14 +120,7 @@ public class Client implements Runnable{
 		}
 	}
 
-	@Override
-	public void run() {
-		try {
-			lancementListener((short) 5959, lireBufferAttenteJoueurServeur(5656));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+
 }
 
 class Pair<E,V>{

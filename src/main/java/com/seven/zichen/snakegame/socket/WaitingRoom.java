@@ -143,12 +143,12 @@ public class WaitingRoom implements Runnable{
                 }
 
                 System.out.println("Game initializing...");
-                List<String> userList = new ArrayList<>();
-                for (int i = 1; i <= clientInRoom.size(); i++) {
-                    userList.add(Integer.toString(i));
-                }
-                GamePanel mainGame = new GamePanel(userList);
-                System.out.println("Game initialization finished!");
+//                List<String> userList = new ArrayList<>();
+//                for (int i = 1; i <= clientInRoom.size(); i++) {
+//                    userList.add(Integer.toString(i));
+//                }
+//                GamePanel mainGame = new GamePanel(userList);
+//                System.out.println("Game initialization finished!");
 
                 for (Integer client : activeClients.keySet()) {
                     Socket currSocket = activeClients.get(client);
@@ -165,7 +165,9 @@ public class WaitingRoom implements Runnable{
 //                }
                 gameRunning = true;
                 System.out.println("Server initializing...");
-                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size()));
+//                System.out.println(activeClients.size());
+
+                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
                 GH.start();
 
             }
