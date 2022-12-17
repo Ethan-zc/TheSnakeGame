@@ -167,8 +167,8 @@ public class WaitingRoom implements Runnable{
                 System.out.println("Server initializing...");
 //                System.out.println(activeClients.size());
 
-                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
-                GH.start();
+//                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
+//                GH.start();
 
             }
             catch(IOException ex) {

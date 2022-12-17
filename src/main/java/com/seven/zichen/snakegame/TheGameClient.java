@@ -4,6 +4,7 @@ import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
 import com.seven.zichen.snakegame.models.SignUp;
 import com.seven.zichen.snakegame.models.SignIn;
+import com.seven.zichen.snakegame.socket.WaitingRoom;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.List;
 public class TheGameClient {
 
     public static void main(String[] args) {
+        new SpringApplicationBuilder(TheSnakeGameApplication.class).headless(false).run(args);
+        new WaitingRoom();
         new SignUp();
 //        List<String> test = new ArrayList<>();
 //        test.add("Haha");
