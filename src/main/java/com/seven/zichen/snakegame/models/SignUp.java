@@ -86,6 +86,8 @@ public class SignUp extends JFrame implements ActionListener {
         getContentPane().add(btn1);
         getContentPane().add(btn2);
         getContentPane().add(btn3);
+        setVisible(false);
+        setVisible(true);
     }
 
     @Override

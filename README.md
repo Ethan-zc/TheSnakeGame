@@ -12,7 +12,7 @@ Mybatis and SQLite, new user could also register a new account to be able to log
 After login, user could click start game button to enter the waiting room. The username in the waiting room
 would be updated based on the user that joins the waiting room. When one of the user in waiting room clicked the
 "Start Game" button, all users in the waiting room would start to play the snake game together on the server. 
-The snake that is been controlled by the current user would be draw in blue, while other snakes would be draw in black. 
+The snake that is controlled by the current user would be drawn in blue, while other snakes would be drawn in black. 
 The snake could be controlled by arrow button to move around. Following are the basic rules for the game: <br>
 
 1. Every second one user live, the user would get 10 points. <br>
@@ -74,4 +74,28 @@ user list to all users in the waiting room dynamically. When it receive the mess
 "GAME START" to all users in the waiting room, and the close the socket, start the threads for GameHandler to start the game. 
 
 
-<h3> UI, UPD transmission, and the game </h3>
+<h3> UI, UDP transmission, and the game </h3>
+1. When each user starts the client after a server started, a Signing Up page would show up: <img src="/src/main/resources/imgs/SignUp.png"/><br>
+Users can choose to register a new account (the <code>account/register</code> API will be called) or Sign In using an existing account: <img src="/src/main/resources/imgs/LogIn.png"/><br>
+Error handling will be made by the <code>account/login</code> API. <br>
+2. A welcome page would come up after logged in successfully:  <img src="/src/main/resources/imgs/Welcome.png"/><br>
+User at here could choose to view the leader board or start the game directly. <br>
+3. If the user choose to view the leader board, the leader board with 6 highest scores with their players would display: 
+<img src="/src/main/resources/imgs/LeaderBoard.png"/><br>
+4. If the user choose to start the game, he/she will be added to the waiting room automatically: <img src="/src/main/resources/imgs/Waiting.png"/><br>
+After joining the waiting room, players can see all players joined the game with usernames listed. the server will start to communicate with clients using sockets. 
+All clients would inform the server with their joining (implemented in the <code>src/main/java/com/seven/zichen/snakegame/socket/WaitingClient.java</code>), 
+and clients would know others joining (implemented in <code>src/main/java/com/seven/zichen/snakegame/socket/WaitingRoom.java</code>). <br>
+5. All UI panels are implemented in the folder <code>src/main/java/com/seven/zichen/snakegame/models/</code><br>
+6. After any one of the waiting player choose to start the game, the game will start and the game frame would be drawn: <img src="/src/main/resources/imgs/Game.png"/><br>
+which is implemented in <code>src/main/java/com/seven/zichen/snakegame/client/DrawGame.java</code><br>
+When the game starts, the server would start to communicate with clients through UDP transmission. There are 4 types of UDP datagrams: Game Initialization, Direction Change, Grid Handling and Score Sending. <br>
+Inside the <code>~/client</code> folder, there is a <code>ClientListener</code> implements methods listening UDP transmission from the server and a <code>ClientListener</code> 
+responsible for sending UDP to the server. At the beginning, the <code>GameManager</code> inside the <code>~/game</code> folder through <code>GameHandlerManager</code> and <code>GameHandlerOutput</code> 
+would send out a Game Initialization UDP to all clients, <code>ClientListener</code> after receiving the UDP, will initialize the <code>DrawGame</code> through <code>Client</code>. <code>MoveSnakes</code> will 
+continuously update the whole game grid with different colors for each pixel (Different Colors: Self Snake, Other Snake(s), Apple) and send grids to clients by Grid Handling. <code>HandleReturnedGrid</code> on the client side will handle the grid sent by the server 
+and update the game frame through <code>DrawGame</code>. If players press keyboard to change the snake direction, <code>HandleInputDirection</code> on the client side will handle the key event and 
+a Direction Change UDP would be sent to the server. The <code>MoveSnake</code> on the server side will update the direction of the requested snake and update the grid. <br>
+When the game is over(all snakes are dead or time runs up), <code>Game Manager</code> on the server side will send Score Sending UDP to all clients, clients after receiving scores will display the game over page: <img src="/src/main/resources/imgs/GameOver.png"/><br>
+Users could choose to view the leader board with the latest scores updated.  <br>
+UDP Transmission Code Reference: https://github.com/TheoCabannes/SnakeGame 
