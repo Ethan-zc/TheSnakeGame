@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/game")
@@ -35,10 +38,10 @@ public class GameController {
     }
 
     @RequestMapping(value = "/addgame", method = RequestMethod.POST)
-    public void addGame(@RequestParam Date starttime,
-                        @RequestParam Date endtime) {
-
-        gameService.addGame(starttime, endtime);
+    public void addGame(@RequestParam String starttime) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+        Date date = formatter.parse(starttime);
+        gameService.addGame(date);
     }
 
     @RequestMapping(value = "/addscore", method = RequestMethod.POST)
@@ -49,12 +52,6 @@ public class GameController {
         gameService.addScore(userId, gameId, score);
     }
 
-    @RequestMapping(value = "/newgame", method = RequestMethod.POST)
-    public void newGame(@RequestParam int num) throws IOException {
-        System.out.println("Server received start game request!");
-        Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, num));
-        GH.start();
-    }
 
 //    @RequestMapping(value = "/newgame", method = RequestMethod.GET)
 //    public void testing() throws IOException {

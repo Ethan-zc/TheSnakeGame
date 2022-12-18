@@ -11,8 +11,8 @@ import java.util.Date;
 public interface GameMapper {
 
     @Insert("INSERT INTO game (starttime, endtime) " +
-            "VALUES (#{startTime}, #{endTime})")
-    public void addGame(Date startTime, Date endTime);
+            "VALUES (#{startTime})")
+    public void addGame(Date startTime);
 
     @Insert("INSERT INTO acc_game(accid, gameid, score) " +
             "VALUES (#{accid}, #{gameid}, #{score})")

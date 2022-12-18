@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ArrayBlockingQueue;
+import com.seven.zichen.snakegame.TheGameClient;
 
 import com.seven.zichen.snakegame.models.LeaderBoard;
 import com.seven.zichen.snakegame.utilities.GameOptions;
@@ -60,7 +61,7 @@ public class DrawGame extends JComponent implements KeyListener {
 				gameGraph.dispose();
 				String response = null;
 				try {
-					response = LeaderBoard.getLeaderBoardData();
+					response = LeaderBoard.getLeaderBoardData(TheGameClient.localhostIP);
 				} catch (IOException ex) {
 					throw new RuntimeException(ex);
 				}

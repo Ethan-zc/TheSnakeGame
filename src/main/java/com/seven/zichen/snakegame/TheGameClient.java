@@ -17,7 +17,7 @@ public class TheGameClient {
     public static void main(String[] args) {
 //        new SpringApplicationBuilder(TheSnakeGameApplication.class).headless(false).run(args);
 //        new WaitingRoom();
-        new SignIn(localhostIP);
+        new SignIn();
 //        List<String> test = new ArrayList<>();
 //        test.add("Haha");
 //        test.add("Yes");

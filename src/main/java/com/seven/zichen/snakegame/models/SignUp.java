@@ -14,6 +14,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import com.seven.zichen.snakegame.TheGameClient;
 
 public class SignUp extends JFrame implements ActionListener {
     JLabel l1, l2, l3, l4;
@@ -24,8 +25,8 @@ public class SignUp extends JFrame implements ActionListener {
     private String pwd;
     private String ipAddr = "";
 
-    public SignUp(String ip) {
-        this.ipAddr = ip;
+    public SignUp() {
+        this.ipAddr = TheGameClient.localhostIP;
         setVisible(true);
         setSize(400, 300);
         setLayout(null);
@@ -137,7 +138,7 @@ public class SignUp extends JFrame implements ActionListener {
                     if (strCurrentLine.equals("Success!")) {
                         JOptionPane.showMessageDialog(btn1, "Data Saved Successfully");
                         this.dispose();
-                        new SignIn(this.ipAddr);
+                        new SignIn();
                     } else {
                         JOptionPane.showMessageDialog(btn1, "Error, please try again");
                     }
@@ -159,7 +160,7 @@ public class SignUp extends JFrame implements ActionListener {
         }
         else {
             this.dispose();
-            new SignIn(this.ipAddr);
+            new SignIn();
         }
     }
 }

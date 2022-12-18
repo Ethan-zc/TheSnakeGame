@@ -1,5 +1,7 @@
 package com.seven.zichen.snakegame.models;
 
+import com.seven.zichen.snakegame.TheGameClient;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -44,7 +46,7 @@ public class DrawGame extends JPanel implements ActionListener {
             frame.dispose();
             String response = null;
             try {
-                response = LeaderBoard.getLeaderBoardData();
+                response = LeaderBoard.getLeaderBoardData(TheGameClient.localhostIP);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -1,5 +1,6 @@
 package com.seven.zichen.snakegame.socket;
 
+import com.seven.zichen.snakegame.TheGameClient;
 import com.seven.zichen.snakegame.games_handler.GH_Manager;
 import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
@@ -7,6 +8,8 @@ import com.seven.zichen.snakegame.models.GamePanel;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -158,6 +161,35 @@ public class WaitingRoom implements Runnable{
                     }
                 }
                 socket.close();
+                Date myDateObj = new Date();
+                System.out.println("Before formatting: " + myDateObj);
+                DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                System.out.println("After: " + myDateObj);
+
+                URL url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/addgame");
+                Map<String,Object> params = new LinkedHashMap<>();
+                params.put("starttime", myFormatObj.toString());
+
+                StringBuilder postData = new StringBuilder();
+                for (Map.Entry<String,Object> param : params.entrySet()) {
+                    if (postData.length() != 0) postData.append('&');
+                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+                byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
+
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                conn.setDoOutput(true);
+                conn.getOutputStream().write(postDataBytes);
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String strCurrentLine = br.readLine();
+                int gameId = Integer.parseInt(strCurrentLine);
+                System.out.println("New game id is: " + gameId);
                 Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
         		GH.start();
 //                GamePanel game = new GamePanel(userList);

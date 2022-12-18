@@ -19,8 +19,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void addGame(Date startTime, Date endTime) {
-        gameMapper.addGame(startTime, endTime);
+    public void addGame(Date startTime) {
+        gameMapper.addGame(startTime);
     }
 
     @Override

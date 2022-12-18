@@ -12,6 +12,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import com.seven.zichen.snakegame.TheGameClient;
 
 public class SignIn extends JFrame implements ActionListener {
     JLabel l1, l2, l3;
@@ -20,8 +21,8 @@ public class SignIn extends JFrame implements ActionListener {
     JPasswordField p1;
     String ipAddr = "";
 
-    public SignIn(String ip) {
-        this.ipAddr = ip;
+    public SignIn() {
+        this.ipAddr = TheGameClient.localhostIP;
         setTitle("Login");
 
         setVisible(true);

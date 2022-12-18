@@ -6,7 +6,7 @@ public interface GameService {
 
     void addHistory(int userId, int gameId, int score);
 
-    void addGame(Date startTime, Date endTime);
+    void addGame(Date startTime);
 
     void addScore(int userId, int gameId, int score);
 }

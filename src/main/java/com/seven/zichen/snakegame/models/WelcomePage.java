@@ -1,5 +1,7 @@
 package com.seven.zichen.snakegame.models;
 
+import com.seven.zichen.snakegame.TheGameClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -55,7 +57,7 @@ public class WelcomePage extends JFrame implements ActionListener {
             this.dispose();
             String response = null;
             try {
-                response = LeaderBoard.getLeaderBoardData();
+                response = LeaderBoard.getLeaderBoardData(TheGameClient.localhostIP);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

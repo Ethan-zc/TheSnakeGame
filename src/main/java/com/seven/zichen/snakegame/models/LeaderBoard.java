@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
+import com.seven.zichen.snakegame.TheGameClient;
+
 public class LeaderBoard extends JFrame implements ActionListener {
     private JLabel l1;
     private JButton btn;
@@ -20,9 +22,11 @@ public class LeaderBoard extends JFrame implements ActionListener {
 
     private static final String[] suffixes = new String[] {"st", "nd", "rd", "th", "th", "th"};
     private String userName;
+    private String ipAddr;
 
     public LeaderBoard(String response, String userName) {
         this.userName = userName;
+        this.ipAddr = TheGameClient.localhostIP;
 
         setTitle("Leader Board");
 
@@ -61,8 +65,8 @@ public class LeaderBoard extends JFrame implements ActionListener {
         add(l1);
     }
 
-    public static String getLeaderBoardData() throws IOException {
-        URL url = new URL("http://localhost:8080/account/getLeaderBoard");
+    public static String getLeaderBoardData(String ipAddr) throws IOException {
+        URL url = new URL("http://"+ ipAddr +":8080/account/getLeaderBoard");
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
         conn.setRequestMethod("GET");
         conn.setDoOutput(true);
