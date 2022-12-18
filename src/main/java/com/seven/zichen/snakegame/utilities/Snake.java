@@ -49,7 +49,7 @@ public class Snake {
 	}
 
 	synchronized public void direction(byte i) {
-		if (direction() % 2 != i % 2) { //check cases unable to make a turn
+		if (direction() % 2 != i % 2) {
 			switch (i) {
 			case 0:
 				this.direction = Direction.Left;
@@ -142,26 +142,24 @@ public class Snake {
 		Snake snake = (Snake) o;
 		return snake.id == this.id;
 	}
-	
+
 	synchronized static ByteBuffer encodeOneSnake(Snake snake){
 		LinkedList<Point> points = new LinkedList<>();
 		for(Point pt: snake.points){
 			points.addLast(pt);
 		}
-		// s: queue > point > point > head
-		
-		
-		LinkedList<Byte> dirs = new LinkedList<>();// collection of directions
-		LinkedList<Byte> lens = new LinkedList<>();// collection of lengths
-		
-		//Snake should be at least 2 Points long
-		
+
+
+		LinkedList<Byte> dirs = new LinkedList<>();
+		LinkedList<Byte> lens = new LinkedList<>();
+
+
 		Point p = points.poll();
-		Point q = p; // queue
+		Point q = p;
 		Point n = points.poll();
 		byte direction = dir(p,n);
 		byte length = 1;
-		
+
 		while(n != null){
 			byte dir = dir(p,n);
 			if(direction == dir)
@@ -178,10 +176,10 @@ public class Snake {
 		}
 		dirs.addLast(direction);
 		lens.addLast(length);
-		
+
 		length = (byte) lens.size();
-		
-		ByteBuffer buf=ByteBuffer.allocate(length*2+4);
+
+		ByteBuffer buf=ByteBuffer.allocate(length * 2 + 4);
 
 		buf.put(snake.id);
 		buf.put((byte) q.x);
@@ -193,11 +191,11 @@ public class Snake {
 			byte len = lens.poll();
 			buf.put(len);
 		}
-		
+
 		return buf;
-		
+
 	}
-	
+
 	static byte dir(Point p, Point n){
 		int mod = GameOptions.gridSize;
 		if(p.x % mod == n.x % mod){
@@ -213,14 +211,13 @@ public class Snake {
 		LinkedList<ByteBuffer> bb = new LinkedList<>();
 		int size = 0;
 		for (Snake s : snakes.values()) {
-			// System.out.println("encodage du Snake  "+i);
 			bb.add(encodeOneSnake(s));
 			size += bb.getLast().capacity();
 		}
-		ByteBuffer buf = ByteBuffer.allocate(size + 2 + 2);//+2 for the apple;
+		ByteBuffer buf = ByteBuffer.allocate(size + 2 + 2);
 		byte nb = (byte) snakes.size();
-		buf.put((byte) 2);// TYPE
-		buf.put(nb);// NB SNAKES
+		buf.put((byte) 2);
+		buf.put(nb);
 
 		for (ByteBuffer b : bb) {
 			b.flip();

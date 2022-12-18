@@ -22,7 +22,6 @@ public class GameHandlerOutput implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("GameHandlerOutput has been started");
 		try {
 			DatagramChannel clientSocket = DatagramChannel.open();
 			clientSocket.socket().setBroadcast(true);
@@ -35,10 +34,8 @@ public class GameHandlerOutput implements Runnable {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

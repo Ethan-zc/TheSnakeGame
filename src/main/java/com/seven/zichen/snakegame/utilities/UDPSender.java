@@ -17,7 +17,6 @@ public class UDPSender {
 		channel.bind(local);
 		this.remote = new InetSocketAddress(target, remotePort);
 		channel.connect(remote);
-		System.out.println("UDP Sender initiated to reach "+target+" on port "+remotePort);
 	}
 	
 	public void send(ByteBuffer b) throws IOException{

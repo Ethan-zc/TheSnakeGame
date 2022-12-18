@@ -13,7 +13,6 @@ public class RunnableInput extends UDPListener implements Runnable {
 	public RunnableInput(int port, ArrayBlockingQueue<Job> communicator,
 						 String prefix) throws IOException {
 		super(port);
-		System.out.println("Runnable input initiated on port "+port);
 		buffer = ByteBuffer.allocate(1000);
 		this.communicator = communicator;
 		this.parentPrefix = prefix;
@@ -21,7 +20,6 @@ public class RunnableInput extends UDPListener implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(parentPrefix + ": Input has been started");
 		while (true) {
 			try {
 				InetSocketAddress remote = listen(buffer);

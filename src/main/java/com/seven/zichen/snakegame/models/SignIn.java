@@ -65,20 +65,21 @@ public class SignIn extends JFrame implements ActionListener {
         p1.setBounds(130, 110, 188, 30);
 
         btn1.setBounds(130, 160, 100, 30);
-
-        add(l1);
-
-        add(l2);
-
-        add(tf1);
-
-        add(l3);
-
-        add(p1);
-
-        add(btn1);
-
         btn1.addActionListener(this);
+
+        getContentPane().add(l1);
+
+        getContentPane().add(l2);
+
+        getContentPane().add(tf1);
+
+        getContentPane().add(l3);
+
+        getContentPane().add(p1);
+
+        getContentPane().add(btn1);
+
+
     }
     @Override
     public void actionPerformed(ActionEvent actionEvent) {

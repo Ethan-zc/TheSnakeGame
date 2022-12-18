@@ -54,10 +54,8 @@ public class MoveSnakes implements Runnable {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-							System.out.println("Game to be over set to true");
 						}
-						
-					} else System.out.println("game is still on");
+					}
 				}
 			}
 			if (counter % GameOptions.appleLifeTime == 0)

@@ -24,7 +24,6 @@ public class RunnableOutput extends UDPSender implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(parentPrefix + ": Output has been started");
 		while (true) {
 			try {
 				Job j = this.communicator.take();
@@ -34,8 +33,6 @@ public class RunnableOutput extends UDPSender implements Runnable {
 						buffer = BufferHandler.goPlayThere(j.port(), j.id());
 						buffer.flip();
 						this.send(buffer);
-						System.out
-								.println("Runnable_Output sent a " + j.type());
 						Thread.sleep(10);
 						if (!manager.sendGameInfo)
 							break;
@@ -67,23 +64,18 @@ public class RunnableOutput extends UDPSender implements Runnable {
 						buffer=BufferHandler.sendScores(j.snakes);
 						buffer.flip();
 						this.send(buffer);
-						System.out.println("Scores have been sent");
 
 						Thread.sleep(100);
 
 					}
 					break;
 				default:
-					System.out.println("ERROR > Runnable_Output Received a "
-							+ j.type()
-							+ "job when waiting for a SEND_GAME_INFO");
 					break;
 
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
-				System.out.println("ERROR > Unreachable");
 				e.printStackTrace();
 				break;
 				

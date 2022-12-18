@@ -8,9 +8,6 @@ public class Client {
 	public int listeningPort;
 	
 	public Client(String address, int listeningPort, byte id, String name){
-		/**
-		 * Defined by a physical address and a listeningPort
-		 */
 		this.id = id&255;
 		this.address = address;
 		this.listeningPort = listeningPort;

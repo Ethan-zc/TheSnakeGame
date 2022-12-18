@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -76,16 +75,17 @@ public class SignUp extends JFrame implements ActionListener {
         btn1.setBounds(80, 200, 100, 30);
         btn2.setBounds(200, 200, 100, 30);
         btn3.setBounds(140, 230, 100, 30);
-        add(l1);
-        add(l2);
-        add(tf1);
-        add(l3);
-        add(l4);
-        add(p1);
-        add(p2);
-        add(btn1);
-        add(btn2);
-        add(btn3);
+
+        getContentPane().add(l1);
+        getContentPane().add(l2);
+        getContentPane().add(tf1);
+        getContentPane().add(l3);
+        getContentPane().add(l4);
+        getContentPane().add(p1);
+        getContentPane().add(p2);
+        getContentPane().add(btn1);
+        getContentPane().add(btn2);
+        getContentPane().add(btn3);
     }
 
     @Override

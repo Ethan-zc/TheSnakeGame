@@ -8,7 +8,6 @@ public class Apple {
 	
 	public Apple(){
 		this.a = generate();
-		System.out.println("apple exists");
 	}
 	
 	public Point generate(){

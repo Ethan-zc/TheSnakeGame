@@ -10,15 +10,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
-import java.util.List;
 
 import com.seven.zichen.snakegame.TheGameClient;
+import com.seven.zichen.snakegame.utilities.Pair;
 
 public class LeaderBoard extends JFrame implements ActionListener {
     private JLabel l1;
     private JButton btn;
     private static final int numLeaders = 6;
-    private Map<String, Integer> leaderScore = new HashMap<>();
+    private PriorityQueue<Pair<Integer, String>> scoreToLeader;
 
     private static final String[] suffixes = new String[] {"st", "nd", "rd", "th", "th", "th"};
     private String userName;
@@ -27,6 +27,7 @@ public class LeaderBoard extends JFrame implements ActionListener {
     public LeaderBoard(String response, String userName) {
         this.userName = userName;
         this.ipAddr = TheGameClient.localhostIP;
+        this.scoreToLeader = new PriorityQueue<>(Comparator.comparingInt(t -> -t.obj1));
 
         setTitle("Leader Board");
 
@@ -45,23 +46,23 @@ public class LeaderBoard extends JFrame implements ActionListener {
 
         processResponse(response);
 
-        List<Map.Entry<String, Integer>> leaderList = new LinkedList<>(leaderScore.entrySet());
-        int boardLength = Math.min(numLeaders, leaderList.size());
+        int boardLength = Math.min(numLeaders, scoreToLeader.size());
 
         for (int i = 0; i < boardLength; i++) {
-            JLabel l = new JLabel(String.format("%-6s %-15s %-5d", (i + 1) + suffixes[i], leaderList.get(i).getKey(), leaderList.get(i).getValue()));
+            Pair<Integer, String> pair = scoreToLeader.poll();
+            JLabel l = new JLabel(String.format("%-6s %-15s %-5d", (i + 1) + suffixes[i], pair.obj2, pair.obj1));
             l.setForeground(Color.black);
             l.setFont(new Font("Bayon", Font.BOLD, 22));
             l.setBounds(46, 50 * i + 90, 350, 43);
-            add(l);
+            getContentPane().add(l);
         }
 
         btn = new JButton("Go Back");
         btn.setBounds(119, 400, 150, 30);
         btn.addActionListener(this);
 
-        add(btn);
-        add(l1);
+        getContentPane().add(btn);
+        getContentPane().add(l1);
     }
 
     public static String getLeaderBoardData(String ipAddr) throws IOException {
@@ -89,7 +90,8 @@ public class LeaderBoard extends JFrame implements ActionListener {
         for (int i = 1; i < records.length; i++) {
             String name = records[i].split("\"")[0];
             int score = Integer.parseInt(records[i].split("}")[0].split("\"score\":")[1]);
-            leaderScore.put(name, score);
+            Pair<Integer, String> pair = new Pair<>(score, name);
+            scoreToLeader.add(pair);
         }
     }
 

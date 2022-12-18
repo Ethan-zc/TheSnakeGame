@@ -36,14 +36,13 @@ public class WelcomePage extends JFrame implements ActionListener {
 
         btn1.setBounds(115, 120, 150, 30);
         btn2.setBounds(115, 160, 150, 30);
-
-        add(l1);
-
-        add(btn1);
-        add(btn2);
-
         btn1.addActionListener(this);
         btn2.addActionListener(this);
+
+        getContentPane().add(l1);
+
+        getContentPane().add(btn1);
+        getContentPane().add(btn2);
     }
     @Override
     public void actionPerformed(ActionEvent actionEvent) {

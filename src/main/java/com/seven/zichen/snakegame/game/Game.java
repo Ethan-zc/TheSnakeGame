@@ -43,8 +43,6 @@ public class Game extends Thread {
 		snakesAtStart = new HashSet<>();
 		
 		this.manager = new GameManager(this, inputPort);
-		System.out.println("Game was initialized, listening on " + inputPort);
-		
 		waitForClients=true;
 		
 		games.add(this);
@@ -61,15 +59,12 @@ public class Game extends Thread {
 			this.manager.outCommunicator.put(c, out_communicator);
 			Thread t=new Thread(new RunnableOutput(c.address, c.listeningPort, out_communicator, "G", manager));
 			t.start();
-			
-			System.out.println("A client has been added and communicator was initiated");
+
 			
 			Job j = new Job(Job.Type.SEND_GAME_INFO);
 			j.id(snake.id);
 			j.port(manager.inputPort);
 			out_communicator.put(j);
-			
-			System.out.println("Game sent a job \""+ j.type() +"\" to Runnable_Output for Client "+c.id);
 			resetApple();
 			if(!this.hasRoom()) waitForClients=false;
 		}
@@ -103,9 +98,6 @@ public class Game extends Thread {
 	
 
 	public static Game getGameForANewPlayer() {
-		/**
-		 * returns an existing Game that is not full
-		 */
 		for (Game game : games) {
 			if (game.hasRoom() && game.waitForClients)
 				return game;

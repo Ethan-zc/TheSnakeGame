@@ -12,7 +12,7 @@ public class BufferHandler {
 	}
 	
 	public static ByteBuffer sendScores(HashSet<Snake> snakes){
-		ByteBuffer buffer=ByteBuffer.allocate(1+1+3*snakes.size());
+		ByteBuffer buffer=ByteBuffer.allocate(1 + 1 + 3 * snakes.size());
 		buffer.put((byte)3);
 		buffer.put((byte)snakes.size());
 		for(Snake s:snakes){
@@ -31,13 +31,10 @@ public class BufferHandler {
 	}
 
 	public static ByteBuffer helloClient(String serverName, int connectionPort) {
-		/**
-		 * Creates a buffer ServerName and connectionPort
-		 */
 		ByteBuffer attenteJoueur = ByteBuffer.allocate(1024);
-		byte taille = (byte) serverName.length();
-		attenteJoueur.put(taille);
-		for (int i = 0; i < taille; i++)
+		byte size = (byte) serverName.length();
+		attenteJoueur.put(size);
+		for (int i = 0; i < size; i++)
 			attenteJoueur.put((byte) serverName.charAt(i));
 		attenteJoueur.putShort((short) connectionPort);
 

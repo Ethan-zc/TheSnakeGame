@@ -34,11 +34,8 @@ public class GameManager implements Runnable {
 		inCommunicator = new ArrayBlockingQueue<>(100);
 		this.inputPort = inputPort;
 		input = new Thread(new RunnableInput(inputPort, inCommunicator, "G"));
-		System.out.println("\t> input Thread initialized on port " + inputPort);
+		System.out.println("input Thread initialized on port " + inputPort);
 		outCommunicator = new HashMap<>();
-		System.out.println("\t> output Thread initialized");
-
-		System.out.println("\t> END");
 
 		sendGameInfo = true;
 		sendTimer = false;
@@ -50,7 +47,6 @@ public class GameManager implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("GameManager has been started");
 		input.start();
 
 		try {
@@ -65,7 +61,6 @@ public class GameManager implements Runnable {
 					Job j = new Job(Job.Type.SEND_TIMER);
 					j.timer(timer);
 					outCommunicator.get(c).put(j);
-					System.out.println("GameManager sent job \"" + j.type() + "\" to Runnable_Output for Client " + c.id);
 				}
 				Thread.sleep(950);// a bit less than a second
 			}
@@ -79,7 +74,6 @@ public class GameManager implements Runnable {
 				j.id(c.id);
 				j.port(this.inputPort);
 				outCommunicator.get(c).put(j);
-				System.out.println("GameManager sent job \"" + j.type() + "\" to Runnable_Output for Client " + c.id);
 			}
 
 			Thread moveSnakes;
@@ -114,8 +108,6 @@ public class GameManager implements Runnable {
 					System.out.println(j.jobId());
 				id = j.jobId();
 				synchronized (thisGame.snakes) {
-					System.out.println("Job type " + j.type()
-							+ " + client id: " + j.id());
 					Snake s = thisGame.snakes.get(j.id() & 255);
 					s.direction(j.direction());
 
@@ -131,7 +123,6 @@ public class GameManager implements Runnable {
 				j.id(c.id);
 				j.snakes = thisGame.snakesAtStart;
 				outCommunicator.get(c).put(j);
-				System.out.println("GameManager sent job \"" + j.type() + "\" to RunnableOutput for Client " + c.id);
 			}
 			Thread.sleep(2000);
 			sendScore = false;

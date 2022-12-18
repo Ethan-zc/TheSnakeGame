@@ -74,18 +74,19 @@ public class WaitingPanel extends JFrame implements ActionListener {
 
         l6.setBounds(34, 202, 100, 30);
 
-        add(l1);
+        getContentPane().add(l1);
 
-        add(l2);
+        getContentPane().add(l2);
 
-        add(l4);
-        add(l5);
-        add(l6);
+        getContentPane().add(l4);
+        getContentPane().add(l5);
+        getContentPane().add(l6);
 
         btn1 = new JButton("Start Game!");
         btn1.setBounds(125, 246, 150, 30);
         btn1.addActionListener(this);
-        add(btn1);
+
+        getContentPane().add(btn1);
     }
 
     @Override
