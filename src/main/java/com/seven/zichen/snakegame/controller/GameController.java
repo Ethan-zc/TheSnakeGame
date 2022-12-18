@@ -1,5 +1,6 @@
 package com.seven.zichen.snakegame.controller;
 
+import com.seven.zichen.snakegame.entry.GameEntry;
 import com.seven.zichen.snakegame.service.AccountService;
 import com.seven.zichen.snakegame.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,16 @@ public class GameController {
         return id + "";
     }
 
+    @RequestMapping(value = "/addgame", method = RequestMethod.GET)
+    public String addGameByGet() throws ParseException {
+//        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:SS zzz yyyy", Locale.ENGLISH);
+//        Date date = formatter.parse(starttime);
+        Date date = new Date();
+        gameService.addGame(date);
+        int id = gameService.selectNewId();
+        return id + "";
+    }
+
     @RequestMapping(value = "/addscore", method = RequestMethod.POST)
     public void addScore(@RequestParam String userName,
                          @RequestParam int gameId,
@@ -56,6 +67,7 @@ public class GameController {
 
     @RequestMapping(value = "/allgame", method = RequestMethod.GET)
     public List<GameEntry> allgame() {
+        System.out.println(gameService.getAllGames());
         return gameService.getAllGames();
     }
 

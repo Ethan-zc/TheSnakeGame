@@ -141,6 +141,7 @@ public class GameManager implements Runnable {
 			Thread.sleep(2000);
 			sendScore = false;
 
+
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

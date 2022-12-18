@@ -1,7 +1,7 @@
 package com.seven.zichen.snakegame.socket;
 
 import com.seven.zichen.snakegame.TheGameClient;
-import com.seven.zichen.snakegame.games_handler.GH_Manager;
+import com.seven.zichen.snakegame.games_handler.GameHandlerManager;
 import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
 import com.seven.zichen.snakegame.service.GameService;
@@ -169,36 +169,16 @@ public class WaitingRoom implements Runnable{
                 activeClients.clear();
                 clientInRoom.clear();
 
-                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
-        		GH.start();
-//                GamePanel game = new GamePanel(userList);
-//                for (int i = 0; i < userList.size(); i++) {
-//                    new GameFrame(game);
-//                }
-//                gameRunning = true;
-//                System.out.println("Server initializing...");
-//
-//                URL url = new URL("http://localhost:8080/game/newgame");
-//                Map<String,Object> params = new LinkedHashMap<>();
-//                params.put("num", activeClients.size() - 1);
-//
-//                StringBuilder postData = new StringBuilder();
-//                for (Map.Entry<String,Object> param : params.entrySet()) {
-//                    if (postData.length() != 0) postData.append('&');
-//                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-//                    postData.append('=');
-//                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-//                }
-//                byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
-//
-//                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-//                conn.setRequestMethod("POST");
-//                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//                conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-//                conn.setDoOutput(true);
-//                conn.getOutputStream().write(postDataBytes);
-//                System.out.println("Sent!");
+                URL url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/addgame");
 
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+                int responseCode = conn.getResponseCode();
+                System.out.println("responseCode: " + responseCode);
+
+                Thread GH=new Thread(new GameHandlerManager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
+        		GH.start();
 
             }
             catch(IOException ex) {
