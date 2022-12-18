@@ -82,6 +82,8 @@ public class WaitingClient implements Runnable{
             catch (IOException ex) {
                 System.err.println(ex);
             }
+            // While in waiting room, listen to server to get the list
+            // of current user names in the waiting room.
             while (isWaiting) {
                 try {
                     if (socket.isClosed()) break;
@@ -99,15 +101,15 @@ public class WaitingClient implements Runnable{
             wp.setVisible(false);
 
 
-//            List<String> userList = getUserList();
+            // When game started, client would create a thread to run client class
+            // to handle the game process on client side.
             if (!username.equals("GAMESTART")) {
                 try {
                     System.out.println("Client started!");
                     socket.close();
                     Thread C = new Thread((Runnable) new Client(username));
                     C.start();
-//                    new Client();
-//                new Client();
+
                 } catch (Exception e) {
                 }
             }

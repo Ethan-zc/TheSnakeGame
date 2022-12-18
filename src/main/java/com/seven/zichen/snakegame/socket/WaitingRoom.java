@@ -144,12 +144,7 @@ public class WaitingRoom implements Runnable{
                 }
 
                 System.out.println("Game initializing...");
-//                List<String> userList = new ArrayList<>();
-//                for (int i = 1; i <= clientInRoom.size(); i++) {
-//                    userList.add(Integer.toString(i));
-//                }
-//                GamePanel mainGame = new GamePanel(userList);
-//                System.out.println("Game initialization finished!");
+
 
                 for (Integer client : activeClients.keySet()) {
                     Socket currSocket = activeClients.get(client);
@@ -163,6 +158,7 @@ public class WaitingRoom implements Runnable{
                 socket.close();
                 clientInRoom.clear();
 
+                // send out the requets to add a new record in game table.
                 URL url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/addgame");
 
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -171,6 +167,7 @@ public class WaitingRoom implements Runnable{
                 int responseCode = conn.getResponseCode();
                 System.out.println("responseCode: " + responseCode);
 
+                // Start the game.
                 Thread GH=new Thread(new GameHandlerManager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
         		GH.start();
                 activeClients.clear();
