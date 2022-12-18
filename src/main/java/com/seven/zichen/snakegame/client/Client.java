@@ -18,14 +18,19 @@ public class Client{
 	private String serverName;
 	private HandleInputDirection hid;
 	private DrawGame gameDisplay = null;
-	private List<String> userName;
+	private String userName;
 
-	public Client(List<String> username) throws Exception{
+	private byte number;
+
+	public Client(String username) throws Exception{
 		this.userName = username;
 		startListener((short) 5959, bufferWaitPlayerServer(5656));
 	}
 	String numToName(byte num) {
-		return userName.get(num - 1);
+		if (number == num) {
+			return userName;
+		}
+		return "snake";
 	}
 
 	private void startListener(short listeningPort, short sendingPort) throws Exception {
@@ -35,6 +40,7 @@ public class Client{
 	}
 
 	void startGamePanel(byte number) {
+		this.number = number;
 		directionIdJobs = new LinkedBlockingDeque<>(5);
 		ArrayBlockingQueue<Byte> directionJobs = new ArrayBlockingQueue<>(5);
 		hid = new HandleInputDirection(directionIdJobs, directionJobs);
