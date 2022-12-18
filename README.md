@@ -62,6 +62,21 @@ Then we used the application-sqlite.yml to configure that the server would take 
 The database is created as following: <br>
 <img src="/src/main/resources/imgs/db.png"/>
 
+By default, we have added data into the database when it is created, the added data are: <br>
+
+INSERT INTO `acc` (`accname`, `pwd`) VALUES ('zichenyang', 'e10adc3949ba59abbe56e057f20f883e'); <br>
+INSERT INTO `acc` (`accname`, `pwd`) VALUES ('zhangnan', 'e10adc3949ba59abbe56e057f20f883e'); <br>
+INSERT INTO `acc` (`accname`, `pwd`) VALUES ('pochita', 'e10adc3949ba59abbe56e057f20f883e'); <br>
+
+INSERT INTO `game` (`starttime`) VALUES ('2020-09-14 23:18:17'); <br>
+INSERT INTO `game` (`starttime`) VALUES ('2022-12-14 23:18:17'); <br>
+
+INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('123456', '1', '1'); <br>
+INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('23441', '2', '2'); <br>
+INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('12314123', '3', '1'); <br>
+INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('1312', '1', '2'); <br>
+INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('1312', '3', '2'); <br>
+
 <h3> Socket, Thread and Waiting Room </h3>
 Here Socket is mainly used for the information exchange during the waiting room between client and server. 
 Two classes are created to handle the socket. <br>
