@@ -166,7 +166,6 @@ public class WaitingRoom implements Runnable{
                     }
                 }
                 socket.close();
-                activeClients.clear();
                 clientInRoom.clear();
 
                 URL url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/addgame");
@@ -179,6 +178,7 @@ public class WaitingRoom implements Runnable{
 
                 Thread GH=new Thread(new GameHandlerManager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
         		GH.start();
+                activeClients.clear();
 
             }
             catch(IOException ex) {
