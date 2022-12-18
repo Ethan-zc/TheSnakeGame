@@ -2,16 +2,11 @@ package com.seven.zichen.snakegame.socket;
 
 import com.seven.zichen.snakegame.TheGameClient;
 import com.seven.zichen.snakegame.gamesHandler.GameHandlerManager;
-import com.seven.zichen.snakegame.models.GameFrame;
-import com.seven.zichen.snakegame.models.GamePanel;
 import com.seven.zichen.snakegame.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
