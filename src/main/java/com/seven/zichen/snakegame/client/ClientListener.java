@@ -1,5 +1,7 @@
 package com.seven.zichen.snakegame.client;
 
+import com.seven.zichen.snakegame.utilities.GameOptions;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -14,10 +16,13 @@ public class ClientListener implements Runnable {
 	private DatagramChannel listenerChannel;
 	private Client client;
 	private boolean dirNotStarted = true;
+	private int gameTime;
 
 	protected ClientListener(ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> jobs, short listeningPort, Client c) {
 		gridJobs = jobs;
 		client = c;
+		gameTime = GameOptions.gameTime;
+
 		try {
 			listenerChannel = DatagramChannel.open();
 			System.out.println("The port is: " + listeningPort);
@@ -56,7 +61,7 @@ public class ClientListener implements Runnable {
 						dirNotStarted = false;
 						client.print("");
 					}
-					lireSerpents(buffer);
+					decodeSnakes(buffer);
 					break;
 				case 3:
 					if (!gameOver) {
@@ -85,7 +90,7 @@ public class ClientListener implements Runnable {
 		return s + "</HTML>";
 	}
 
-	private void lireSerpents(ByteBuffer buffer) throws Exception {
+	private void decodeSnakes(ByteBuffer buffer) throws Exception {
 		Pair<HashMap<Byte, Snake>, Point> req = decodeBufferToGame(buffer);
 		while (gridJobs.size() > 0)
 			gridJobs.poll();
@@ -98,7 +103,7 @@ public class ClientListener implements Runnable {
 			byte nbSnakes = buf.get();
 			for (int i = 0; i < nbSnakes; i++) {
 				byte numSnake = buf.get();
-				LinkedList<Point> curSnake = new LinkedList<Point>();
+				LinkedList<Point> curSnake = new LinkedList<>();
 				Point cur = new Point(buf.get(), buf.get());
 				curSnake.add(cur);
 				byte nbDir = buf.get();
@@ -117,8 +122,8 @@ public class ClientListener implements Runnable {
 				Snake c = new Snake(dir, numSnake, curSnake);
 				snakes.put(numSnake, c);
 			}
-			Point pomme = new Point(buf.get(), buf.get());
-			return new Pair<>(snakes, pomme);
+			Point point = new Point(buf.get(), buf.get());
+			return new Pair<>(snakes, point);
 		} catch (Exception e) {
 		}
 		throw new Exception("The message from the server is incorrectly decoded");

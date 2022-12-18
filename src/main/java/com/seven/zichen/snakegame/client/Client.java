@@ -1,13 +1,17 @@
 package com.seven.zichen.snakegame.client;
+import com.seven.zichen.snakegame.utilities.GameOptions;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.InetSocketAddress;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
+import javax.swing.Timer;
 
 
 public class Client{
@@ -44,7 +48,7 @@ public class Client{
 		directionIdJobs = new LinkedBlockingDeque<>(5);
 		ArrayBlockingQueue<Byte> directionJobs = new ArrayBlockingQueue<>(5);
 		hid = new HandleInputDirection(directionIdJobs, directionJobs);
-		gameDisplay = new DrawGame(number, directionJobs);
+		gameDisplay = new DrawGame(number, directionJobs, userName);
 		new Thread(new HandleReturnedGrid(gridJobs, gameDisplay, number, hid)).start();
 	}
 

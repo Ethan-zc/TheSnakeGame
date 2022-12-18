@@ -1,6 +1,5 @@
 package com.seven.zichen.snakegame;
 
-import com.seven.zichen.snakegame.games_handler.GH_Manager;
 import com.seven.zichen.snakegame.socket.WaitingRoom;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -14,7 +14,6 @@ import com.seven.zichen.snakegame.TheGameClient;
 import com.seven.zichen.snakegame.models.LeaderBoard;
 import com.seven.zichen.snakegame.utilities.GameOptions;
 
-@SuppressWarnings("serial")
 public class DrawGame extends JComponent implements KeyListener {
 	protected static final byte BLANK = 0, FULL = 1, APPLE = 2, USER = 3, cellSize = 10;
 	private byte[][] grid;
@@ -23,13 +22,16 @@ public class DrawGame extends JComponent implements KeyListener {
 	private final JLabel l = new JLabel();
 	private final JButton btn = new JButton("Show Leaderboard");
 	private boolean isGameOver;
+	private String userName;
+	private int gameTime;
 
-	protected void swap(byte[][] returnedGrid) {
+	protected void swap(byte[][] returnedGrid, int gt) {
 		try {
 			EventQueue.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
 					grid = returnedGrid;
+					gameTime = gt;
 					paintImmediately(0, 0, getWidth(), getHeight());
 				}
 			});
@@ -38,11 +40,12 @@ public class DrawGame extends JComponent implements KeyListener {
 		}
 	}
 
-	protected DrawGame(int num, ArrayBlockingQueue<Byte> dir) {
+	protected DrawGame(int num, ArrayBlockingQueue<Byte> dir, String userName) {
 		grid = new byte[GameOptions.gridSize][GameOptions.gridSize];
 		setGraph(num);
 		inputDirection = dir;
 		isGameOver = false;
+		this.userName = userName;
 	}
 
 	void gameOver() {
@@ -52,7 +55,8 @@ public class DrawGame extends JComponent implements KeyListener {
 	private void setGraph(int num) {
 		gameGraph = new JFrame("Snake Game");
 		addKeyListener(this);
-		gameGraph.setBounds(400, 100, (GameOptions.gridSize + 1) * cellSize, (GameOptions.gridSize + 3) * cellSize);
+		gameGraph.setBounds(400, 100, (GameOptions.gridSize) * cellSize, (GameOptions.gridSize) * cellSize + 75);
+		l.setFont(new Font("Bayon", Font.BOLD, 16));
 		l.setBounds(GameOptions.gridSize * cellSize / 4,GameOptions.gridSize * cellSize / 2, GameOptions.gridSize * cellSize, GameOptions.gridSize * cellSize / 4);
 		gameGraph.add(l);
 		btn.setBounds(220, 540, 150, 30);
@@ -65,7 +69,7 @@ public class DrawGame extends JComponent implements KeyListener {
 				} catch (IOException ex) {
 					throw new RuntimeException(ex);
 				}
-				new LeaderBoard(response, ""); // TODO: Pass current username
+				new LeaderBoard(response, userName);
 			}
 		});
 		btn.setVisible(false);
@@ -75,6 +79,7 @@ public class DrawGame extends JComponent implements KeyListener {
 		requestFocusInWindow();
 		gameGraph.setVisible(true);
 		setFocusable(true);
+
 	}
 
 	@Override
@@ -82,15 +87,27 @@ public class DrawGame extends JComponent implements KeyListener {
 		for (int i = 0; i < GameOptions.gridSize; i++)
 			for (int j = 0; j < GameOptions.gridSize; j++)
 				fill(g, i, j, grid[i][j]);
-		// this.remove(a);
+		g.setColor(Color.blue);
+		g.setFont(new Font("Bayon",Font.BOLD,35));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+		g.drawString("0" + gameTime / 60 + ":" + (gameTime % 60 >= 10 ? "" : "0")
+				+ gameTime % 60, (GameOptions.gridSize * cellSize - metrics.stringWidth("00:00")) / 2 , GameOptions.gridSize * cellSize + 35);
 	}
 
 	private void fill(Graphics g, int i, int j, byte color) {
 		g.setColor((color == BLANK) ? Color.WHITE
 				: (color == FULL) ? Color.BLACK : (color == APPLE) ? Color.RED
 						: (color == USER) ? Color.blue : Color.white);
-		g.fillRect(i * cellSize + cellSize / 16, j * cellSize + cellSize / 16,
-				cellSize - cellSize / 8, cellSize - cellSize / 8);
+		if (color == APPLE) {
+			g.fillOval(i * cellSize, j * cellSize,
+					cellSize, cellSize);
+		} else if (color == FULL || color == USER){
+			g.fillRoundRect(i * cellSize, j * cellSize,
+					cellSize, cellSize, 9, 9);
+		} else {
+			g.fillRect(i * cellSize, j * cellSize,
+					cellSize, cellSize);
+		}
 	}
 
 	@Override

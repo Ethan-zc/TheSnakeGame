@@ -1,12 +1,12 @@
 package com.seven.zichen.snakegame.game;
 
-import com.seven.zichen.snakegame.utilities.Client;
-import com.seven.zichen.snakegame.utilities.Job;
-import com.seven.zichen.snakegame.utilities.RunnableInput;
-import com.seven.zichen.snakegame.utilities.Snake;
+import com.seven.zichen.snakegame.utilities.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
+import javax.swing.Timer;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class GameManager implements Runnable {
@@ -20,25 +20,24 @@ public class GameManager implements Runnable {
 
 	private Thread input;
 	public int inputPort;
-	public ArrayBlockingQueue<Job> in_communicator;
+	public ArrayBlockingQueue<Job> inCommunicator;
 
-	public HashMap<Client, ArrayBlockingQueue<Job>> out_communicators;
+	public HashMap<Client, ArrayBlockingQueue<Job>> outCommunicator;
+
+	private Timer countDown;
+	private int gameTime;
 
 	public GameManager(Game g, int inputPort, long multicastTimeInterval)
 			throws IOException {
-		/**
-		 * A manager for 1 game: - listening each player moves on port inputPort
-		 * (using 1 Thread) - multicasting everyones position every
-		 * multicastTimeInterval (ms) on outputPort (using another Thread)
-		 */
-		System.out.println("G_Manager has been initialized:");
+
+		System.out.println("GameManager has been initialized:");
 
 		thisGame = g;
-		in_communicator = new ArrayBlockingQueue<>(100);
+		inCommunicator = new ArrayBlockingQueue<>(100);
 		this.inputPort = inputPort;
-		input = new Thread(new RunnableInput(inputPort, in_communicator, "G"));
+		input = new Thread(new RunnableInput(inputPort, inCommunicator, "G"));
 		System.out.println("\t> input Thread initialized on port " + inputPort);
-		out_communicators = new HashMap<>();
+		outCommunicator = new HashMap<>();
 		System.out.println("\t> output Thread initialized");
 
 		System.out.println("\t> END");
@@ -48,30 +47,27 @@ public class GameManager implements Runnable {
 		gameToBeOver = false;
 		gameOver = false;
 		sendScore = false;
+		gameTime = GameOptions.gameTime;
 	}
 
 	@Override
 	public void run() {
-		System.out.println("G_Manager has been started");
+		System.out.println("GameManager has been started");
 		input.start();
 
 		try {
 			sendGameInfo = true;
 			while (sendGameInfo) {
-				// at this point all players asked to play and were displayed
-				// the info
 				sendGameInfo = thisGame.hasRoom();
-				// Thread.sleep(2000);
 			}
 
 			sendTimer = true;
 			for (byte timer = 5; timer > 0; timer--) {
-				for (Client c : out_communicators.keySet()) {
+				for (Client c : outCommunicator.keySet()) {
 					Job j = new Job(Job.Type.SEND_TIMER);
 					j.timer(timer);
-					out_communicators.get(c).put(j);
-					System.out.println("G_Manager sent job \"" + j.type()
-							+ "\" to Runnable_Output for Client " + c.id);
+					outCommunicator.get(c).put(j);
+					System.out.println("GameManager sent job \"" + j.type() + "\" to Runnable_Output for Client " + c.id);
 				}
 				Thread.sleep(950);// a bit less than a second
 			}
@@ -80,13 +76,12 @@ public class GameManager implements Runnable {
 			Thread.sleep(1000);
 			gameOver = false;
 
-			for (Client c : out_communicators.keySet()) {
+			for (Client c : outCommunicator.keySet()) {
 				Job j = new Job(Job.Type.SEND_POSITIONS);
 				j.id(c.id);
 				j.port(this.inputPort);
-				out_communicators.get(c).put(j);
-				System.out.println("G_Manager sent job \"" + j.type()
-						+ "\" to Runnable_Output for Client " + c.id);
+				outCommunicator.get(c).put(j);
+				System.out.println("GameManager sent job \"" + j.type() + "\" to Runnable_Output for Client " + c.id);
 			}
 
 			Thread moveSnakes;
@@ -95,9 +90,22 @@ public class GameManager implements Runnable {
 
 			byte id = -1;
 			gameToBeOver = false;
+			countDown = new Timer(1000, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent ae) {
+					gameTime--;
+					if (gameTime == 0) {
+						gameToBeOver = true;
+						gameOver = true;
+						countDown.stop();
+					}
+				}
+			});
+			countDown.start();
+
 			while (!gameOver) {
 				
-				Job j = in_communicator.take();
+				Job j = inCommunicator.take();
 				if(gameToBeOver){
 					break;
 				}
@@ -123,13 +131,12 @@ public class GameManager implements Runnable {
 			System.out.println(">>>>>>>>>>>>>> GameOver <<<<<<<<<<<<<<<");
 
 			sendScore = true;
-			for (Client c : out_communicators.keySet()) {
+			for (Client c : outCommunicator.keySet()) {
 				Job j = new Job(Job.Type.SEND_SCORES);
 				j.id(c.id);
 				j.snakes = thisGame.snakesAtStart;
-				out_communicators.get(c).put(j);
-				System.out.println("G_Manager sent job \"" + j.type()
-						+ "\" to Runnable_Output for Client " + c.id);
+				outCommunicator.get(c).put(j);
+				System.out.println("GameManager sent job \"" + j.type() + "\" to RunnableOutput for Client " + c.id);
 			}
 			Thread.sleep(2000);
 			sendScore = false;

@@ -1,14 +1,11 @@
 package com.seven.zichen.snakegame.socket;
 
 import com.seven.zichen.snakegame.TheGameClient;
-import com.seven.zichen.snakegame.games_handler.GH_Manager;
-import com.seven.zichen.snakegame.models.GameFrame;
-import com.seven.zichen.snakegame.models.GamePanel;
+import com.seven.zichen.snakegame.games_handler.GameHandlerManager;
 
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -190,7 +187,7 @@ public class WaitingRoom implements Runnable{
                 String strCurrentLine = br.readLine();
                 int gameId = Integer.parseInt(strCurrentLine);
                 System.out.println("New game id is: " + gameId);
-                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
+                Thread GH=new Thread(new GameHandlerManager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
         		GH.start();
 //                GamePanel game = new GamePanel(userList);
 //                for (int i = 0; i < userList.size(); i++) {
