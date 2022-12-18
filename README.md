@@ -1,6 +1,6 @@
-br# TheSnakeGame
+# TheSnakeGame
 <h4> Zhangnan Jiang(zj2028), Zichen Yang(zy2486)</h4>
-<h4> Final Project for CS9053
+<h4> Final Project for CS9053 </h4>
 <h3> Introduction</h3>
 This is a multiplayer snake game that based on <b>SpringBoot, Mybatis, SQLite, Socket, and UDP</b> using Java. 
 By running TheSnakeGameApplication as the server with its local IP address, other players on different computer
@@ -46,6 +46,32 @@ Following are detailed introduction for different part of the project.
 
 <h3> SpringBoot, MyBatis, and SQLite</h3>
 
+In this project, SpringBoot is used for API construction. Controller, Service and ServiceImplements are implemented for 
+APIs. Followings are the list for important APIs in this project. 
+1. <b>localIP:8080/account/register</b>: Used for new user to be registered. 
+2. <b>localIP:8080/account/login</b>: Used for users to login with their username and password. Notice that the password that stored in the database would be encrypted using md5. 
+3. <b>localIP:8080/account/getLeaderBoard</b>: Used for get the leaderboard of all scores stored in db with username. 
+4. <b>localIP:8080/game/addgame</b>: Used for server to add a record of new game into game table. 
+5. <b>localIP:8080/game/addscore</b>: Used for adding score of certain user in certain game into the database.
+
+MyBatis is used to map java functions into sql query to select, insert data into our database. Mappers are constructed to
+do this work. <b>AccountMapper and GameMapper</b> are used for AccountService and GameService to do interactions with database. 
+
+SQLite is used as the database of the project. Using /resources/DatabaseCreation.sql with SQLite, we get the database file schema.db. 
+Then we used the application-sqlite.yml to configure that the server would take the schema.db as our database. <br>
+The database is created as following: <br>
+<img src="/src/main/resources/imgs/db.png"/>
+
 <h3> Socket, Thread and Waiting Room </h3>
+Here Socket is mainly used for the information exchange during the waiting room between client and server. 
+Two classes are created to handle the socket. <br>
+<b>WaitingClient</b>: This one is served for the client, when the user enter the waiting room, the WaitingCLient would be created
+and the client would send a message with username. If there are already users in the waiting room, the client would then receive a list
+of users that currently in the waiting room. When the game start, the client who press the button would send a message "GAME START!" to the server, 
+and then create a Client class to handle the game process. 
+<b>WaitingRoom</b>: This class is served as the server of waiting room. It would receive message from user and broadcast the 
+user list to all users in the waiting room dynamically. When it receive the message of "GAME START" from user, it would broadcast
+"GAME START" to all users in the waiting room, and the close the socket, start the threads for GameHandler to start the game. 
+
 
 <h3> UI, UPD transmission, and the game </h3>
