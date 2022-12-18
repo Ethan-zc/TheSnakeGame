@@ -33,6 +33,10 @@ public class Client{
 		return "snake";
 	}
 
+	String getUserName() {
+		return userName;
+	}
+
 	private void startListener(short listeningPort, short sendingPort) throws Exception {
 		gridJobs = new ArrayBlockingQueue<>(1);
 		new Thread(new ClientListener(gridJobs, listeningPort, this)).start();

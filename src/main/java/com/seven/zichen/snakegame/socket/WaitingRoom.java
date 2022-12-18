@@ -1,5 +1,6 @@
 package com.seven.zichen.snakegame.socket;
 
+import com.seven.zichen.snakegame.TheGameClient;
 import com.seven.zichen.snakegame.games_handler.GH_Manager;
 import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
@@ -158,8 +159,18 @@ public class WaitingRoom implements Runnable{
                     }
                 }
                 socket.close();
+                clientInRoom.clear();
+
+                URL url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/addgame");
+
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+                int responseCode = conn.getResponseCode();
+                System.out.println("responseCode: " + responseCode);
                 Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
         		GH.start();
+                activeClients.clear();
 //                GamePanel game = new GamePanel(userList);
 //                for (int i = 0; i < userList.size(); i++) {
 //                    new GameFrame(game);
