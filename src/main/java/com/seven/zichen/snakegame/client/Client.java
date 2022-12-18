@@ -66,6 +66,12 @@ public class Client{
 
 	public void gameOver() {
 		gameDisplay.gameOver();
+
+
+	}
+
+	public String getUserName() {
+		return userName;
 	}
 
 	private void envoieServer(short listeningPort, short portConnexion,

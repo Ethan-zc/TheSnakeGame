@@ -1,5 +1,6 @@
 package com.seven.zichen.snakegame.socket;
 
+import com.seven.zichen.snakegame.TheGameClient;
 import com.seven.zichen.snakegame.models.WaitingPanel;
 import com.seven.zichen.snakegame.client.Client;
 import java.io.*;
@@ -18,7 +19,7 @@ public class WaitingClient implements Runnable{
         try {
             this.wp = wp;
             this.username = username;
-            socket = new Socket("192.168.1.159", 8000);
+            socket = new Socket(TheGameClient.localhostIP, 8000);
             new Thread(new HandleServer(socket, username)).start();
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -110,10 +111,6 @@ public class WaitingClient implements Runnable{
                 } catch (Exception e) {
                 }
             }
-
-
-
-
 
         }
     }

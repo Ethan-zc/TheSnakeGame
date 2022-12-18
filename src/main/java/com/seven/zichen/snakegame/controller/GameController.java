@@ -52,7 +52,7 @@ public class GameController {
         return id + "";
     }
 
-    @RequestMapping(value = "/addscore", method = RequestMethod.POST)
+    @RequestMapping(value = "/addscore", method = RequestMethod.GET)
     public void addScore(@RequestParam String userName,
                          @RequestParam int gameId,
                          @RequestParam int score) {
@@ -60,7 +60,7 @@ public class GameController {
         gameService.addScore(userId, gameId, score);
     }
 
-    @RequestMapping(value = "/testing", method = RequestMethod.GET)
+    @RequestMapping(value = "/getnewgame", method = RequestMethod.GET)
     public int testing() {
         return gameService.selectNewId();
     }

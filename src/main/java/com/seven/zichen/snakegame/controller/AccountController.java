@@ -50,6 +50,9 @@ public class AccountController {
         return accountService.getScore();
     }
 
-
+    @RequestMapping(value = "/getid", method = RequestMethod.GET)
+    public int getIdByName(@RequestParam String name) {
+        return accountService.getUserIdByName(name);
+    }
 
 }

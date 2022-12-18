@@ -1,10 +1,16 @@
 package com.seven.zichen.snakegame.client;
 
+import com.seven.zichen.snakegame.TheGameClient;
+import com.seven.zichen.snakegame.utilities.GameOptions;
 import com.seven.zichen.snakegame.utilities.Pair;
 import com.seven.zichen.snakegame.utilities.Point;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.HashMap;
@@ -17,10 +23,13 @@ public class ClientListener implements Runnable {
 	private DatagramChannel listenerChannel;
 	private Client client;
 	private boolean dirNotStarted = true;
+	private int gameTime;
+	private short score;
 
 	protected ClientListener(ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> jobs, short listeningPort, Client c) {
 		gridJobs = jobs;
 		client = c;
+		gameTime = GameOptions.gameTime;
 
 		try {
 			listenerChannel = DatagramChannel.open();
@@ -67,6 +76,7 @@ public class ClientListener implements Runnable {
 						gameOver = true;
 						client.gameOver();
 						client.print(readFinalBuffer(buffer));
+
 					}
 					break;
 				default:
@@ -78,14 +88,30 @@ public class ClientListener implements Runnable {
 		}
 	}
 
-	private String readFinalBuffer(ByteBuffer buffer) {
+	private String readFinalBuffer(ByteBuffer buffer) throws IOException {
 		String s = "<HTML><h2>Game Over!</h2>";
 		byte nbSnakes = buffer.get();
 		for (int i = 0; i < nbSnakes; i++) {
 			byte num = buffer.get();
-			short score = buffer.getShort();
+			score = buffer.getShort();
 			s += "<h3>Player " + client.numToName(num) + " got " + score + " points</h3>";
 		}
+
+		URL url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/getnewgame");
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		int gameId = Integer.parseInt(br.readLine());
+
+		url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/addscore?userName=" + client.getUserName() +
+																						"&gameId=" + gameId +
+																						"&score=" + score);
+		conn = (HttpURLConnection)url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+		br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
 		return s + "</HTML>";
 	}
 
