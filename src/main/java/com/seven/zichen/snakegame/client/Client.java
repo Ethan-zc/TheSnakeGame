@@ -48,7 +48,7 @@ public class Client{
 		directionIdJobs = new LinkedBlockingDeque<>(5);
 		ArrayBlockingQueue<Byte> directionJobs = new ArrayBlockingQueue<>(5);
 		hid = new HandleInputDirection(directionIdJobs, directionJobs);
-		gameDisplay = new DrawGame(number, directionJobs);
+		gameDisplay = new DrawGame(number, directionJobs, userName);
 		new Thread(new HandleReturnedGrid(gridJobs, gameDisplay, number, hid)).start();
 	}
 

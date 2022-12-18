@@ -66,7 +66,7 @@ public class Game extends Thread {
 			this.snakes.put(c.id, snake);
 			
 			ArrayBlockingQueue<Job> out_communicator = new ArrayBlockingQueue<>(100);
-			this.manager.out_communicators.put(c, out_communicator);
+			this.manager.outCommunicator.put(c, out_communicator);
 			Thread t=new Thread(new RunnableOutput(c.address, c.listeningPort, out_communicator, "G", manager));
 			t.start();
 			
@@ -90,7 +90,7 @@ public class Game extends Thread {
 
 	public void removeClient(Client c) {
 		snakes.remove(c);
-		this.manager.out_communicators.remove(c);
+		this.manager.outCommunicator.remove(c);
 	}
 
 	public boolean hasRoom() {

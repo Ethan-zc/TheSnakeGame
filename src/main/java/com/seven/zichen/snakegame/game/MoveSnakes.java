@@ -15,15 +15,15 @@ public class MoveSnakes implements Runnable {
 
 	@Override
 	public void run() {
-		LinkedList<Snake> newLoosers = new LinkedList<Snake>();
+		LinkedList<Snake> newLosers = new LinkedList<Snake>();
 		int counter = 0;
 		while (!game.manager.gameOver) {
 			synchronized (game.snakes) {
 				for (Snake snake : game.snakes.values()) {
 					Snake killer = snake.isInCollision(game.snakes);
 					if (killer != null) {
-						
-						newLoosers.add(snake);
+
+						newLosers.add(snake);
 						if (snake != killer)
 							killer.score += 1000;
 					} else {
@@ -34,23 +34,24 @@ public class MoveSnakes implements Runnable {
 							counter = 0;
 						} else {
 							snake.move();
-							snake.score+=1;
+							snake.score += 1;
+
 						}
 					}
 
 				}
 			}
 			synchronized (game.snakes) {
-				while (!newLoosers.isEmpty()) {
+				while (!newLosers.isEmpty()) {
 
-					game.snakes.remove(newLoosers.poll().id & 255);
+					game.snakes.remove(newLosers.poll().id & 255);
 					
 					if((game.snakesAtStart.size() > 1 && game.snakes.size() < 2) || game.snakes.size() < 1){
 						System.out.println("Game Over");
 						synchronized(game.manager){
 							game.manager.gameToBeOver = true;
 							try {
-								game.manager.in_communicator.put(new Job(Job.Type.UNKNOWN));
+								game.manager.inCommunicator.put(new Job(Job.Type.UNKNOWN));
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

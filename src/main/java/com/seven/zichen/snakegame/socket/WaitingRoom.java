@@ -1,13 +1,10 @@
 package com.seven.zichen.snakegame.socket;
 
 import com.seven.zichen.snakegame.TheGameClient;
-import com.seven.zichen.snakegame.games_handler.GH_Manager;
-import com.seven.zichen.snakegame.models.GameFrame;
-import com.seven.zichen.snakegame.models.GamePanel;
+import com.seven.zichen.snakegame.games_handler.GameHandlerManager;
 
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -168,7 +165,7 @@ public class WaitingRoom implements Runnable{
                 conn.setRequestProperty("User-Agent", "Mozilla/5.0");
                 int responseCode = conn.getResponseCode();
                 System.out.println("responseCode: " + responseCode);
-                Thread GH=new Thread(new GH_Manager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
+                Thread GH=new Thread(new GameHandlerManager(5757, 5656, "Snakes Server", 2000, activeClients.size() - 1));
         		GH.start();
                 activeClients.clear();
 //                GamePanel game = new GamePanel(userList);

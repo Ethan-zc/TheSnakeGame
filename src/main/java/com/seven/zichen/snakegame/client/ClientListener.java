@@ -63,7 +63,7 @@ public class ClientListener implements Runnable {
 						dirNotStarted = false;
 						client.print("");
 					}
-					lireSerpents(buffer);
+					decodeSnakes(buffer);
 					break;
 				case 3:
 					if (!gameOver) {
@@ -106,7 +106,7 @@ public class ClientListener implements Runnable {
 		return s + "</HTML>";
 	}
 
-	private void lireSerpents(ByteBuffer buffer) throws Exception {
+	private void decodeSnakes(ByteBuffer buffer) throws Exception {
 		Pair<HashMap<Byte, Snake>, Point> req = decodeBufferToGame(buffer);
 		while (gridJobs.size() > 0)
 			gridJobs.poll();
@@ -119,7 +119,7 @@ public class ClientListener implements Runnable {
 			byte nbSnakes = buf.get();
 			for (int i = 0; i < nbSnakes; i++) {
 				byte numSnake = buf.get();
-				LinkedList<Point> curSnake = new LinkedList<Point>();
+				LinkedList<Point> curSnake = new LinkedList<>();
 				Point cur = new Point(buf.get(), buf.get());
 				curSnake.add(cur);
 				byte nbDir = buf.get();
@@ -138,8 +138,8 @@ public class ClientListener implements Runnable {
 				Snake c = new Snake(dir, numSnake, curSnake);
 				snakes.put(numSnake, c);
 			}
-			Point pomme = new Point(buf.get(), buf.get());
-			return new Pair<>(snakes, pomme);
+			Point point = new Point(buf.get(), buf.get());
+			return new Pair<>(snakes, point);
 		} catch (Exception e) {
 		}
 		throw new Exception("The message from the server is incorrectly decoded");
