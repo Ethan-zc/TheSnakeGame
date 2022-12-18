@@ -1,6 +1,6 @@
 # TheSnakeGame
-<h4> Zhangnan Jiang(), Zichen Yang</h4>
-
+<h4> Zhangnan Jiang(), Zichen Yang(zy2486)</h4>
+<h4> Final Project for CS9053
 <h3> Introduction</h3>
 This is a multiplayer snake game that based on SpringBoot, Mybatis, SQLite, Socket, and UDP. 
 By running TheSnakeGameApplication as the server with its local IP address, other players on different computer
