@@ -28,11 +28,6 @@ public class WaitingRoom implements Runnable{
         t.start();
     }
 
-    public static void main(String[] args) {
-        WaitingRoom waitingRoom = new WaitingRoom();
-    }
-
-
     @Override
     public void run() {
         try {

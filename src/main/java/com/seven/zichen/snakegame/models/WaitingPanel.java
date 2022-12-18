@@ -112,13 +112,7 @@ public class WaitingPanel extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         WaitingClient nullClient = new WaitingClient("GAMESTART", this);
-//        List<String> userList = new ArrayList<>();
-//        while(nullClient.getUserList().size() == 0) {
-//            userList = nullClient.getUserList();
-//        }
-//        System.out.println("The list is: " + userList.toString());
         this.setVisible(false);
-//        GameFrame clientGame = new GameFrame(userList);
     }
 
     public void setNumPlayers(int numPlayers) {

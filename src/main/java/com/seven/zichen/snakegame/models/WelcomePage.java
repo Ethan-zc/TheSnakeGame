@@ -48,7 +48,6 @@ public class WelcomePage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == btn1) {
             this.dispose();
-//            new GameFrame();
             WaitingPanel wp = new WaitingPanel(userName);
             Timer timer = new Timer(1000, new UpdateWaitingPanel(wp));
             timer.start();

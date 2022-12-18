@@ -1,5 +1,5 @@
 # TheSnakeGame
-<h4> Zhangnan Jiang(), Zichen Yang(zy2486)</h4>
+<h4> Zhangnan Jiang(zj2028), Zichen Yang(zy2486)</h4>
 <h4> Final Project for CS9053
 <h3> Introduction</h3>
 This is a multiplayer snake game that based on SpringBoot, Mybatis, SQLite, Socket, and UDP. 
