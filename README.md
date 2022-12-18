@@ -1,6 +1,9 @@
 # TheSnakeGame
 <h4> Zhangnan Jiang(zj2028), Zichen Yang(zy2486)</h4>
 <h4> Final Project for CS9053 </h4>
+
+<h4>Video for SetUp and simple demo: <a href="https://www.avast.com/c-how-to-find-ip-address">Video</a></h4>
+
 <h3> Introduction</h3>
 This is a multiplayer snake game that based on <b>SpringBoot, Mybatis, SQLite, Socket, and UDP</b> using Java. 
 By running TheSnakeGameApplication as the server with its local IP address, other players on different computer
@@ -40,7 +43,7 @@ for all users in the same local network.
 As for the server, please run TheSnakeGameApplication. After seeing that the server is running, 
 different computers under the same local network could run TheGameClient to as client to login and play the game. <br>
 
-For detailed process, please refer to the video: <a href="https://www.avast.com/c-how-to-find-ip-address">Video</a>
+<h4>For detailed process, please refer to the video: <a href="https://www.avast.com/c-how-to-find-ip-address">Video</a></h4>
 
 Following are detailed introduction for different part of the project. 
 
@@ -76,6 +79,8 @@ INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('23441', '2', '2'); 
 INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('12314123', '3', '1'); <br>
 INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('1312', '1', '2'); <br>
 INSERT INTO `acc_game` (`score`, `accid`, `gameid`) VALUES ('1312', '3', '2'); <br>
+
+Here the password is md5 encrypted, which is 123456 for these three users
 
 <h3> Socket, Thread and Waiting Room </h3>
 Here Socket is mainly used for the information exchange during the waiting room between client and server. 
