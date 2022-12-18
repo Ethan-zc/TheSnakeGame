@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @RestController
@@ -38,10 +39,12 @@ public class GameController {
     }
 
     @RequestMapping(value = "/addgame", method = RequestMethod.POST)
-    public void addGame(@RequestParam String starttime) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+    public String addGame(@RequestParam String starttime) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:SS zzz yyyy", Locale.ENGLISH);
         Date date = formatter.parse(starttime);
         gameService.addGame(date);
+        int id = gameService.selectNewId();
+        return id + "";
     }
 
     @RequestMapping(value = "/addscore", method = RequestMethod.POST)
@@ -50,6 +53,16 @@ public class GameController {
                          @RequestParam int score) {
         int userId = accountService.getUserIdByName(userName);
         gameService.addScore(userId, gameId, score);
+    }
+
+    @RequestMapping(value = "/testing", method = RequestMethod.GET)
+    public int testing() {
+        return gameService.selectNewId();
+    }
+
+    @RequestMapping(value = "/allgame", method = RequestMethod.GET)
+    public List<GameEntry> allgame() {
+        return gameService.getAllGames();
     }
 
 

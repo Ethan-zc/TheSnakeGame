@@ -1,11 +1,13 @@
 package com.seven.zichen.snakegame.service.Impl;
 
 import com.seven.zichen.snakegame.dao.GameMapper;
+import com.seven.zichen.snakegame.entry.GameEntry;
 import com.seven.zichen.snakegame.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -19,8 +21,9 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void addGame(Date startTime) {
+    public int addGame(Date startTime) {
         gameMapper.addGame(startTime);
+        return gameMapper.getIdByTime(startTime);
     }
 
     @Override
@@ -28,4 +31,13 @@ public class GameServiceImpl implements GameService {
         gameMapper.addScore(userId, gameId, score);
     }
 
+    @Override
+    public int selectNewId() {
+        return gameMapper.getNewId();
+    }
+
+    @Override
+    public List<GameEntry> getAllGames() {
+        return gameMapper.getAllGames();
+    }
 }
