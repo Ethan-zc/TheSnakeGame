@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.DatagramChannel;
 
-public class GH_Output implements Runnable {
+public class GameHandlerOutput implements Runnable {
 	private int outputPort;
 	private String serverName;
 	private int inputPort;
 	private long interval;
 
-	public GH_Output(int outputPort, String serverName, long interval,
-			int inputPort) {
+	public GameHandlerOutput(int outputPort, String serverName, long interval,
+							 int inputPort) {
 		this.outputPort = outputPort;
 		this.serverName = serverName;
 		this.inputPort = inputPort;
@@ -22,7 +22,7 @@ public class GH_Output implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("GH_Output has been started");
+		System.out.println("GameHandlerOutput has been started");
 		try {
 			DatagramChannel clientSocket = DatagramChannel.open();
 			clientSocket.socket().setBroadcast(true);

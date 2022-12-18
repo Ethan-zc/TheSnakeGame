@@ -1,18 +1,12 @@
 package com.seven.zichen.snakegame.controller;
 
-import com.seven.zichen.snakegame.entry.GameEntry;
-import com.seven.zichen.snakegame.games_handler.GH_Manager;
 import com.seven.zichen.snakegame.service.AccountService;
 import com.seven.zichen.snakegame.service.GameService;
-import com.seven.zichen.snakegame.service.Impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;

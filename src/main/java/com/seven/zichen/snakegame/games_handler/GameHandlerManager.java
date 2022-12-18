@@ -7,38 +7,37 @@ import com.seven.zichen.snakegame.utilities.RunnableInput;
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class GH_Manager implements Runnable{
+public class GameHandlerManager implements Runnable{
 	/**
 	 * Handles the new player asking to play
-	 * 
-	 * 
+	 *
+	 *
 	 */
-	// Output Thread > sends a message to the player to tell them that they can ask to play on a specific port
 	private Thread output;
 		
 	// Input thread > players are sending messages to it
 	// messages are transformed into Jobs and sent to this class through in_communicator
 	private Thread input;
-	private ArrayBlockingQueue<Job> in_communicator;
+	private ArrayBlockingQueue<Job> inCommunicator;
 	//private HashSet<Byte> jobAlreadyDone;
 	private int nextPortToUseForGame, nbPlayers;
 	
 	
-	public GH_Manager(int inputPort, int outputPort, String serverName, long broadcastTimeInterval, int nbP) throws IOException{
+	public GameHandlerManager(int inputPort, int outputPort, String serverName, long broadcastTimeInterval, int nbP) throws IOException{
 		/**
-		 * A GameHandler_Manager:
+		 * A GameHandlerManager:
 		 * - listening on port inputPort (using 1 Thread)
 		 * - broadcasting this inputPort and the serverName every broadcastTimeInterval (ms) on outputPort (using another Thread)
 		 */
 		nbPlayers = Math.max(1, Math.min(nbP, 4));
 		System.out.println("GH_Manager has been initialized:");
 		
-		in_communicator=new ArrayBlockingQueue<Job>(100);
-		input=new Thread(new RunnableInput(inputPort, in_communicator, "GH"));
-		System.out.println("\t> input Thread initialized on port "+inputPort);
+		inCommunicator = new ArrayBlockingQueue<>(100);
+		input = new Thread(new RunnableInput(inputPort, inCommunicator, "GH"));
+		System.out.println("\t> input Thread initialized on port " + inputPort);
 		
-		output=new Thread(new GH_Output(outputPort, serverName, broadcastTimeInterval, inputPort));
-		System.out.println("\t> output Thread initialized on port "+outputPort+" (for broadcast)");
+		output = new Thread(new GameHandlerOutput(outputPort, serverName, broadcastTimeInterval, inputPort));
+		System.out.println("\t> output Thread initialized on port " + outputPort+" (for broadcast)");
 		
 		System.out.println("\t> END");
 		//jobAlreadyDone=new HashSet<Byte>();
@@ -56,17 +55,16 @@ public class GH_Manager implements Runnable{
 		while(true){
 			//we indefinitely wait for new players wanting to play
 			try {
-				Job j=in_communicator.take();
+				Job j = inCommunicator.take();
 				System.out.println(">>>>>>>>>>>>>>>>>>>>> Received a message");
 				switch(j.type()){
 				case WANT_TO_PLAY:
-					//if(jobAlreadyDone.contains(j.jobId())) break;//if we already did the job, let's do nothing 
-					//jobAlreadyDone.add(j.jobId());
+
 					System.out.println("A player want to play");
-					Game g= Game.getGameForANewPlayer();
-					if(g==null && nextPortToUseForGame<32000){
+					Game g = Game.getGameForANewPlayer();
+					if(g == null && nextPortToUseForGame<32000){
 						//no existing Game for now
-						g=new Game(nbPlayers, nextPortToUseForGame++);
+						g = new Game(nbPlayers, nextPortToUseForGame++);
 						//we start a new Game with maxPlayer, inputPort
 						g.start();
 					}
