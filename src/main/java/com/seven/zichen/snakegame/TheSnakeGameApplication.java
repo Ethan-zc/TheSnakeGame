@@ -11,7 +11,7 @@ import java.io.IOException;
 @MapperScan("com.seven.zichen.snakegame.dao")
 public class TheSnakeGameApplication {
 
-	public static String localhostIP = "192.168.1.159";
+	public static String localhostIP = "192.168.1.156";
 
 	public static void main(String[] args) throws IOException {
 //		new SpringApplicationBuilder(TheSnakeGameApplication.class).headless(false).run(args);

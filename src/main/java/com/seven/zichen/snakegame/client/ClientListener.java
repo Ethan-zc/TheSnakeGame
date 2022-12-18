@@ -91,10 +91,16 @@ public class ClientListener implements Runnable {
 	private String readFinalBuffer(ByteBuffer buffer) throws IOException {
 		String s = "<HTML><h2>Game Over!</h2>";
 		byte nbSnakes = buffer.get();
+		String curr = "";
+		short currScore = 0;
 		for (int i = 0; i < nbSnakes; i++) {
 			byte num = buffer.get();
 			score = buffer.getShort();
 			s += "<h3>Player " + client.numToName(num) + " got " + score + " points</h3>";
+			if (!client.numToName(num).equals("snake")) {
+				curr = client.numToName(num);
+				currScore = score;
+			}
 		}
 
 		URL url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/getnewgame");
@@ -104,9 +110,9 @@ public class ClientListener implements Runnable {
 		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		int gameId = Integer.parseInt(br.readLine());
 
-		url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/addscore?userName=" + client.getUserName() +
+		url = new URL("http://" + TheGameClient.localhostIP + ":8080/game/addscore?userName=" + curr +
 																						"&gameId=" + gameId +
-																						"&score=" + score);
+																						"&score=" + currScore);
 		conn = (HttpURLConnection)url.openConnection();
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("User-Agent", "Mozilla/5.0");
