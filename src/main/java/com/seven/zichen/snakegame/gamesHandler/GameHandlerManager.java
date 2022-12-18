@@ -1,4 +1,4 @@
-package com.seven.zichen.snakegame.games_handler;
+package com.seven.zichen.snakegame.gamesHandler;
 
 import com.seven.zichen.snakegame.game.Game;
 import com.seven.zichen.snakegame.utilities.Job;
@@ -14,12 +14,9 @@ public class GameHandlerManager implements Runnable{
 	 *
 	 */
 	private Thread output;
-		
-	// Input thread > players are sending messages to it
-	// messages are transformed into Jobs and sent to this class through in_communicator
+
 	private Thread input;
 	private ArrayBlockingQueue<Job> inCommunicator;
-	//private HashSet<Byte> jobAlreadyDone;
 	private int nextPortToUseForGame, nbPlayers;
 	
 	
@@ -30,7 +27,7 @@ public class GameHandlerManager implements Runnable{
 		 * - broadcasting this inputPort and the serverName every broadcastTimeInterval (ms) on outputPort (using another Thread)
 		 */
 		nbPlayers = Math.max(1, Math.min(nbP, 4));
-		System.out.println("GH_Manager has been initialized:");
+		System.out.println("GameHandlerManager has been initialized:");
 		
 		inCommunicator = new ArrayBlockingQueue<>(100);
 		input = new Thread(new RunnableInput(inputPort, inCommunicator, "GH"));
@@ -40,7 +37,6 @@ public class GameHandlerManager implements Runnable{
 		System.out.println("\t> output Thread initialized on port " + outputPort+" (for broadcast)");
 		
 		System.out.println("\t> END");
-		//jobAlreadyDone=new HashSet<Byte>();
 		nextPortToUseForGame=30000;
 		
 		
@@ -48,12 +44,11 @@ public class GameHandlerManager implements Runnable{
 
 	@Override
 	public void run() {
-		System.out.println("GH_Manager has been started");
+		System.out.println("GameHandlerManager has been started");
 		input.start();
 		output.start();
 		
 		while(true){
-			//we indefinitely wait for new players wanting to play
 			try {
 				Job j = inCommunicator.take();
 				System.out.println(">>>>>>>>>>>>>>>>>>>>> Received a message");
@@ -61,18 +56,16 @@ public class GameHandlerManager implements Runnable{
 				case WANT_TO_PLAY:
 
 					System.out.println("A player want to play");
-					Game g = Game.getGameForANewPlayer();
-					if(g == null && nextPortToUseForGame<32000){
-						//no existing Game for now
-						g = new Game(nbPlayers, nextPortToUseForGame++);
-						//we start a new Game with maxPlayer, inputPort
-						g.start();
+					Game game = Game.getGameForANewPlayer();
+					if(game == null && nextPortToUseForGame < 32000){
+						game = new Game(nbPlayers, nextPortToUseForGame++);
+						game.start();
 					}
-					g.addClient(j.address(), j.port());
+					game.addClient(j.address(), j.port());
 					break;
 					
 				default:
-					System.out.println("received another type: "+j.type());
+					System.out.println("received another type: " + j.type());
 					break;
 				
 				}

@@ -15,16 +15,13 @@ public class Game extends Thread {
 	public Snake s4;
 	
 	public volatile boolean waitForClients;
-	private String gameName;//unused for now
+	private String gameName;
 	private int maxPlayers;
-	public LinkedList<Snake> remainingSnakes;//Snakes available for new players
+	public LinkedList<Snake> remainingSnakes;
 	public HashMap<Integer,Snake> snakes;
 	public HashSet<Snake> snakesAtStart;
 	public Apple apple;
-	
 	public GameManager manager;
-	private long multicastTimeInterval = 50;// 50 ms
-	
 	
 	public Game(int maxPlayers, int inputPort) throws IOException {
 		this.maxPlayers = maxPlayers;
@@ -45,12 +42,12 @@ public class Game extends Thread {
 		
 		snakesAtStart = new HashSet<>();
 		
-		this.manager = new GameManager(this, inputPort, multicastTimeInterval);
+		this.manager = new GameManager(this, inputPort);
 		System.out.println("Game was initialized, listening on " + inputPort);
 		
 		waitForClients=true;
 		
-		games.add(this); //Once a Game is initiated, we had it to this list, so that it can be filled with new players
+		games.add(this);
 	}
 
 	public void addClient(String address, int port) throws IOException, InterruptedException {

@@ -18,7 +18,7 @@ public class WaitingClient implements Runnable{
         try {
             this.wp = wp;
             this.username = username;
-            socket = new Socket("192.168.1.156", 8000);
+            socket = new Socket("192.168.1.159", 8000);
             new Thread(new HandleServer(socket, username)).start();
         } catch (IOException e1) {
             e1.printStackTrace();

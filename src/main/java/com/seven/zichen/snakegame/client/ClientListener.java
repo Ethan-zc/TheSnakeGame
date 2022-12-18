@@ -1,6 +1,7 @@
 package com.seven.zichen.snakegame.client;
 
-import com.seven.zichen.snakegame.utilities.GameOptions;
+import com.seven.zichen.snakegame.utilities.Pair;
+import com.seven.zichen.snakegame.utilities.Point;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,12 +17,10 @@ public class ClientListener implements Runnable {
 	private DatagramChannel listenerChannel;
 	private Client client;
 	private boolean dirNotStarted = true;
-	private int gameTime;
 
 	protected ClientListener(ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> jobs, short listeningPort, Client c) {
 		gridJobs = jobs;
 		client = c;
-		gameTime = GameOptions.gameTime;
 
 		try {
 			listenerChannel = DatagramChannel.open();

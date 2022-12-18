@@ -15,7 +15,7 @@ public class MoveSnakes implements Runnable {
 
 	@Override
 	public void run() {
-		LinkedList<Snake> newLosers = new LinkedList<Snake>();
+		LinkedList<Snake> newLosers = new LinkedList<>();
 		int counter = 0;
 		while (!game.manager.gameOver) {
 			synchronized (game.snakes) {
@@ -52,7 +52,6 @@ public class MoveSnakes implements Runnable {
 							try {
 								game.manager.inCommunicator.put(new Job(Job.Type.UNKNOWN));
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							System.out.println("Game to be over set to true");
@@ -66,7 +65,6 @@ public class MoveSnakes implements Runnable {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			counter++;

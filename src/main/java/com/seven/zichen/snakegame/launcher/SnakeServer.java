@@ -1,6 +1,6 @@
 package com.seven.zichen.snakegame.launcher;
 
-import com.seven.zichen.snakegame.games_handler.GameHandlerManager;
+import com.seven.zichen.snakegame.gamesHandler.GameHandlerManager;
 
 import java.io.IOException;
 

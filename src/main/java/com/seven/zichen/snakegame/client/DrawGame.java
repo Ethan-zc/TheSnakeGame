@@ -15,7 +15,7 @@ import com.seven.zichen.snakegame.models.LeaderBoard;
 import com.seven.zichen.snakegame.utilities.GameOptions;
 
 public class DrawGame extends JComponent implements KeyListener {
-	protected static final byte BLANK = 0, FULL = 1, APPLE = 2, USER = 3, cellSize = 10;
+	protected static final byte BLANK = 0, OTHER = 1, APPLE = 2, USER = 3, cellSize = 10;
 	private byte[][] grid;
 	private JFrame gameGraph;
 	private ArrayBlockingQueue<Byte> inputDirection;
@@ -27,13 +27,10 @@ public class DrawGame extends JComponent implements KeyListener {
 
 	protected void swap(byte[][] returnedGrid, int gt) {
 		try {
-			EventQueue.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					grid = returnedGrid;
-					gameTime = gt;
-					paintImmediately(0, 0, getWidth(), getHeight());
-				}
+			EventQueue.invokeAndWait(() -> {
+				grid = returnedGrid;
+				gameTime = gt;
+				paintImmediately(0, 0, getWidth(), getHeight());
 			});
 		} catch (InvocationTargetException | InterruptedException e) {
 			e.printStackTrace();
@@ -79,7 +76,6 @@ public class DrawGame extends JComponent implements KeyListener {
 		requestFocusInWindow();
 		gameGraph.setVisible(true);
 		setFocusable(true);
-
 	}
 
 	@Override
@@ -96,12 +92,12 @@ public class DrawGame extends JComponent implements KeyListener {
 
 	private void fill(Graphics g, int i, int j, byte color) {
 		g.setColor((color == BLANK) ? Color.WHITE
-				: (color == FULL) ? Color.BLACK : (color == APPLE) ? Color.RED
+				: (color == OTHER) ? Color.BLACK : (color == APPLE) ? Color.RED
 						: (color == USER) ? Color.blue : Color.white);
 		if (color == APPLE) {
 			g.fillOval(i * cellSize, j * cellSize,
 					cellSize, cellSize);
-		} else if (color == FULL || color == USER){
+		} else if (color == OTHER || color == USER){
 			g.fillRoundRect(i * cellSize, j * cellSize,
 					cellSize, cellSize, 9, 9);
 		} else {

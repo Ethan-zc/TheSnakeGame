@@ -14,16 +14,15 @@ public class Job {
 	private byte timer;
 	public HashSet<Snake> snakes;
 
-	public static enum Type {
-		WANT_TO_PLAY, // type 0 recu
-		READY_TO_PLAY,// type 1 recu
-		MOVE, // type 2 recu
-		SEND_GAME_INFO,// sends game port and player id
-//		SEND_WAITING_FOR_PLAYERS,//sends just tis type
-		SEND_TIMER,//sends timer before this game begins
-		SEND_POSITIONS,//sends all the snakes positions
-		SEND_SCORES,//sends this type
-		UNKNOWN // default
+	public enum Type {
+		WANT_TO_PLAY,
+		READY_TO_PLAY,
+		MOVE,
+		SEND_GAME_INFO,
+		SEND_TIMER,
+		SEND_POSITIONS,
+		SEND_SCORES,
+		UNKNOWN
 	}
 
 	public Job(Type type) {
@@ -37,7 +36,6 @@ public class Job {
 		switch (type) {
 		case 0:
 			this.type = Type.WANT_TO_PLAY;
-			//this.jobId=buf.get();
 			this.port = buf.getShort();
 			break;
 		case 1:
@@ -59,44 +57,27 @@ public class Job {
 	public Type type() {
 		return type;
 	}
-//	public void type(Type t){
-//		type=t;
-//	}
-	
 	public String address(){
 		return address;
 	}
-//	public void address(String a){
-//		this.address=a;
-//	}
-	
 	public int port(){
 		return this.port;
 	}
 	public void port(int p){
 		this.port=p;
 	}
-	
 	public byte direction(){
 		return this.direction;
 	}
-//	public void direction(byte d){
-//		 this.direction=d;
-//	}
-	
 	public byte id(){
 		return this.id;
 	}
 	public void id(int id){
 		this.id=(byte) id;
 	}
-	
 	public byte jobId(){
 		return this.jobId;
 	}
-//	public void jobId(int jobId){
-//		this.jobId=(byte) jobId;
-//	}
 	public byte timer(){
 		return this.timer;
 	}

@@ -2,8 +2,6 @@ package com.seven.zichen.snakegame.game;
 
 import com.seven.zichen.snakegame.utilities.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.swing.Timer;
@@ -27,7 +25,7 @@ public class GameManager implements Runnable {
 	private Timer countDown;
 	private int gameTime;
 
-	public GameManager(Game g, int inputPort, long multicastTimeInterval)
+	public GameManager(Game g, int inputPort)
 			throws IOException {
 
 		System.out.println("GameManager has been initialized:");
@@ -90,15 +88,12 @@ public class GameManager implements Runnable {
 
 			byte id = -1;
 			gameToBeOver = false;
-			countDown = new Timer(1000, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					gameTime--;
-					if (gameTime == 0) {
-						gameToBeOver = true;
-						gameOver = true;
-						countDown.stop();
-					}
+			countDown = new Timer(1000, ae -> {
+				gameTime--;
+				if (gameTime == 0) {
+					gameToBeOver = true;
+					gameOver = true;
+					countDown.stop();
 				}
 			});
 			countDown.start();

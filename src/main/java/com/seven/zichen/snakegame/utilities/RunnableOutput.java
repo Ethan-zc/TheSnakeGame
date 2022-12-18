@@ -24,7 +24,7 @@ public class RunnableOutput extends UDPSender implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(parentPrefix + "_Output has been started");
+		System.out.println(parentPrefix + ": Output has been started");
 		while (true) {
 			try {
 				Job j = this.communicator.take();

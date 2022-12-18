@@ -21,21 +21,17 @@ public class RunnableInput extends UDPListener implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(parentPrefix + "_Input has been started");
+		System.out.println(parentPrefix + ": Input has been started");
 		while (true) {
 			try {
-				InetSocketAddress remote = listen(buffer);// fills the buffer
+				InetSocketAddress remote = listen(buffer);
 				buffer.flip();
-				Job j = new Job(buffer, remote.getHostName());// interprets this
-																// buffer as a
-																// Job to do
-				communicator.put(j);// send this job in communicator
+				Job j = new Job(buffer, remote.getHostName());
+				communicator.put(j);
 				buffer.clear();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

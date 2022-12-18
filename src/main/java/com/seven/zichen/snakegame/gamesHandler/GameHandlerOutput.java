@@ -1,4 +1,4 @@
-package com.seven.zichen.snakegame.games_handler;
+package com.seven.zichen.snakegame.gamesHandler;
 
 import com.seven.zichen.snakegame.utilities.BufferHandler;
 

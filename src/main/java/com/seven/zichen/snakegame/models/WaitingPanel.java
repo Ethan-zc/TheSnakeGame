@@ -29,7 +29,7 @@ public class WaitingPanel extends JFrame implements ActionListener {
 
         setVisible(true);
 
-        setSize(400, 340);
+        setBounds(400, 100, 400, 340);
         getContentPane().setBackground(Color.white);
 
         setLayout(null);

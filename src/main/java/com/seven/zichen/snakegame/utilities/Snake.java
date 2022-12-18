@@ -182,8 +182,7 @@ public class Snake {
 		length = (byte) lens.size();
 		
 		ByteBuffer buf=ByteBuffer.allocate(length*2+4);
-		
-		// Then we prepare the buffer
+
 		buf.put(snake.id);
 		buf.put((byte) q.x);
 		buf.put((byte) q.y);
@@ -193,9 +192,7 @@ public class Snake {
 			buf.put(dir);
 			byte len = lens.poll();
 			buf.put(len);
-			//System.out.print("["+dir+","+len+"]");
 		}
-		//System.out.println();
 		
 		return buf;
 		
@@ -232,44 +229,4 @@ public class Snake {
 
 		return buf;
 	}
-
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//		System.out.println("Creating a snake");
-//		Snake s = new Snake(new Point(10, 10), 5, (byte) 1, "Test1");
-//		System.out.println(s);
-//		System.out.println();
-//		System.out.println("Testing directions and move()");
-//		s.direction((byte) 3);
-//		s.move();
-//		System.out.println(s);
-//
-//		s.direction((byte) 2);
-//		s.move();
-//		System.out.println(s);
-//
-//		System.out.println();
-//		System.out.println("Testing grow()");
-//		s.direction((byte) 1);
-//		s.grow();
-//		System.out.println(s);
-//
-//		System.out.println();
-//		System.out.println("Testing collision");
-//		Snake s2 = new Snake(new Point(10, 9), 5, (byte) 2, "Test2");
-//		System.out.println(s2);
-//		s2.move();
-//
-//
-//		System.out.println();
-//		System.out.println("Testing grid");
-//		Snake s3 = new Snake(new Point(120, 120), 10, (byte) 3, "Test3");
-//		System.out.println(s3);
-//		s3.direction((byte) 0);
-//		for (int i = 0; i < 8; i++)
-//			s3.move();
-//		System.out.println(s3);
-//
-//	}
-
 }

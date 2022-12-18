@@ -28,7 +28,7 @@ public class SignUp extends JFrame implements ActionListener {
     public SignUp() {
         this.ipAddr = TheGameClient.localhostIP;
         setVisible(true);
-        setSize(400, 300);
+        setBounds(400, 100, 400, 300);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("SignUp");

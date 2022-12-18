@@ -31,8 +31,7 @@ public class LeaderBoard extends JFrame implements ActionListener {
         setTitle("Leader Board");
 
         setVisible(true);
-
-        setSize(388, 470);
+        setBounds(400, 100, 388, 470);
         getContentPane().setBackground(Color.white);
 
         setLayout(null);

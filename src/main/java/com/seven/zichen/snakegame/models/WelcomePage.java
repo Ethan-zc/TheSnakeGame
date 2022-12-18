@@ -18,7 +18,7 @@ public class WelcomePage extends JFrame implements ActionListener {
 
         setVisible(true);
 
-        setSize(400, 270);
+        setBounds(400, 100, 400, 270);
         getContentPane().setBackground(Color.white);
 
         setLayout(null);

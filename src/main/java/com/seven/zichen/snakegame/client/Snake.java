@@ -1,8 +1,9 @@
 package com.seven.zichen.snakegame.client;
 
+import com.seven.zichen.snakegame.utilities.Point;
+
 import java.util.LinkedList;
 
-// La classe Snake code les serpents sur une liste de points
 public class Snake {
 	public byte direction;
 	byte number;

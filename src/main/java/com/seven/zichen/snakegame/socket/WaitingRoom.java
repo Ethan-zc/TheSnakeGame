@@ -1,7 +1,7 @@
 package com.seven.zichen.snakegame.socket;
 
 import com.seven.zichen.snakegame.TheGameClient;
-import com.seven.zichen.snakegame.games_handler.GameHandlerManager;
+import com.seven.zichen.snakegame.gamesHandler.GameHandlerManager;
 import com.seven.zichen.snakegame.models.GameFrame;
 import com.seven.zichen.snakegame.models.GamePanel;
 import com.seven.zichen.snakegame.service.GameService;

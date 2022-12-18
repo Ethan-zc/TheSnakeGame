@@ -1,8 +1,7 @@
 package com.seven.zichen.snakegame.client;
-import com.seven.zichen.snakegame.utilities.GameOptions;
+import com.seven.zichen.snakegame.utilities.Pair;
+import com.seven.zichen.snakegame.utilities.Point;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.InetSocketAddress;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
@@ -11,7 +10,6 @@ import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
-import javax.swing.Timer;
 
 
 public class Client{
@@ -96,8 +94,7 @@ public class Client{
 		return res;
 	}
 
-	private short bufferWaitPlayerServer(int serverPort)
-			throws Exception {
+	private short bufferWaitPlayerServer(int serverPort) throws Exception {
 		DatagramChannel clientSocket = DatagramChannel.open();
 		InetSocketAddress local = new InetSocketAddress(serverPort);
 		clientSocket.socket().bind(local);
@@ -111,9 +108,9 @@ public class Client{
 			serverName = "";
 			for (int i = 0; i < nbChar; i++)
 				serverName += (char) buffer.get();
-			short portConnexion = buffer.getShort();
+			short portConnection = buffer.getShort();
 			clientSocket.close();
-			return portConnexion;
+			return portConnection;
 		} catch (BufferUnderflowException e) {
 			clientSocket.close();
 			throw new Exception("Game Server is corrupted");
