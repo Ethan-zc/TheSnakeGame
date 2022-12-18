@@ -15,15 +15,8 @@ public class TheGameClient {
     public static String localhostIP = "192.168.1.156";
 
     public static void main(String[] args) {
-//        new SpringApplicationBuilder(TheSnakeGameApplication.class).headless(false).run(args);
-//        new WaitingRoom();
+
         new SignUp();
-//        List<String> test = new ArrayList<>();
-//        test.add("Haha");
-//        test.add("Yes");
-//        GamePanel gamePanel = new GamePanel(test);
-//        for (int i = 0; i < gamePanel.getSnakes().size(); i++) {
-//            new GameFrame(gamePanel);
-//        }
+
     }
 }
