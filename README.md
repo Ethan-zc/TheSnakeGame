@@ -44,7 +44,7 @@ for all users in the same local network.
 As for the server, please run TheSnakeGameApplication. After seeing that the server is running, 
 different computers under the same local network could run TheGameClient to as client to login and play the game. <br>
 
-<h4>For detailed process, please refer to the video: <a href="https://www.avast.com/c-how-to-find-ip-address">Video</a></h4>
+<h4>For detailed process, please refer to the video: <a href="https://www.youtube.com/watch?v=wDBBOvSAy58&ab_channel=ZichenYang">Video</a></h4>
 
 Following are detailed introduction for different part of the project. 
 
