@@ -1,9 +1,9 @@
 # TheSnakeGame
 <h4> Zhangnan Jiang(zj2028), Zichen Yang(zy2486)</h4>
 <h4> Final Project for CS9053 </h4>
-<h4> Link to the Project Repo: <a href = "https://www.youtube.com/watch?v=wDBBOvSAy58&ab_channel=ZichenYang">https://github.com/Ethan-zc/TheSnakeGame</a> </h4>
+<h4> Link to the Project Repo: <a href = "https://github.com/Ethan-zc/TheSnakeGame">https://github.com/Ethan-zc/TheSnakeGame</a> </h4>
 
-<h4>Video for SetUp and simple demo: <a href="https://www.avast.com/c-how-to-find-ip-address">Click Here</a></h4>
+<h4>Video for SetUp and simple demo: <a href="https://www.youtube.com/watch?v=wDBBOvSAy58&ab_channel=ZichenYang">Click Here</a></h4>
 
 <h3> Introduction</h3>
 This is a multiplayer snake game that based on <b>SpringBoot, Mybatis, SQLite, Socket, and UDP</b> using Java. 
