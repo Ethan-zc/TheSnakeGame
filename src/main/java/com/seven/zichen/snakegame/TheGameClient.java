@@ -6,7 +6,7 @@ import com.seven.zichen.snakegame.models.SignUp;
 
 public class TheGameClient {
 
-    public static String localhostIP = "192.168.1.164";
+    public static String localhostIP = "192.168.1.159";
 
     public static void main(String[] args) {
 
